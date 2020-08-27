@@ -6,7 +6,8 @@ import { ContractService} from './services/contract';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent  {
+export class AppComponent {
+  public isNavbarOpen;
   public account;
   private accountSubscribe;
   public leftDaysInfo;
@@ -29,11 +30,16 @@ export class AppComponent  {
     this.contractService.getEndDateTime().then((result) => {
       this.leftDaysInfo = result;
     });
+    this.isNavbarOpen = false;
 
     this.contractService.getContractsInfo().then((info) => {
       this.tableInfo = info;
       this.iniRunString();
     });
+  }
+
+  public openNavbar() {
+    this.isNavbarOpen = !this.isNavbarOpen;
   }
 
   public subscribeAccount() {
