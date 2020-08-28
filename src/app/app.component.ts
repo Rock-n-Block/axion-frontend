@@ -1,5 +1,6 @@
-import {AfterContentInit, Component, NgZone, ViewChild} from '@angular/core';
+import {AfterContentInit, Component, NgZone, ViewChild, OnInit} from '@angular/core';
 import {TransactionSuccessModalComponent} from './components/transactionSuccessModal/transaction-success-modal.component';
+import {MetamaskErrorComponent} from './components/metamaskError/metamask-error.component';
 import { ContractService} from './services/contract';
 import {MatDialog} from '@angular/material/dialog';
 
@@ -8,8 +9,9 @@ import {MatDialog} from '@angular/material/dialog';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   public isNavbarOpen;
+  public isHeaderActive;
   public account;
   private accountSubscribe;
   public leftDaysInfo;
@@ -28,7 +30,21 @@ export class AppComponent {
         this.subscribeAccount();
       }
     });
-    this.contractService.getAccount(true);
+
+    this.contractService.transactionsSubscribe().subscribe((transaction: any) => {
+      if (transaction) {
+        this.dialog.open(TransactionSuccessModalComponent, {
+          width: '400px',
+          data: transaction.hash
+        });
+      }
+    });
+    this.contractService.getAccount(true).catch(err => {
+      this.dialog.open(MetamaskErrorComponent, {
+        width: '400px',
+        data: err
+      });
+    });
 
     this.contractService.getEndDateTime().then((result) => {
       this.leftDaysInfo = result;
@@ -39,6 +55,8 @@ export class AppComponent {
       this.tableInfo = info;
       this.iniRunString();
     });
+
+    this.isHeaderActive = false;
   }
 
   public openNavbar() {
@@ -58,16 +76,10 @@ export class AppComponent {
       });
     });
     this.contractService.getAccount().catch((err) => {
-      alert(JSON.stringify(err));
-    });
-
-    this.contractService.transactionsSubscribe().subscribe((transaction: any) => {
-      if (transaction) {
-        const dialogRef = this.dialog.open(TransactionSuccessModalComponent, {
-          width: '400px',
-          data: transaction.hash
-        });
-      }
+      this.dialog.open(MetamaskErrorComponent, {
+        width: '400px',
+        data: err
+      });
     });
   }
 
@@ -86,6 +98,16 @@ export class AppComponent {
         runStringElement.appendChild(allElements[0]);
       }
     }, 30);
+  }
+
+  private onScrollWindow() {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+    this.isHeaderActive = scrollTop >= 10;
+  }
+
+  ngOnInit(): void {
+    window.addEventListener('scroll', this.onScrollWindow.bind(this));
   }
 
 }

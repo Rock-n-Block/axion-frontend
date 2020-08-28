@@ -43,7 +43,6 @@ export class ContractService {
     ETH: 18
   };
   public account;
-  public transaction;
   private allAccountSubscribers = [];
   private allTransactionSubscribers = [];
 
@@ -81,9 +80,9 @@ export class ContractService {
       observer.next(this.account);
     });
   }
-  private callAllTransactionsSubscribers() {
+  private callAllTransactionsSubscribers(transaction) {
     this.allTransactionSubscribers.forEach((observer) => {
-      observer.next(this.transaction);
+      observer.next(transaction);
     });
   }
 
@@ -113,7 +112,6 @@ export class ContractService {
   }
   public transactionsSubscribe() {
     const newObserver = new Observable((observer) => {
-      observer.next(this.transaction);
       this.allTransactionSubscribers.push(observer);
     });
     return newObserver;
@@ -252,8 +250,7 @@ export class ContractService {
   private checkTx(tx, resolve, reject) {
     this.web3Service.Web3.eth.getTransaction(tx.transactionHash).then((txInfo) => {
       if (txInfo.blockNumber) {
-        this.transaction = txInfo;
-        this.callAllTransactionsSubscribers();
+        this.callAllTransactionsSubscribers(txInfo);
         resolve(tx);
       } else {
         setTimeout(() => {

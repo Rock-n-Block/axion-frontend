@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { ClaimPageComponent } from './claim-page/claim-page.component';
 import { AuctionPageComponent } from './auction-page/auction-page.component';
 import { TransactionSuccessModalComponent } from './components/transactionSuccessModal/transaction-success-modal.component';
+import { MetamaskErrorComponent } from './components/metamaskError/metamask-error.component';
 import {ContractService} from './services/contract';
 import {FormsModule} from '@angular/forms';
 import {BigNumberDirective, BigNumberFormat, BigNumberMax, BigNumberMin} from './directives/bignumber/bignumber';
@@ -15,9 +16,8 @@ import {AngularFittextModule} from 'angular-fittext';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {HttpClientModule} from '@angular/common/http';
 import {
-  MatDialogModule,
+  MatDialogModule, MatTooltipModule
 } from '@angular/material';
-
 
 export function initializeApp(
   injector: Injector
@@ -35,12 +35,13 @@ export function initializeApp(
 }
 
 @NgModule({
-  entryComponents: [TransactionSuccessModalComponent],
+  entryComponents: [TransactionSuccessModalComponent, MetamaskErrorComponent],
   declarations: [
     AppComponent,
     ClaimPageComponent,
     AuctionPageComponent,
     TransactionSuccessModalComponent,
+    MetamaskErrorComponent,
     BigNumberDirective,
     BigNumberFormat,
     BigNumberMin,
@@ -52,6 +53,7 @@ export function initializeApp(
     BrowserModule,
     AppRoutingModule,
     MatDialogModule,
+    MatTooltipModule,
     FormsModule,
     AngularFittextModule,
     HttpClientModule,

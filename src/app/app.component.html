@@ -1,4 +1,4 @@
-<header class="header">
+<header class="header" [ngClass]="{'active': isHeaderActive}">
   <div class="content-container">
     <div class="header-content">
       <img class="header-logo" src="./assets/images/logo.svg"/>
@@ -13,7 +13,7 @@
           <a routerLink="staking" routerLinkActive="active-link">Staking</a>
         </li>
         <li class="header-menu_item">
-          <button class="metamask-button" (click)="subscribeAccount()" [ngClass]="{'no-clickable': !!account}">
+          <button class="metamask-button" (click)="subscribeAccount()" [ngClass]="{'no-clickable': !!account}" >
             <img class="metamask-button_icon" src="./assets/images/metamask.svg"/>
             <span class="metamask-button_text">{{account ? account.address : 'MetaMask'}}</span>
           </button>
