@@ -21,6 +21,8 @@ export class ClaimPageComponent implements OnDestroy {
   public burnTokensProgress: boolean;
   public claimTokensProgress: boolean;
 
+  public swapNativeTokenInfo: any;
+
   @ViewChild('sendForm', {static: false}) sendForm;
 
   constructor(
@@ -33,9 +35,9 @@ export class ClaimPageComponent implements OnDestroy {
           this.account = account;
           window.dispatchEvent(new Event('resize'));
           if (account) {
-            console.log(account.claimableInfo);
             this.onChangeAccount.emit();
             this.updateSwapBalanceProgress = true;
+            this.readSwapNativeToken();
             this.contractService.swapTokenBalanceOf().then((balance) => {
               this.swapContractBalance = balance;
               this.updateSwapBalanceProgress = false;
@@ -47,6 +49,14 @@ export class ClaimPageComponent implements OnDestroy {
     });
     this.tokensDecimals = this.contractService.getCoinsDecimals();
   }
+
+  private readSwapNativeToken() {
+    this.contractService.readSwapNativeToken().then((result) => {
+      this.swapNativeTokenInfo = result;
+      window.dispatchEvent(new Event('resize'));
+    });
+  }
+
 
   public swapH2T() {
     this.swapTokensProgress = true;

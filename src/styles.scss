@@ -4,6 +4,25 @@ router-outlet ~ * {
   height: 100%;
 }
 
+
+body::-webkit-scrollbar {
+  width: 12px;
+  background-color: #4d2696;
+  opacity: 0;
+}
+body::-webkit-scrollbar-thumb {
+  /* border-radius: 10px; */
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+  background-color: rgba(51, 26, 99, 0.4);
+}
+
+body::-webkit-scrollbar-track {
+  //-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  /* border-radius: 10px; */
+  background-color: transparent;
+  padding: 0 2px;
+}
+
 /* You can add global styles to this file, and also import other style files */
 html,
 body {
@@ -19,6 +38,7 @@ body {
   color: #fff;
   min-width: 880px;
   padding-bottom: 100px;
+  overflow-y: scroll;
 }
 
 button,
@@ -94,10 +114,10 @@ input:-internal-autofill-selected {
 
     &:not(:disabled) {
       &:hover {
-        background: rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.05);
       }
       &:active {
-        background: rgba(0, 0, 0, 0.1);
+        background: rgba(0, 0, 0, 0.05);
       }
     }
   }
@@ -147,7 +167,7 @@ input:-internal-autofill-selected {
     background-color: rgb(91 42 176 / 78%);
     box-shadow: 0 3px 7px rgba(0, 0, 0, 0.2);
     .header-logo {
-      width: 140px; 
+      width: 140px;
     }
   }
   &-navbar {
@@ -257,7 +277,7 @@ input:-internal-autofill-selected {
     font-size: 28px;
     line-height: 107.2%;
     text-align: center;
-    margin-bottom: 2vw;
+    margin-bottom: 20px;
     .question {
       margin-bottom: 10px;
     }
@@ -348,7 +368,7 @@ input:-internal-autofill-selected {
     }
     &_value {
       font-weight: 300;
-      font-size: 38px;
+      font-size: 0;
       line-height: 45px;
       height: 45px;
       margin-bottom: 20px;
@@ -707,6 +727,9 @@ input:-internal-autofill-selected {
     position: absolute;
     top: 50%;
     background: rgba(255, 255, 255, 0.7);
+    .btn__transparent & {
+      background: #37C8B4;
+    }
     animation-timing-function: cubic-bezier(0, 1, 1, 0);
     margin-top: -5px;
     width: 10px;

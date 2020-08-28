@@ -61,7 +61,7 @@
 
   <div class="content-block" [ngClass]="{'no-active': !account}">
     <div class="content-block_title">
-      <span>H2T > H2X</span>
+      <span>H2T > Axion</span>
       <span class="content-block_title_help"></span>
     </div>
 
@@ -144,7 +144,9 @@
         <div class="list">
           <div class="blocks-list_item width-50">
             <div class="blocks-list_item_title uppercase">For Claim</div>
-            <div class="blocks-list_item_value blocks-list_item_value__positive" fittext [maxFontSize]="38">0</div>
+            <div class="blocks-list_item_value blocks-list_item_value__positive" fittext [maxFontSize]="38">
+              {{(swapNativeTokenInfo ? swapNativeTokenInfo[0] : 0) | bigNumberFormat : tokensDecimals.HEX2X : true : false : 4}}
+            </div>
             <div class="blocks-list_item_currency blocks-list_item_currency__axn">
               <span>AXN</span>
             </div>
@@ -152,7 +154,7 @@
           <div class="blocks-list_item width-50">
             <div class="blocks-list_item_title uppercase">Penalty</div>
             <div class="blocks-list_item_value blocks-list_item_value__negative" fittext [maxFontSize]="38">
-              50,879,777,143.4973
+              {{(swapNativeTokenInfo ? swapNativeTokenInfo[1] : 0) | bigNumberFormat : tokensDecimals.HEX2X : true : false : 4}}
             </div>
             <div class="blocks-list_item_currency blocks-list_item_currency__axn">
               <span>AXN</span>

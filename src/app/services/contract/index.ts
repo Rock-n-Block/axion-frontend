@@ -401,7 +401,9 @@ export class ContractService {
     });
   }
 
-
+  public readSwapNativeToken() {
+    return this.NativeSwapContract.methods.readSwapNativeToken(this.account.address).call();
+  }
 
   /* Staking */
   public depositHEX2X(amount, days) {
@@ -599,6 +601,7 @@ export class ContractService {
       return this.checkTransaction(res);
     });
   }
+
 
 
   private initializeContracts() {
