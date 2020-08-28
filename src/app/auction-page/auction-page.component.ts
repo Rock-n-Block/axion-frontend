@@ -1,7 +1,5 @@
 import {Component, EventEmitter, NgZone, OnDestroy, OnInit, ViewChild, TemplateRef} from '@angular/core';
 import {ContractService} from '../services/contract';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import {TransactionSuccessModalComponent} from '../components/transactionSuccessModal/transaction-success-modal.component';
 
 @Component({
   selector: 'app-auction-page',
@@ -30,7 +28,6 @@ export class AuctionPageComponent implements OnDestroy {
   constructor(
     private contractService: ContractService,
     private ngZone: NgZone,
-    public dialog: MatDialog
   ) {
     this.accountSubscribe = this.contractService.accountSubscribe().subscribe((account: any) => {
 
@@ -62,11 +59,6 @@ export class AuctionPageComponent implements OnDestroy {
 
         this.sendAuctionProgress = false;
         this.formsData.auctionAmount = undefined;
-
-        const dialogRef = this.dialog.open(TransactionSuccessModalComponent, {
-          width: '400px',
-          data: {transactionHash}
-        });
       });
     }).catch(() => {
       this.sendAuctionProgress = false;

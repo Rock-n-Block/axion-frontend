@@ -11,7 +11,7 @@ export class TransactionSuccessModalComponent {
         public dialogRef: MatDialogRef<TransactionSuccessModalComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any
         ) {
-            this.ethLink = `https://rinkeby.etherscan.io/tx/${data.transactionHash}`;
+            this.ethLink = `https://rinkeby.etherscan.io/tx/${data}`;
         }
     public closeModal() {
         this.dialogRef.close();

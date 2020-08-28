@@ -1,5 +1,7 @@
-import {Component, NgZone, ViewChild} from '@angular/core';
+import {AfterContentInit, Component, NgZone, ViewChild} from '@angular/core';
+import {TransactionSuccessModalComponent} from './components/transactionSuccessModal/transaction-success-modal.component';
 import { ContractService} from './services/contract';
+import {MatDialog} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +19,7 @@ export class AppComponent {
   constructor(
     private contractService: ContractService,
     private ngZone: NgZone,
+    public dialog: MatDialog
   ) {
 
     this.accountSubscribe = this.contractService.accountSubscribe().subscribe((account) => {
@@ -56,6 +59,15 @@ export class AppComponent {
     });
     this.contractService.getAccount().catch((err) => {
       alert(JSON.stringify(err));
+    });
+
+    this.contractService.transactionsSubscribe().subscribe((transaction: any) => {
+      if (transaction) {
+        const dialogRef = this.dialog.open(TransactionSuccessModalComponent, {
+          width: '400px',
+          data: transaction.hash
+        });
+      }
     });
   }
 
