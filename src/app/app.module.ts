@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ClaimPageComponent } from './claim-page/claim-page.component';
 import { AuctionPageComponent } from './auction-page/auction-page.component';
+import { TransactionSuccessModalComponent } from './components/transactionSuccessModal/transaction-success-modal.component';
 import {ContractService} from './services/contract';
 import {FormsModule} from '@angular/forms';
 import {BigNumberDirective, BigNumberFormat, BigNumberMax, BigNumberMin} from './directives/bignumber/bignumber';
@@ -13,6 +14,9 @@ import {MinMaxDirective} from './directives/minmax/minmax';
 import {AngularFittextModule} from 'angular-fittext';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {HttpClientModule} from '@angular/common/http';
+import {
+  MatDialogModule,
+} from '@angular/material';
 
 
 export function initializeApp(
@@ -31,10 +35,12 @@ export function initializeApp(
 }
 
 @NgModule({
+  entryComponents: [TransactionSuccessModalComponent],
   declarations: [
     AppComponent,
     ClaimPageComponent,
     AuctionPageComponent,
+    TransactionSuccessModalComponent,
     BigNumberDirective,
     BigNumberFormat,
     BigNumberMin,
@@ -45,9 +51,11 @@ export function initializeApp(
   imports: [
     BrowserModule,
     AppRoutingModule,
+    MatDialogModule,
     FormsModule,
     AngularFittextModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule
   ],
   providers: [
     {

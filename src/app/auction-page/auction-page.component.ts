@@ -1,5 +1,7 @@
-import {Component, EventEmitter, NgZone, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, EventEmitter, NgZone, OnDestroy, OnInit, ViewChild, TemplateRef} from '@angular/core';
 import {ContractService} from '../services/contract';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {TransactionSuccessModalComponent} from '../components/transactionSuccessModal/transaction-success-modal.component';
 
 @Component({
   selector: 'app-auction-page',
@@ -7,6 +9,8 @@ import {ContractService} from '../services/contract';
   styleUrls: ['./auction-page.component.scss']
 })
 export class AuctionPageComponent implements OnDestroy {
+  @ViewChild('successModal', {
+    static: true}) successModal: TemplateRef<any>;
 
   public account;
   public tokensDecimals;
@@ -25,7 +29,8 @@ export class AuctionPageComponent implements OnDestroy {
 
   constructor(
     private contractService: ContractService,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    public dialog: MatDialog
   ) {
     this.accountSubscribe = this.contractService.accountSubscribe().subscribe((account: any) => {
 
@@ -52,10 +57,16 @@ export class AuctionPageComponent implements OnDestroy {
 
   public sendETHToAuction() {
     this.sendAuctionProgress = true;
-    this.contractService.sendETHToAuction(this.formsData.auctionAmount).then(() => {
+    this.contractService.sendETHToAuction(this.formsData.auctionAmount).then(({transactionHash}) => {
       this.contractService.updateETHBalance(true).then(() => {
+
         this.sendAuctionProgress = false;
         this.formsData.auctionAmount = undefined;
+
+        const dialogRef = this.dialog.open(TransactionSuccessModalComponent, {
+          width: '400px',
+          data: {transactionHash}
+        });
       });
     }).catch(() => {
       this.sendAuctionProgress = false;

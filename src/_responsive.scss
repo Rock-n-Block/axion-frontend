@@ -1,5 +1,14 @@
 
 @media only screen and (max-width: 991px) {
+    .blocks-list_form-group .blocks-list_item:nth-child(2) {
+        width: 100%;
+        .blocks-list_new-item, .form-group {
+            border-radius: 12px !important;
+        }
+    }
+    .form-group_input input {
+        min-width: unset;
+    }
     .standard-table {
         overflow: scroll;
         width: 100vw;
