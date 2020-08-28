@@ -12,7 +12,7 @@
         <div class="blocks-list_item">
           <div class="blocks-list_item_title uppercase">Your Amount</div>
           <div class="blocks-list_item_value" fittext [maxFontSize]="38">
-            {{account ? account?.balances.HEX.display || 0 : 0}}
+            {{(account ? account?.balances.HEX.wei || 0 : 0) | bigNumberFormat : tokensDecimals.HEX : true : false : 4}}
           </div>
           <div class="blocks-list_item_currency blocks-list_item_currency__hex">
             <span>HEX</span>
@@ -71,7 +71,7 @@
           <div class="blocks-list_item" *ngIf="account?.balances">
             <div class="blocks-list_item_title nowrap uppercase">Your amount</div>
             <div class="blocks-list_item_value" fittext [maxFontSize]="38">
-              {{account ? account?.balances.H2T.display || 0 : 0}}
+              {{(account ? account?.balances.H2T.wei || 0 : 0) | bigNumberFormat : tokensDecimals.H2T : true : false : 4}}
             </div>
             <div class="blocks-list_item_currency blocks-list_item_currency__h2t">
               <span>H2T</span>

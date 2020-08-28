@@ -99,6 +99,9 @@
     }
     .results-table {
       margin-top: 30px;
+      &_row {
+        border-radius: 0;
+      }
     }
     .results-table_cells-group {
       flex-direction: column;
@@ -228,4 +231,3 @@
       }
     }
   }
-  

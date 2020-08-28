@@ -3,6 +3,7 @@ import {TransactionSuccessModalComponent} from './components/transactionSuccessM
 import {MetamaskErrorComponent} from './components/metamaskError/metamask-error.component';
 import { ContractService} from './services/contract';
 import {MatDialog} from '@angular/material/dialog';
+import {NavigationStart, Router} from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -21,7 +22,8 @@ export class AppComponent implements OnInit {
   constructor(
     private contractService: ContractService,
     private ngZone: NgZone,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    route: Router,
   ) {
 
     this.accountSubscribe = this.contractService.accountSubscribe().subscribe((account) => {
@@ -39,12 +41,7 @@ export class AppComponent implements OnInit {
         });
       }
     });
-    this.contractService.getAccount(true).catch(err => {
-      this.dialog.open(MetamaskErrorComponent, {
-        width: '400px',
-        data: err
-      });
-    });
+    this.contractService.getAccount(true);
 
     this.contractService.getEndDateTime().then((result) => {
       this.leftDaysInfo = result;
@@ -57,6 +54,12 @@ export class AppComponent implements OnInit {
     });
 
     this.isHeaderActive = false;
+
+    route.events.subscribe((event) => {
+      if (event instanceof NavigationStart) {
+        window.scrollTo(0, 0);
+      }
+    });
   }
 
   public openNavbar() {

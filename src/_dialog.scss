@@ -46,8 +46,9 @@
 .mat-dialog-container {
   padding: 0 !important;
   box-shadow: 0 1em 5em rgba(0, 0, 0, 0.6);
-  border-radius: 0 !important;
   overflow: hidden !important;
+  background-color: #4B29A1;
+  border-radius: 8px;
 }
 
 .alert-window-title {
@@ -64,10 +65,10 @@
 }
 
 .dialog-block {
-  background-color: #4B29A1;
+  //background-color: #4B29A1;
   color: white;
   &__content {
-    padding: 30px;
+    padding: 20px;
   }
   .transaction-title,
   .transaction-description {
@@ -83,12 +84,17 @@
 .dialog-title {
   text-align: center;
   font-size: 28px;
+  font-weight: 300;
 }
 .dialog-description {
   text-align: center;
   margin-top: 20px;
   a {
     color: #fff;
+    &:hover {
+      text-decoration: none;
+      color: #ff0;
+    }
   }
 }
 .dialog-closer {
