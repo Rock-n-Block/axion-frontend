@@ -44,6 +44,7 @@ export class ContractService {
   };
   public account;
   private allAccountSubscribers = [];
+  private allTransactionSubscribers = [];
 
   constructor(
     private httpService: HttpClient
@@ -79,6 +80,11 @@ export class ContractService {
       observer.next(this.account);
     });
   }
+  private callAllTransactionsSubscribers(transaction) {
+    this.allTransactionSubscribers.forEach((observer) => {
+      observer.next(transaction);
+    });
+  }
 
   public accountSubscribe() {
     const newObserver = new Observable((observer) => {
@@ -103,6 +109,12 @@ export class ContractService {
         this.callAllAccountsSubscribers();
       }
     });
+  }
+  public transactionsSubscribe() {
+    const newObserver = new Observable((observer) => {
+      this.allTransactionSubscribers.push(observer);
+    });
+    return newObserver;
   }
 
   public getAccount(noEnable?) {
@@ -238,6 +250,7 @@ export class ContractService {
   private checkTx(tx, resolve, reject) {
     this.web3Service.Web3.eth.getTransaction(tx.transactionHash).then((txInfo) => {
       if (txInfo.blockNumber) {
+        this.callAllTransactionsSubscribers(txInfo);
         resolve(tx);
       } else {
         setTimeout(() => {

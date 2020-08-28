@@ -1,7 +1,10 @@
 <div class="content-container">
   <div class="content-block" [ngClass]="{'no-active': !account}">
     <div class="content-block_title">
-      <span>HEX > Axion</span>
+      <span>HEX > Axion
+
+      <div class="question" mat-raised-button matTooltip="Info about the action" matTooltipClass='question__tooltip'></div>
+      </span>
       <span class="content-block_title_help"></span>
     </div>
     <div class="blocks-list">
@@ -74,8 +77,8 @@
               <span>H2T</span>
             </div>
           </div>
-          <div class="blocks-list_item" [ngClass]="{disabled: swapTokensProgress}">
-            <div class="blocks-list_item_title uppercase">Send to Swap</div>
+          <div class="blocks-list_item blocks-list_item--mobile-border-top" [ngClass]="{disabled: swapTokensProgress}">
+            <div class="blocks-list_item_title">Send to Swap</div>
             <div class="form-group">
               <div class="form-group_title uppercase">Enter amount</div>
               <div class="form-group_input">

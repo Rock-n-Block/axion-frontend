@@ -1,4 +1,4 @@
-<header class="header">
+<header class="header" [ngClass]="{'active': isHeaderActive}">
   <div class="content-container">
     <div class="header-content">
       <img class="header-logo" src="./assets/images/logo.svg"/>
@@ -13,12 +13,33 @@
           <a routerLink="staking" routerLinkActive="active-link">Staking</a>
         </li>
         <li class="header-menu_item">
-          <button class="metamask-button" (click)="subscribeAccount()" [ngClass]="{'no-clickable': !!account}">
+          <button class="metamask-button" (click)="subscribeAccount()" [ngClass]="{'no-clickable': !!account}" >
             <img class="metamask-button_icon" src="./assets/images/metamask.svg"/>
             <span class="metamask-button_text">{{account ? account.address : 'MetaMask'}}</span>
           </button>
         </li>
       </ul>
+      <div class="header-navbar-btn" (click)="openNavbar()">
+        <img src="./assets/images/styling/navbar-btn.svg" alt="" *ngIf="!isNavbarOpen">
+        <img src="./assets/images/styling/navbar-btn-close.svg" alt="" *ngIf="isNavbarOpen">
+      </div>
+    </div>
+    <div class="header-navbar" [ngClass]="{'active': isNavbarOpen}">
+      <div class="header-navbar-item">
+        <a routerLink="claim" routerLinkActive="active-link" (click)="openNavbar()">Claim</a>
+      </div>
+      <div class="header-navbar-item">
+        <a routerLink="auction" routerLinkActive="active-link" (click)="openNavbar()">Auction</a>
+      </div>
+      <div class="header-navbar-item">
+        <a routerLink="staking" routerLinkActive="active-link" (click)="openNavbar()">Staking</a>
+      </div>
+      <div class="header-navbar-item">
+        <button class="metamask-button" (click)="subscribeAccount()" [ngClass]="{'no-clickable': !!account}">
+          <img class="metamask-button_icon" src="./assets/images/metamask.svg"/>
+          <span class="metamask-button_text">{{account ? account.address : 'MetaMask'}}</span>
+        </button>
+      </div>
     </div>
   </div>
 </header>
