@@ -564,14 +564,20 @@ export class ContractService {
 
   public getStakingContractInfo() {
     const promises = [
-      this.DailyAuctionContract.methods
-        .calculateStepsFromStart()
+      this.StakingContract.methods
+        .startContract()
         .call()
-        .then((result) => {
-          return {
-            key: "StepsFromStart",
-            value: result,
-          };
+        .then((startContract) => {
+          return this.StakingContract.methods
+            .stepTimestamp()
+            .call()
+            .then((stepTimestamp) => {
+              const result = (Date.now() - startContract) / stepTimestamp;
+              return {
+                key: "StepsFromStart",
+                value: result === Infinity ? 0 : result,
+              };
+            });
         }),
       this.StakingContract.methods
         .shareRate()
@@ -609,6 +615,53 @@ export class ContractService {
       return values;
     });
   }
+  // public getStakingContractInfo() {
+  //   const promises = [
+  //     this.DailyAuctionContract.methods
+  //       .calculateStepsFromStart()
+  //       .call()
+  //       .then((result) => {
+  //         return {
+  //           key: "StepsFromStart",
+  //           value: result,
+  //         };
+  //       }),
+  //     this.StakingContract.methods
+  //       .shareRate()
+  //       .call()
+  //       .then((result) => {
+  //         return {
+  //           key: "ShareRate",
+  //           value: result,
+  //         };
+  //       }),
+  //     this.SubBalanceContract.methods
+  //       .getClosestYearShares()
+  //       .call()
+  //       .then((result) => {
+  //         return {
+  //           key: "closestYearShares",
+  //           value: result,
+  //         };
+  //       }),
+  //     this.BPDContract.methods
+  //       .getClosestPoolAmount()
+  //       .call()
+  //       .then((result) => {
+  //         return {
+  //           key: "closestPoolAmount",
+  //           value: result,
+  //         };
+  //       }),
+  //   ];
+  //   return Promise.all(promises).then((results) => {
+  //     const values = {};
+  //     results.forEach((v) => {
+  //       values[v.key] = v.value;
+  //     });
+  //     return values;
+  //   });
+  // }
 
   public getAccountStakes(): Promise<{
     closed: DepositInterface[];
