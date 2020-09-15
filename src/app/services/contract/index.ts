@@ -519,7 +519,6 @@ export class ContractService {
         .calculateDeltaPenalty(value)
         .call()
         .then((res) => {
-          console.log(res);
           return res;
         });
     });
