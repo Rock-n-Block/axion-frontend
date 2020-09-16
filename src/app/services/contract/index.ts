@@ -1,4 +1,4 @@
-import { CONTRACTS_PARAMS } from "./constants";
+// import { CONTRACTS_PARAMS } from "./constants";
 import { MetamaskService } from "../web3";
 import { Contract } from "web3-eth-contract";
 import { Observable } from "rxjs";
@@ -6,7 +6,7 @@ import { Injectable } from "@angular/core";
 import BigNumber from "bignumber.js";
 import { HttpClient } from "@angular/common/http";
 
-const swapDays = 350;
+// const swapDays = 350;
 export const stakingMaxDays = 1820;
 const oneDaySeconds = 86400;
 
@@ -46,12 +46,42 @@ export class ContractService {
   private allAccountSubscribers = [];
   private allTransactionSubscribers = [];
 
-  constructor(private httpService: HttpClient) {
-    this.web3Service = new MetamaskService();
-    this.initializeContracts();
+  private CONTRACTS_PARAMS: any;
+
+  constructor(private httpService: HttpClient) {}
+
+  private initAll() {
+    return new Promise((resolve, reject) => {
+      this.httpService
+        .get(`/assets/js/constants.json`)
+        .toPromise()
+        .then((result) => {
+          console.log(result);
+          const IS_PRODUCTION = location.protocol === "https:";
+          const CONTRACTS_PARAMS =
+            result[IS_PRODUCTION ? "mainnet" : "rinkeby"];
+
+          this.CONTRACTS_PARAMS = CONTRACTS_PARAMS;
+
+          console.log(this.CONTRACTS_PARAMS);
+          console.log(
+            this.CONTRACTS_PARAMS.H2T.ABI,
+            this.CONTRACTS_PARAMS.H2T.ADDRESS
+          );
+
+          this.web3Service = new MetamaskService();
+          this.initializeContracts();
+
+          resolve(true);
+        })
+        .catch(() => reject());
+    });
   }
 
-  private getTokensInfo() {
+  private getTokensInfo(noEnable?) {
+    if (!noEnable) {
+      this.initializeContracts();
+    }
     const promises = [
       this.H2TContract.methods
         .decimals()
@@ -76,8 +106,11 @@ export class ContractService {
   }
 
   public getStaticInfo() {
-    const promises = [this.getTokensInfo()];
-    return Promise.all(promises);
+    return this.initAll().then((res) => {
+      console.log(res);
+      const promises = [this.getTokensInfo(false)];
+      return Promise.all(promises);
+    });
   }
 
   private callAllAccountsSubscribers() {
@@ -860,53 +893,53 @@ export class ContractService {
 
   private initializeContracts() {
     this.H2TContract = this.web3Service.getContract(
-      CONTRACTS_PARAMS.H2T.ABI,
-      CONTRACTS_PARAMS.H2T.ADDRESS
+      this.CONTRACTS_PARAMS.H2T.ABI,
+      this.CONTRACTS_PARAMS.H2T.ADDRESS
     );
 
     this.HEX2XContract = this.web3Service.getContract(
-      CONTRACTS_PARAMS.HEX2X.ABI,
-      CONTRACTS_PARAMS.HEX2X.ADDRESS
+      this.CONTRACTS_PARAMS.HEX2X.ABI,
+      this.CONTRACTS_PARAMS.HEX2X.ADDRESS
     );
 
     this.NativeSwapContract = this.web3Service.getContract(
-      CONTRACTS_PARAMS.NativeSwap.ABI,
-      CONTRACTS_PARAMS.NativeSwap.ADDRESS
+      this.CONTRACTS_PARAMS.NativeSwap.ABI,
+      this.CONTRACTS_PARAMS.NativeSwap.ADDRESS
     );
 
     this.DailyAuctionContract = this.web3Service.getContract(
-      CONTRACTS_PARAMS.DailyAuction.ABI,
-      CONTRACTS_PARAMS.DailyAuction.ADDRESS
+      this.CONTRACTS_PARAMS.DailyAuction.ABI,
+      this.CONTRACTS_PARAMS.DailyAuction.ADDRESS
     );
 
     this.WeeklyAuctionContract = this.web3Service.getContract(
-      CONTRACTS_PARAMS.WeeklyAuction.ABI,
-      CONTRACTS_PARAMS.WeeklyAuction.ADDRESS
+      this.CONTRACTS_PARAMS.WeeklyAuction.ABI,
+      this.CONTRACTS_PARAMS.WeeklyAuction.ADDRESS
     );
 
     this.StakingContract = this.web3Service.getContract(
-      CONTRACTS_PARAMS.Staking.ABI,
-      CONTRACTS_PARAMS.Staking.ADDRESS
+      this.CONTRACTS_PARAMS.Staking.ABI,
+      this.CONTRACTS_PARAMS.Staking.ADDRESS
     );
 
     this.HEXContract = this.web3Service.getContract(
-      CONTRACTS_PARAMS.HEX.ABI,
-      CONTRACTS_PARAMS.HEX.ADDRESS
+      this.CONTRACTS_PARAMS.HEX.ABI,
+      this.CONTRACTS_PARAMS.HEX.ADDRESS
     );
 
     this.ForeignSwapContract = this.web3Service.getContract(
-      CONTRACTS_PARAMS.ForeignSwap.ABI,
-      CONTRACTS_PARAMS.ForeignSwap.ADDRESS
+      this.CONTRACTS_PARAMS.ForeignSwap.ABI,
+      this.CONTRACTS_PARAMS.ForeignSwap.ADDRESS
     );
 
     this.BPDContract = this.web3Service.getContract(
-      CONTRACTS_PARAMS.BPD.ABI,
-      CONTRACTS_PARAMS.BPD.ADDRESS
+      this.CONTRACTS_PARAMS.BPD.ABI,
+      this.CONTRACTS_PARAMS.BPD.ADDRESS
     );
 
     this.SubBalanceContract = this.web3Service.getContract(
-      CONTRACTS_PARAMS.SubBalance.ABI,
-      CONTRACTS_PARAMS.SubBalance.ADDRESS
+      this.CONTRACTS_PARAMS.SubBalance.ABI,
+      this.CONTRACTS_PARAMS.SubBalance.ADDRESS
     );
   }
 }
