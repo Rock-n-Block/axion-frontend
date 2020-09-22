@@ -14,9 +14,9 @@
       <span class="content-block_title_help"></span>
     </div>
     <div class="blocks-list">
-      <div class="blocks-list_element width-33">
+      <div class="blocks-list_element width-28">
         <div class="blocks-list_item">
-          <div class="blocks-list_item_title uppercase">Your Amount</div>
+          <div class="blocks-list_item_title uppercase">From</div>
           <div class="blocks-list_item_value" fittext [maxFontSize]="38">
             {{
               (account ? account?.balances.HEX.wei || 0 : 0)
@@ -28,14 +28,14 @@
           </div>
         </div>
       </div>
-      <div class="blocks-list_group blocks-list_element width-66">
+      <div class="blocks-list_group blocks-list_element width-50_5">
         <div class="list">
           <div class="blocks-list_item">
-            <div class="blocks-list_item_title uppercase">For Claim</div>
+            <div class="blocks-list_item_title uppercase">To</div>
             <div
               class="blocks-list_item_value blocks-list_item_value__positive"
               fittext
-              [maxFontSize]="38"
+              [maxFontSize]="40"
             >
               {{
                 (account ? account.claimableInfo.claim || 0 : 0)
@@ -48,12 +48,12 @@
               <span>AXN</span>
             </div>
           </div>
-          <div class="blocks-list_item">
+          <div class="blocks-list_item width-62">
             <div class="blocks-list_item_title uppercase">Penalty</div>
             <div
               class="blocks-list_item_value blocks-list_item_value__negative"
               fittext
-              [maxFontSize]="38"
+              [maxFontSize]="25"
             >
               {{
                 (account ? account.claimableInfo.penalty || 0 : 0)
@@ -77,7 +77,7 @@
           "
         >
           <button
-            class="btn btn__normal"
+            class="btn btn__normal btn__w-265"
             (click)="claim()"
             [ngClass]="{ progress: claimTokensProgress }"
             [disabled]="claimTokensProgress"
@@ -101,64 +101,67 @@
     </div>
 
     <form #sendForm="ngForm" class="blocks-list">
-      <div
-        class="blocks-list_group blocks-list_element blocks-list_form-group width-40"
-      >
+      <div class="blocks-list_group blocks-list_element width-32_8">
         <div class="list">
           <div class="blocks-list_item" *ngIf="account?.balances">
-            <div class="blocks-list_item_title nowrap uppercase">
-              Your amount
-            </div>
+            <div class="blocks-list_item_title nowrap uppercase">From</div>
             <div class="blocks-list_item_value" fittext [maxFontSize]="38">
-              {{
-                (account ? account?.balances.H2T.wei || 0 : 0)
-                  | bigNumberFormat: tokensDecimals.H2T:true:false:4
-              }}
+              <input
+                type="text"
+                *ngIf="account"
+                required="required"
+                placeholder="0"
+                class="blocks-list_item_input"
+                [appBigNumber]="{
+                  decimals: tokensDecimals['H2T'],
+                  min: 1,
+                  max: account?.balances.H2T.wei
+                }"
+                [maxValueChange]="onChangeAccount"
+                [(ngModel)]="formsData.swapAmount"
+                name="swap-amount"
+              />
             </div>
             <div
               class="blocks-list_item_currency blocks-list_item_currency__h2t"
             >
               <span>H2T</span>
             </div>
-          </div>
-          <div
-            class="blocks-list_item blocks-list_item--mobile-border-top"
-            [ngClass]="{ disabled: swapTokensProgress }"
-          >
-            <div class="blocks-list_item_title">Send to Swap</div>
-            <div class="form-group">
-              <div class="form-group_title uppercase">Enter amount</div>
-              <div class="form-group_input">
-                <input
-                  type="text"
-                  *ngIf="account"
-                  required="required"
-                  [appBigNumber]="{
-                    decimals: tokensDecimals['H2T'],
-                    min: 1,
-                    max: account?.balances.H2T.wei
-                  }"
-                  [maxValueChange]="onChangeAccount"
-                  [(ngModel)]="formsData.swapAmount"
-                  name="swap-amount"
-                />
-                <div class="form-group_input-btn">
-                  <button
-                    (click)="
-                      formsData.swapAmount = account?.balances.H2T.shortBigNumber.toString()
-                    "
-                  >
-                    Send<br />max
-                  </button>
+
+            <div
+              [ngClass]="{ disabled: swapTokensProgress }"
+              style="
+                display: flex;
+                margin-top: 20px;
+                justify-content: space-evenly;
+              "
+            >
+              <div class="form-group_input-btn form-group_input-btn-normal">
+                <button
+                  (click)="
+                    formsData.swapAmount = account?.balances.H2T.shortBigNumber.toString()
+                  "
+                >
+                  Send max
+                </button>
+                <div
+                  class="form-group_input-btn-text"
+                  fittext
+                  [maxFontSize]="14"
+                >
+                  balance
+                  {{
+                    (account ? account?.balances.H2T.wei || 0 : 0)
+                      | bigNumberFormat: tokensDecimals.H2T:true:false:4
+                  }}
                 </div>
               </div>
-            </div>
-            <div class="blocks-list_group_btn without-margin">
               <button
-                class="btn btn__normal"
+                class="btn btn__normal btn__normal-img"
                 [ngClass]="{ progress: swapTokensProgress }"
                 [disabled]="sendForm.invalid || swapTokensProgress"
                 (click)="swapH2T()"
+                style="max-width: 130px; width: 100%"
               >
                 <span class="lds-ellipsis" *ngIf="swapTokensProgress">
                   <span class="lds-ellipsis-container">
@@ -166,6 +169,7 @@
                   </span>
                 </span>
                 <span>Send</span>
+                <img src="assets/images/styling/arrow-right.svg" alt="" />
               </button>
             </div>
           </div>
@@ -173,7 +177,7 @@
       </div>
 
       <div
-        class="blocks-list_element width-20"
+        class="blocks-list_element width-24_8"
         [ngClass]="{ 'in-update': updateSwapBalanceProgress }"
       >
         <div class="blocks-list_item">
@@ -186,9 +190,9 @@
           </div>
         </div>
 
-        <div class="blocks-list_group_btn">
+        <div class="blocks-list_group_btn" style="margin-bottom: 12px">
           <button
-            class="btn btn__transparent"
+            class="btn btn__transparent btn__back-img"
             (click)="withdrawH2T()"
             [ngClass]="{ progress: withdrawH2TProgress }"
             [disabled]="+swapContractBalance === 0 || withdrawH2TProgress"
@@ -198,19 +202,20 @@
                 <span></span><span></span><span></span><span></span>
               </span>
             </span>
+            <img src="assets/images/styling/arrow-left.svg" alt="" />
             <span>Draw back</span>
           </button>
         </div>
       </div>
 
-      <div class="blocks-list_group blocks-list_element width-40">
+      <div class="blocks-list_group blocks-list_element width-37_4">
         <div class="list">
           <div class="blocks-list_item width-50">
             <div class="blocks-list_item_title uppercase">For Claim</div>
             <div
               class="blocks-list_item_value blocks-list_item_value__positive"
               fittext
-              [maxFontSize]="38"
+              [maxFontSize]="36"
             >
               {{
                 (swapNativeTokenInfo ? swapNativeTokenInfo : 0)
@@ -223,12 +228,12 @@
               <span>AXN</span>
             </div>
           </div>
-          <div class="blocks-list_item width-50">
+          <div class="blocks-list_item width-45">
             <div class="blocks-list_item_title uppercase">Penalty</div>
             <div
               class="blocks-list_item_value blocks-list_item_value__negative"
               fittext
-              [maxFontSize]="38"
+              [maxFontSize]="25"
             >
               {{
                 (swapNativeTokenInfo ? swapNativeTokenInfo[1] : 0)
@@ -244,7 +249,7 @@
         </div>
         <div class="blocks-list_group_btn">
           <button
-            class="btn btn__normal"
+            class="btn btn__normal btn__w-265"
             (click)="burnH2T()"
             [ngClass]="{ progress: burnTokensProgress }"
             [disabled]="burnTokensProgress"
@@ -254,7 +259,7 @@
                 <span></span><span></span><span></span><span></span>
               </span>
             </span>
-            <span>Burn</span>
+            <span>Swap</span>
           </button>
         </div>
       </div>
