@@ -1,7 +1,7 @@
-<header class="header" [ngClass]="{'active': isHeaderActive}">
+<header class="header" [ngClass]="{ active: isHeaderActive }">
   <div class="content-container">
     <div class="header-content">
-      <img class="header-logo" src="./assets/images/logo.svg"/>
+      <img class="header-logo" src="./assets/images/logo.svg" />
       <ul class="header-menu">
         <li class="header-menu_item">
           <a routerLink="claim" routerLinkActive="active-link">Claim</a>
@@ -13,31 +13,75 @@
           <a routerLink="staking" routerLinkActive="active-link">Staking</a>
         </li>
         <li class="header-menu_item">
-          <button class="metamask-button" (click)="subscribeAccount()" [ngClass]="{'no-clickable': !!account}" >
-            <img class="metamask-button_icon" src="./assets/images/metamask.svg"/>
-            <span class="metamask-button_text">{{account ? account.address : 'MetaMask'}}</span>
+          <button
+            class="metamask-button"
+            (click)="subscribeAccount()"
+            [ngClass]="{ 'no-clickable': !!account }"
+          >
+            <img
+              class="metamask-button_icon"
+              src="./assets/images/metamask.svg"
+            />
+            <div class="metamask-button-block">
+              <span class="metamask-button_text">{{
+                account ? account.address : "MetaMask"
+              }}</span>
+              <span class="metamask-button_text-alt">Quit</span>
+            </div>
           </button>
         </li>
       </ul>
       <div class="header-navbar-btn" (click)="openNavbar()">
-        <img src="./assets/images/styling/navbar-btn.svg" alt="" *ngIf="!isNavbarOpen">
-        <img src="./assets/images/styling/navbar-btn-close.svg" alt="" *ngIf="isNavbarOpen">
+        <img
+          src="./assets/images/styling/navbar-btn.svg"
+          alt=""
+          *ngIf="!isNavbarOpen"
+        />
+        <img
+          src="./assets/images/styling/navbar-btn-close.svg"
+          alt=""
+          *ngIf="isNavbarOpen"
+        />
       </div>
     </div>
-    <div class="header-navbar" [ngClass]="{'active': isNavbarOpen}">
+    <div class="header-navbar" [ngClass]="{ active: isNavbarOpen }">
       <div class="header-navbar-item">
-        <a routerLink="claim" routerLinkActive="active-link" (click)="openNavbar()">Claim</a>
+        <a
+          routerLink="claim"
+          routerLinkActive="active-link"
+          (click)="openNavbar()"
+          >Claim</a
+        >
       </div>
       <div class="header-navbar-item">
-        <a routerLink="auction" routerLinkActive="active-link" (click)="openNavbar()">Auction</a>
+        <a
+          routerLink="auction"
+          routerLinkActive="active-link"
+          (click)="openNavbar()"
+          >Auction</a
+        >
       </div>
       <div class="header-navbar-item">
-        <a routerLink="staking" routerLinkActive="active-link" (click)="openNavbar()">Staking</a>
+        <a
+          routerLink="staking"
+          routerLinkActive="active-link"
+          (click)="openNavbar()"
+          >Staking</a
+        >
       </div>
       <div class="header-navbar-item">
-        <button class="metamask-button" (click)="subscribeAccount()" [ngClass]="{'no-clickable': !!account}">
-          <img class="metamask-button_icon" src="./assets/images/metamask.svg"/>
-          <span class="metamask-button_text">{{account ? account.address : 'MetaMask'}}</span>
+        <button
+          class="metamask-button"
+          (click)="subscribeAccount()"
+          [ngClass]="{ 'no-clickable': !!account }"
+        >
+          <img
+            class="metamask-button_icon"
+            src="./assets/images/metamask.svg"
+          />
+          <span class="metamask-button_text">{{
+            account ? account.address : "MetaMask"
+          }}</span>
         </button>
       </div>
     </div>
@@ -45,9 +89,14 @@
 </header>
 
 <div class="content-container">
-  <div class="left-days-info" #runString [ngClass]="{visibility: leftDaysInfo }">
+  <div
+    class="left-days-info"
+    #runString
+    [ngClass]="{ visibility: leftDaysInfo }"
+  >
     <span class="repeat-content" *ngFor="let item of runLineCountArray">
-      <b>{{ leftDaysInfo?.leftDays || 350 }}</b>&nbsp;<b>days</b>
+      <b>{{ leftDaysInfo?.leftDays || 350 }}</b
+      >&nbsp;<b>days</b>
       left for Claiming H2X
     </span>
   </div>
@@ -55,7 +104,6 @@
 <router-outlet></router-outlet>
 <div class="content-container" *ngIf="tableInfo">
   <div class="results-table">
-
     <div class="results-table_row">
       <div class="results-table_cells-group">
         <div class="results-table_cell results-table_cell__label">
@@ -81,7 +129,7 @@
           Weekly Auction
         </div>
         <div class="results-table_cell results-table_cell__value">
-          {{tableInfo.WeeklyAuction | number}}
+          {{ tableInfo.WeeklyAuction | number }}
         </div>
       </div>
       <div class="results-table_cells-group">
@@ -100,7 +148,7 @@
           Total Supply
         </div>
         <div class="results-table_cell results-table_cell__value">
-          {{tableInfo.totalSupply | number}}
+          {{ tableInfo.totalSupply | number }}
         </div>
       </div>
       <div class="results-table_cells-group">
@@ -115,11 +163,9 @@
 
     <div class="results-table_row">
       <div class="results-table_cells-group">
-        <div class="results-table_cell results-table_cell__label">
-          Staking
-        </div>
+        <div class="results-table_cell results-table_cell__label">Staking</div>
         <div class="results-table_cell results-table_cell__value">
-          {{tableInfo.staking | number}}
+          {{ tableInfo.staking | number }}
         </div>
       </div>
       <div class="results-table_cells-group">

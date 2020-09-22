@@ -4,7 +4,6 @@ router-outlet ~ * {
   height: 100%;
 }
 
-
 body::-webkit-scrollbar {
   width: 12px;
   background-color: #4d2696;
@@ -142,7 +141,7 @@ input:-internal-autofill-selected {
   margin-bottom: 30px;
 }
 .question {
-  background: #7C52C1 url("./assets/images/styling/question.svg");
+  background: #7c52c1 url("./assets/images/styling/question.svg");
   background-position: center center;
   background-repeat: no-repeat;
   border-radius: 50%;
@@ -151,12 +150,12 @@ input:-internal-autofill-selected {
   display: inline-block;
   &__tooltip {
     color: #fff !important;
-    background: #7C52C1 !important;
+    background: #7c52c1 !important;
   }
 }
 .header {
   padding: 20px 0;
-  transition: .3s;
+  transition: 0.3s;
   position: fixed;
   left: 0;
   right: 0;
@@ -173,7 +172,7 @@ input:-internal-autofill-selected {
   &-navbar {
     z-index: -1;
     opacity: 0;
-    background: #4B29A1;
+    background: #4b29a1;
     overflow: hidden;
     height: 0;
     &-btn {
@@ -188,7 +187,7 @@ input:-internal-autofill-selected {
   &-logo {
     vertical-align: middle;
     width: 180px;
-    transition: .3s;
+    transition: 0.3s;
   }
   &-menu {
     display: flex;
@@ -237,13 +236,25 @@ input:-internal-autofill-selected {
   color: #fff;
   transition: all linear 0.1s;
   margin-left: 25px;
+  display: flex;
+
+  &-block {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+  }
+
   &.no-clickable {
     background: transparent;
   }
   &_icon {
-    margin-right: 9px;
+    margin-right: 5px;
     vertical-align: middle;
-    height: 19px;
+    height: 25px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    padding: 8px;
+    width: 25px;
   }
   &:not(.no-clickable) {
     background-color: rgba(255, 255, 255, 0.2);
@@ -261,6 +272,21 @@ input:-internal-autofill-selected {
     overflow: hidden;
     display: inline-block;
     vertical-align: middle;
+
+    &-alt {
+      font-size: 14px;
+      text-align: left;
+      font-weight: normal;
+      color: rgba(255, 255, 255, 0.5);
+      cursor: pointer;
+      transition: 0.4s ease;
+      width: max-content;
+
+      &:hover {
+        transition: 0.4s ease;
+        color: white;
+      }
+    }
   }
 }
 
@@ -282,7 +308,7 @@ input:-internal-autofill-selected {
       margin-bottom: 10px;
     }
   }
-  &.no-active >:not(&_title) {
+  &.no-active > :not(&_title) {
     visibility: hidden;
   }
   &.no-active {
@@ -728,7 +754,7 @@ input:-internal-autofill-selected {
     top: 50%;
     background: rgba(255, 255, 255, 0.7);
     .btn__transparent & {
-      background: #37C8B4;
+      background: #37c8b4;
     }
     animation-timing-function: cubic-bezier(0, 1, 1, 0);
     margin-top: -5px;
