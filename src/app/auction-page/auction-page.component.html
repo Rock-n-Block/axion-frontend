@@ -1,148 +1,249 @@
 <div class="content-container">
-
-
-  <div class="content-block" [ngClass]="{'no-active': !account}">
+  <div class="content-block" [ngClass]="{ 'no-active': !account }">
     <div class="content-block_title">
       <span>Auction</span>
       <span class="content-block_title_help"></span>
     </div>
 
-    <form #sendForm="ngForm" class="blocks-list blocks-list__small-size blocks-list__full-width">
-      <div class="blocks-list_group blocks-list_element blocks-list_form-group width-40">
-        <div class="list">
-          <div class="blocks-list_item">
-            <div class="blocks-list_item_title nowrap uppercase">Your amount</div>
-            <div class="blocks-list_item_value">{{account?.balances?.ETH.display}}</div>
-            <div class="blocks-list_item_currency blocks-list_item_currency__eth">
-              <span>ETH</span>
+    <form
+      #sendForm="ngForm"
+      class="blocks-list blocks-list__small-size blocks-list__full-width"
+    >
+      <div class="form-auction">
+        <div class="form-auction__item">
+          <span class="form-auction__item-title">auction pool</span>
+          <div class="form-auction__item-blocks">
+            <div class="form-auction__item-blocks__item">
+              <span class="form-auction__item-blocks__item-value"
+                >250.000.000</span
+              >
+              <span
+                class="form-auction__item-blocks__item-icon cl-red-light icon icon__axion"
+                >AXN</span
+              >
+            </div>
+            <div class="form-auction__item-blocks__item">
+              <span class="form-auction__item-blocks__item-value"
+                >250.000.000</span
+              >
+              <span
+                class="form-auction__item-blocks__item-icon icon icon__eth-purple"
+                >ETH</span
+              >
             </div>
           </div>
-          <div class="blocks-list_item blocks-list_item--mobile-border-top">
-            <div class="blocks-list_item_title uppercase">Send to Swap</div>
-            <div class="form-group">
-              <div class="form-group_title uppercase">Enter amount</div>
-              <div class="form-group_input">
-                <input type="text"
-                       *ngIf="account"
-                       required="required"
-                       [appBigNumber]="{
-                          decimals: tokensDecimals['ETH'],
-                          min: 1,
-                          max: account?.balances.ETH.wei
-                       }"
-                       [maxValueChange]="onChangeAccount"
-                       [(ngModel)]="formsData.auctionAmount"
-                       name="swap-amount">
-                <div class="form-group_input-btn">
-                  <button (click)="formsData.auctionAmount = account?.balances.ETH.shortBigNumber.toString()">Send<br/>max</button>
-                </div>
-              </div>
+          <div class="form-auction__item-rates">
+            <div class="form-auction__item-rates__item cl-purple">
+              <span
+                class="form-auction__item-rates__item-icon cl-white icon icon__axion"
+                >1 Axn</span
+              >
+              <span class="form-auction__item-rates__item-text">=</span>
+              <span
+                class="form-auction__item-rates__item-icon icon icon__eth-purple"
+                >0.335233</span
+              >
             </div>
-            <div class="blocks-list_group_btn without-margin">
-              <button class="btn btn__normal"
-                      [ngClass]="{progress: sendAuctionProgress}"
-                      [disabled]="sendForm.invalid || sendAuctionProgress" (click)="sendETHToAuction()">
-                <span class="lds-ellipsis" *ngIf="sendAuctionProgress">
-                  <span class="lds-ellipsis-container">
-                    <span></span><span></span><span></span><span></span>
-                  </span>
+            <div class="form-auction__item-rates__item cl-gray">
+              <span
+                class="form-auction__item-rates__item-icon icon icon__axion-gray"
+                >1 Axn</span
+              >
+              <span class="form-auction__item-rates__item-text">=</span>
+              <span
+                class="form-auction__item-rates__item-icon icon icon__eth-gray"
+                >33333</span
+              >
+            </div>
+          </div>
+        </div>
+        <div class="form-auction__item">
+          <span class="form-auction__item-title__light">Input</span>
+          <input
+            type="text"
+            *ngIf="account"
+            required="required"
+            class="form-auction__item-input"
+            placeholder="0.0"
+            [appBigNumber]="{
+              decimals: tokensDecimals['ETH'],
+              min: 1,
+              max: account?.balances.ETH.wei
+            }"
+            [maxValueChange]="onChangeAccount"
+            [(ngModel)]="formsData.auctionAmount"
+            name="swap-amount"
+          />
+          <span class="form-auction__item-amount-icon icon icon__eth-purple"
+            >ETH</span
+          >
+          <div class="form-auction__item-actions">
+            <div class="form-auction__item-actions-amount">
+              <span
+                (click)="
+                  formsData.auctionAmount = account?.balances.ETH.shortBigNumber.toString()
+                "
+                class="form-auction__item-actions-amount-btn"
+                >Send max</span
+              >
+              <span class="form-auction__item-actions-amount-text"
+                >Balance {{ account?.balances?.ETH.display }}</span
+              >
+            </div>
+            <button
+              class="btn btn__normal btn__normal-img"
+              [ngClass]="{ progress: sendAuctionProgress }"
+              [disabled]="sendForm.invalid || sendAuctionProgress"
+              (click)="sendETHToAuction()"
+            >
+              <span class="lds-ellipsis" *ngIf="sendAuctionProgress">
+                <span class="lds-ellipsis-container">
+                  <span></span><span></span><span></span><span></span>
                 </span>
-                <span>Send</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="blocks-list_element width-20">
-        <div class="blocks-list_item">
-          <div class="blocks-list_item_title uppercase">Auction Contract</div>
-          <div class="blocks-list_item_value" fittext [maxFontSize]="38">
-            {{(auctionInfo?.currentUserBalance.eth || 0) | bigNumberFormat : 18 : true : false : 18}}
-          </div>
-          <div class="blocks-list_item_currency blocks-list_item_currency__eth">
-            <span>ETH</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="blocks-list_group blocks-list_element width-40">
-        <div class="blocks-list_item_title uppercase">Auction pool</div>
-        <div class="list">
-          <div class="blocks-list_item">
-            <div class="blocks-list_item_value blocks-list_item_value__positive" fittext [maxFontSize]="38">
-              {{(auctionInfo?.axnPool || 0) | bigNumberFormat : tokensDecimals?.HEX2X : true : false : 18}}
-            </div>
-            <div class="blocks-list_item_currency blocks-list_item_currency__axn">
-              <span>AXN</span>
-            </div>
-          </div>
-          <div class="blocks-list_item">
-            <div class="blocks-list_item_value" fittext [maxFontSize]="38">
-              {{(auctionInfo?.ethPool || 0) | bigNumberFormat : tokensDecimals?.ETH : true : false : 18}}
-            </div>
-            <div class="blocks-list_item_currency blocks-list_item_currency__eth">
-              <span>ETH</span>
-            </div>
+              </span>
+              <span>Send</span>
+              <img src="assets/images/styling/arrow-right.svg" alt="" />
+            </button>
           </div>
         </div>
       </div>
     </form>
+  </div>
+  <div class="content-block generated-link" *ngIf="auctionsList?.length">
+    <button
+      (click)="generateRefLink()"
+      class="generated-link-btn"
+      *ngIf="referalLink === ''"
+    >
+      Generate referral link
+    </button>
+    <span class="generated-link-text" *ngIf="referalLink != ''">{{
+      referalLink
+    }}</span>
+    <button
+      *ngIf="referalLink != ''"
+      class="generated-link-btn-copy"
+      ngxClipboard
+      (cbOnSuccess)="onCopied()"
+    >
+      Copy
+    </button>
+    <span style="font-size: 10px" *ngIf="addressCopy"> address copied </span>
   </div>
 
   <div class="content-block" *ngIf="auctionsList?.length">
     <div class="content-block_title text-left">
       <span>Completed Auctions</span>
     </div>
-    <table class="standard-table text-left" cellpadding="0" cellspacing="0" border="0">
+    <table
+      class="standard-table text-left"
+      cellpadding="0"
+      cellspacing="0"
+      border="0"
+    >
       <thead class="text-left">
-      <tr>
-        <th (click)="sortAuctions('start')" class="as-sort"
-            [ngClass]="{active: currentSort['field'] === 'start', ask: currentSort['ask']}">
-          Date
-          <span class="sort-indicator"></span>
-        </th>
-        <th (click)="sortAuctions('token')" class="as-sort"
-            [ngClass]="{active: currentSort['field'] === 'token', ask: currentSort['ask']}">
-          HEX2X Total
-          <span class="sort-indicator"></span>
-        </th>
-        <th (click)="sortAuctions('eth')" class="as-sort"
-            [ngClass]="{active: currentSort['field'] === 'eth', ask: currentSort['ask']}">
-          ETH Total
-          <span class="sort-indicator"></span>
-        </th>
-        <th (click)="sortAuctions('accountTokenBalance')" class="as-sort"
-            [ngClass]="{active: currentSort['field'] === 'accountTokenBalance', ask: currentSort['ask']}">
-          Your HEX2X
-          <span class="sort-indicator"></span>
-        </th>
-        <th width="10">&nbsp;</th>
-      </tr>
+        <tr>
+          <th
+            (click)="sortAuctions('start')"
+            class="as-sort"
+            [ngClass]="{
+              active: currentSort['field'] === 'start',
+              ask: currentSort['ask']
+            }"
+          >
+            Date
+            <span class="sort-indicator"></span>
+          </th>
+          <th
+            (click)="sortAuctions('token')"
+            class="as-sort"
+            [ngClass]="{
+              active: currentSort['field'] === 'token',
+              ask: currentSort['ask']
+            }"
+          >
+            AXN in pool
+            <span class="sort-indicator"></span>
+          </th>
+          <th
+            (click)="sortAuctions('eth')"
+            class="as-sort"
+            [ngClass]="{
+              active: currentSort['field'] === 'eth',
+              ask: currentSort['ask']
+            }"
+          >
+            ETH in pool
+            <span class="sort-indicator"></span>
+          </th>
+          <th
+            (click)="sortAuctions('accountTokenBalance')"
+            class="as-sort"
+            [ngClass]="{
+              active: currentSort['field'] === 'accountTokenBalance',
+              ask: currentSort['ask']
+            }"
+          >
+            My bet ETH
+            <span class="sort-indicator"></span>
+          </th>
+          <th
+            (click)="sortAuctions('accountTokenBalance')"
+            class="as-sort"
+            [ngClass]="{
+              active: currentSort['field'] === 'accountTokenBalance',
+              ask: currentSort['ask']
+            }"
+          >
+            Your Winnings
+            <span class="sort-indicator"></span>
+          </th>
+          <th width="10">&nbsp;</th>
+        </tr>
       </thead>
       <tbody class="text-left">
-      <tr *ngFor="let auction of auctionsList">
-        <td>{{auction.start | date : 'dd.MM.yyyy'}}</td>
-        <td>{{auction.token | bigNumberFormat : tokensDecimals['HEX2X'] : true : false : 4}}</td>
-        <td>{{auction.eth | bigNumberFormat : tokensDecimals['ETH'] : true : false : 4}}</td>
-        <td [colSpan]="auction.accountETHBalance.isZero() ? 2 : 1">
-          {{auction.accountTokenBalance | bigNumberFormat : tokensDecimals['HEX2X'] : true : false : 4}}
-        </td>
-        <td class="action-button"*ngIf="!auction.accountETHBalance.isZero()">
-          <button class="btn btn__transparent" (click)="auctionWithdraw(auction)"
-                  [ngClass]="{progress: auction.withdrawProgress}"
-                  [disabled]="auction.withdrawProgress">
-                <span class="lds-ellipsis" *ngIf="auction.withdrawProgress">
-                  <span class="lds-ellipsis-container">
-                    <span></span><span></span><span></span><span></span>
-                  </span>
+        <tr *ngFor="let auction of auctionsList">
+          <td>{{ auction.start | date: "dd.MM.yyyy" }}</td>
+          <td>
+            {{
+              auction.token
+                | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:4
+            }}
+          </td>
+          <td>
+            {{
+              auction.eth | bigNumberFormat: tokensDecimals["ETH"]:true:false:4
+            }}
+          </td>
+          <td [colSpan]="auction.accountETHBalance.isZero() ? 2 : 1">
+            {{
+              auction.accountTokenBalance
+                | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:4
+            }}
+          </td>
+          <td [colSpan]="auction.accountETHBalance.isZero() ? 2 : 1">
+            {{
+              auction.accountTokenBalance
+                | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:4
+            }}
+          </td>
+          <td class="action-button" *ngIf="!auction.accountETHBalance.isZero()">
+            <button
+              class="btn btn__transparent"
+              (click)="auctionWithdraw(auction)"
+              [ngClass]="{ progress: auction.withdrawProgress }"
+              [disabled]="auction.withdrawProgress"
+            >
+              <span class="lds-ellipsis" *ngIf="auction.withdrawProgress">
+                <span class="lds-ellipsis-container">
+                  <span></span><span></span><span></span><span></span>
                 </span>
-            <span>&nbsp;&nbsp;Withdraw&nbsp;&nbsp;</span>
-          </button>
-        </td>
-      </tr>
+              </span>
+              <span>&nbsp;&nbsp;Withdraw&nbsp;&nbsp;</span>
+            </button>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
-
 </div>

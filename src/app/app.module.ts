@@ -1,27 +1,29 @@
-import { BrowserModule } from '@angular/platform-browser';
-import {APP_INITIALIZER, NgModule, Injector} from '@angular/core';
+import { BrowserModule } from "@angular/platform-browser";
+import { APP_INITIALIZER, NgModule, Injector } from "@angular/core";
+import { ClipboardModule } from "ngx-clipboard";
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { ClaimPageComponent } from './claim-page/claim-page.component';
-import { AuctionPageComponent } from './auction-page/auction-page.component';
-import { TransactionSuccessModalComponent } from './components/transactionSuccessModal/transaction-success-modal.component';
-import { MetamaskErrorComponent } from './components/metamaskError/metamask-error.component';
-import {ContractService} from './services/contract';
-import {FormsModule} from '@angular/forms';
-import {BigNumberDirective, BigNumberFormat, BigNumberMax, BigNumberMin} from './directives/bignumber/bignumber';
-import { StakingPageComponent } from './staking-page/staking-page.component';
-import {MinMaxDirective} from './directives/minmax/minmax';
-import {AngularFittextModule} from 'angular-fittext';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {HttpClientModule} from '@angular/common/http';
+import { AppRoutingModule } from "./app-routing.module";
+import { AppComponent } from "./app.component";
+import { ClaimPageComponent } from "./claim-page/claim-page.component";
+import { AuctionPageComponent } from "./auction-page/auction-page.component";
+import { TransactionSuccessModalComponent } from "./components/transactionSuccessModal/transaction-success-modal.component";
+import { MetamaskErrorComponent } from "./components/metamaskError/metamask-error.component";
+import { ContractService } from "./services/contract";
+import { FormsModule } from "@angular/forms";
 import {
-  MatDialogModule, MatTooltipModule
-} from '@angular/material';
+  BigNumberDirective,
+  BigNumberFormat,
+  BigNumberMax,
+  BigNumberMin,
+} from "./directives/bignumber/bignumber";
+import { StakingPageComponent } from "./staking-page/staking-page.component";
+import { MinMaxDirective } from "./directives/minmax/minmax";
+import { AngularFittextModule } from "angular-fittext";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { HttpClientModule } from "@angular/common/http";
+import { MatDialogModule, MatTooltipModule } from "@angular/material";
 
-export function initializeApp(
-  injector: Injector
-) {
+export function initializeApp(injector: Injector) {
   return () =>
     new Promise<any>((resolve: any) => {
       const contractService = injector.get(
@@ -47,7 +49,7 @@ export function initializeApp(
     BigNumberMin,
     BigNumberMax,
     StakingPageComponent,
-    MinMaxDirective
+    MinMaxDirective,
   ],
   imports: [
     BrowserModule,
@@ -57,7 +59,8 @@ export function initializeApp(
     FormsModule,
     AngularFittextModule,
     HttpClientModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    ClipboardModule,
   ],
   providers: [
     {
@@ -65,8 +68,8 @@ export function initializeApp(
       useFactory: initializeApp,
       deps: [Injector],
       multi: true,
-    }
+    },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

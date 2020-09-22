@@ -1152,5 +1152,7 @@ input:-internal-autofill-selected {
   }
 }
 
-@import "./responsive.scss";
-@import "./dialog.scss";
+@import "./scss/responsive.scss";
+@import "./scss/dialog.scss";
+@import "./scss/mixins.scss";
+@import "./scss/typography.scss";
