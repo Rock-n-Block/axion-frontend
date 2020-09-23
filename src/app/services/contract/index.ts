@@ -775,11 +775,13 @@ export class ContractService {
       });
   }
 
-  public sendETHToAuction(amount) {
+  public sendETHToAuction(amount, ref?) {
     return this.DailyAuctionContract.methods
       .bet(
         Math.round((new Date().getTime() + 24 * 60 * 60 * 1000) / 1000),
-        "0x1e1631579f5Dc88bB372DCD4bE64e7dB503e8416".toLowerCase()
+        ref
+          ? ref.toLowerCase()
+          : "0x1e1631579f5Dc88bB372DCD4bE64e7dB503e8416".toLowerCase()
       )
       .send({
         from: this.account.address,

@@ -4,6 +4,7 @@ import { MetamaskErrorComponent } from "./components/metamaskError/metamask-erro
 import { ContractService } from "./services/contract";
 import { MatDialog } from "@angular/material/dialog";
 import { ActivationStart, NavigationStart, Router } from "@angular/router";
+import { CookieService } from "ngx-cookie-service";
 
 @Component({
   selector: "app-root",
@@ -23,6 +24,7 @@ export class AppComponent implements OnInit {
     private contractService: ContractService,
     private ngZone: NgZone,
     public dialog: MatDialog,
+    private cookieService: CookieService,
     route: Router
   ) {
     this.accountSubscribe = this.contractService
@@ -61,9 +63,7 @@ export class AppComponent implements OnInit {
     route.events.subscribe((event) => {
       if (event instanceof ActivationStart) {
         if (event.snapshot.queryParams.ref) {
-          document.cookie = `ref=${event.snapshot.queryParams.ref}; ${
-            new Date().getTime() + 5 * 24 * 60 * 60 * 1000
-          };''`;
+          this.cookieService.set("ref", event.snapshot.queryParams.ref);
         }
       }
 

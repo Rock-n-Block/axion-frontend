@@ -1,6 +1,7 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { APP_INITIALIZER, NgModule, Injector } from "@angular/core";
 import { ClipboardModule } from "ngx-clipboard";
+import { CookieService } from "ngx-cookie-service";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -69,6 +70,7 @@ export function initializeApp(injector: Injector) {
       deps: [Injector],
       multi: true,
     },
+    CookieService,
   ],
   bootstrap: [AppComponent],
 })

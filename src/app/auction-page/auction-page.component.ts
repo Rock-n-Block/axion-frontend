@@ -3,10 +3,10 @@ import {
   EventEmitter,
   NgZone,
   OnDestroy,
-  OnInit,
   ViewChild,
   TemplateRef,
 } from "@angular/core";
+import { CookieService } from "ngx-cookie-service";
 import { ContractService } from "../services/contract";
 
 @Component({
@@ -40,6 +40,7 @@ export class AuctionPageComponent implements OnDestroy {
 
   constructor(
     private contractService: ContractService,
+    private cookieService: CookieService,
     private ngZone: NgZone
   ) {
     this.accountSubscribe = this.contractService
@@ -69,7 +70,10 @@ export class AuctionPageComponent implements OnDestroy {
   public sendETHToAuction() {
     this.sendAuctionProgress = true;
     this.contractService
-      .sendETHToAuction(this.formsData.auctionAmount)
+      .sendETHToAuction(
+        this.formsData.auctionAmount,
+        this.cookieService.get("ref")
+      )
       .then(({ transactionHash }) => {
         this.contractService.updateETHBalance(true).then(() => {
           this.sendAuctionProgress = false;
