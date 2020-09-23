@@ -54,11 +54,11 @@ export class StakingPageComponent implements OnDestroy {
   };
 
   public bpd = [
-    { value: 350, data: 0, show: true },
-    { value: 700, data: 0, show: true },
-    { value: 1050, data: 0, show: true },
-    { value: 1400, data: 0, show: true },
-    { value: 1750, data: 0, show: true },
+    { value: 350, days: 350, data: 0, show: true },
+    { value: 700, days: 700, data: 0, show: true },
+    { value: 1050, days: 1050, data: 0, show: true },
+    { value: 1400, days: 1400, data: 0, show: true },
+    { value: 1750, days: 1750, data: 0, show: true },
   ];
 
   constructor(
@@ -99,6 +99,7 @@ export class StakingPageComponent implements OnDestroy {
         this.bpd[count].data = value;
         const show =
           this.bpd[count].value - this.stakingContractInfo.StepsFromStart;
+        this.bpd[count].days = show;
         this.bpd[count].show = show < this.bpd[count].value ? true : false;
         count++;
       });
