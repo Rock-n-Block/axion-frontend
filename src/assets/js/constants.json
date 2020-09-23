@@ -2718,7 +2718,11 @@
       "ABI": [
         {
           "inputs": [
-            { "internalType": "address", "name": "_setter", "type": "address" }
+            {
+              "internalType": "address",
+              "name": "_setter",
+              "type": "address"
+            }
           ],
           "stateMutability": "nonpayable",
           "type": "constructor"
@@ -2809,15 +2813,6 @@
         },
         {
           "inputs": [],
-          "name": "PERIOD",
-          "outputs": [
-            { "internalType": "uint256", "name": "", "type": "uint256" }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
           "name": "SETTER_ROLE",
           "outputs": [
             { "internalType": "bytes32", "name": "", "type": "bytes32" }
@@ -2854,7 +2849,11 @@
         },
         {
           "inputs": [
-            { "internalType": "uint256", "name": "amount", "type": "uint256" },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
             { "internalType": "bytes", "name": "signature", "type": "bytes" }
           ],
           "name": "check",
@@ -2864,7 +2863,11 @@
         },
         {
           "inputs": [
-            { "internalType": "uint256", "name": "amount", "type": "uint256" },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
             { "internalType": "bytes", "name": "signature", "type": "bytes" }
           ],
           "name": "claimFromForeign",
@@ -2903,8 +2906,16 @@
         },
         {
           "inputs": [
-            { "internalType": "uint256", "name": "amount", "type": "uint256" },
-            { "internalType": "address", "name": "account", "type": "address" }
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
           ],
           "name": "getMessageHash",
           "outputs": [
@@ -2980,7 +2991,11 @@
         {
           "inputs": [
             { "internalType": "bytes32", "name": "role", "type": "bytes32" },
-            { "internalType": "address", "name": "account", "type": "address" }
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
           ],
           "name": "grantRole",
           "outputs": [],
@@ -2990,7 +3005,11 @@
         {
           "inputs": [
             { "internalType": "bytes32", "name": "role", "type": "bytes32" },
-            { "internalType": "address", "name": "account", "type": "address" }
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
           ],
           "name": "hasRole",
           "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
@@ -2999,10 +3018,19 @@
         },
         {
           "inputs": [
-            { "internalType": "address", "name": "_signer", "type": "address" },
+            {
+              "internalType": "address",
+              "name": "_signer",
+              "type": "address"
+            },
             {
               "internalType": "uint256",
               "name": "_stepTimestamp",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_stakePeriod",
               "type": "uint256"
             },
             {
@@ -3067,7 +3095,11 @@
         {
           "inputs": [
             { "internalType": "bytes32", "name": "role", "type": "bytes32" },
-            { "internalType": "address", "name": "account", "type": "address" }
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
           ],
           "name": "renounceRole",
           "outputs": [],
@@ -3077,7 +3109,11 @@
         {
           "inputs": [
             { "internalType": "bytes32", "name": "role", "type": "bytes32" },
-            { "internalType": "address", "name": "account", "type": "address" }
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
           ],
           "name": "revokeRole",
           "outputs": [],
@@ -3089,6 +3125,15 @@
           "name": "signerAddress",
           "outputs": [
             { "internalType": "address", "name": "", "type": "address" }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "stakePeriod",
+          "outputs": [
+            { "internalType": "uint256", "name": "", "type": "uint256" }
           ],
           "stateMutability": "view",
           "type": "function"

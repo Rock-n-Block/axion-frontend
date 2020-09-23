@@ -514,7 +514,7 @@ export class ContractService {
       .call()
       .then((secondsInDay) => {
         return this.ForeignSwapContract.methods
-          .PERIOD()
+          .stakePeriod()
           .call()
           .then((swapDaysPeriod) => {
             const allDaysSeconds = swapDaysPeriod * secondsInDay * 1000;
