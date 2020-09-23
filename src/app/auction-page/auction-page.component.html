@@ -117,9 +117,13 @@
     >
       Generate referral link
     </button>
-    <span class="generated-link-text" *ngIf="referalLink != ''">{{
-      referalLink
-    }}</span>
+    <input
+      class="generated-link-text"
+      *ngIf="referalLink != ''"
+      (click)="$event.target.select()"
+      readonly
+      [value]="referalLink"
+    />
     <button
       *ngIf="referalLink != ''"
       class="generated-link-btn-copy"
