@@ -124,6 +124,7 @@
       *ngIf="referalLink != ''"
       class="generated-link-btn-copy"
       ngxClipboard
+      [cbContent]="referalLink"
       (cbOnSuccess)="onCopied()"
     >
       Copy
