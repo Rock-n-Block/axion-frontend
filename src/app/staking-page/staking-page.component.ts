@@ -99,7 +99,7 @@ export class StakingPageComponent implements OnDestroy {
         this.bpd[count].data = value;
         const show =
           this.bpd[count].value - this.stakingContractInfo.StepsFromStart;
-        this.bpd[count].days = show;
+        this.bpd[count].days = show.toFixed(0) as any;
         this.bpd[count].show = show < this.bpd[count].value ? true : false;
         count++;
       });
