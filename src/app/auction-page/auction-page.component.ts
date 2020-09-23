@@ -82,7 +82,6 @@ export class AuctionPageComponent implements OnDestroy {
   }
 
   public generateRefLink() {
-    console.log(this.account);
     this.referalLink =
       window.location.origin + "/auction?ref=" + this.account.address;
   }

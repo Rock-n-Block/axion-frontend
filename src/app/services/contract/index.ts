@@ -56,19 +56,11 @@ export class ContractService {
         .get(`/assets/js/constants.json`)
         .toPromise()
         .then((result) => {
-          console.log(result);
           const IS_PRODUCTION = location.protocol === "https:";
           const CONTRACTS_PARAMS =
             result[IS_PRODUCTION ? "mainnet" : "rinkeby"];
 
           this.CONTRACTS_PARAMS = CONTRACTS_PARAMS;
-
-          console.log(this.CONTRACTS_PARAMS);
-          console.log(
-            this.CONTRACTS_PARAMS.H2T.ABI,
-            this.CONTRACTS_PARAMS.H2T.ADDRESS
-          );
-
           this.web3Service = new MetamaskService();
           this.initializeContracts();
 
@@ -107,7 +99,6 @@ export class ContractService {
 
   public getStaticInfo() {
     return this.initAll().then((res) => {
-      console.log(res);
       const promises = [this.getTokensInfo(false)];
       return Promise.all(promises);
     });
