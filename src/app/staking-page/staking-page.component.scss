@@ -1,5 +1,7 @@
+@import "../../scss/mixins";
+
 .deposit-form {
-  background-color: #6C44D6;
+  background-color: #6c44d6;
   padding: 20px;
 }
 .staking-info-table {
@@ -18,11 +20,248 @@
     margin-top: 10px;
     font-size: 14px;
     line-height: 16px;
-    color: #8670FA;
+    color: #8670fa;
   }
   &_value {
     font-weight: 300;
     font-size: 38px;
     line-height: 45px;
+  }
+}
+
+.staking-form {
+  display: grid;
+  grid-template-columns: minmax(500px, 600px) minmax(400px, 435px);
+  grid-gap: 20px;
+  cursor: default;
+  margin-top: 30px;
+
+  @include b(991) {
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+
+  &__item {
+    padding: 25px 0;
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 12px;
+    text-align: center;
+
+    &-deposit {
+      display: grid;
+      grid-template-columns: 1fr minmax(200px, 230px);
+
+      @include b(991) {
+        grid-template-columns: 1fr;
+        grid-gap: 20px;
+        padding: 20px;
+        align-items: center;
+      }
+
+      &__item {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        border-left: 1px dashed rgba(255, 255, 255, 0.5);
+
+        @include b(991) {
+          border-left: none;
+          border-top: 1px dashed rgba(255, 255, 255, 0.5);
+          padding: 20px 0 0 0;
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          grid-template-areas: "title title" "input action";
+          align-items: center;
+        }
+
+        &-first {
+          @include b(991) {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-areas: "title title" "input icon" "action action";
+          }
+        }
+      }
+    }
+
+    &-title {
+      font-weight: bold;
+      font-size: 14px;
+      line-height: 16px;
+      text-transform: uppercase;
+      color: white;
+      width: 100%;
+      display: block;
+      margin-bottom: 5px;
+      text-align: center;
+
+      @include b(991) {
+        grid-area: title;
+        text-align: left;
+      }
+    }
+
+    &-text {
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 16px;
+      display: block;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.5);
+      margin-top: 10px;
+      width: 100%;
+
+      @include b(991) {
+        text-align: right;
+      }
+    }
+
+    hr {
+      margin: 15px 0;
+      border-color: #ffffff;
+      opacity: 0.1;
+    }
+
+    &-input {
+      width: 100%;
+      border: none;
+      outline: none;
+      font-weight: 300;
+      font-size: 60px;
+      padding: 10px 0;
+      text-transform: uppercase;
+      text-align: center;
+      margin-top: 10px;
+      background: none;
+
+      @include b(991) {
+        text-align: left;
+        grid-area: input;
+      }
+    }
+
+    &-icon {
+      background: rgba(0, 0, 0, 0.25);
+      border-radius: 12px;
+      padding: 7px 10px;
+      display: flex;
+      font-size: 16px;
+      width: max-content;
+      margin: 10px auto;
+
+      @include b(991) {
+        margin: 0;
+      }
+
+      &-wrap {
+        @include b(991) {
+          grid-area: icon;
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+        }
+      }
+
+      &:before {
+        margin-right: 10px;
+      }
+    }
+
+    &-actions {
+      display: flex;
+      width: 100%;
+      margin-top: 10px;
+      flex-direction: column;
+      padding-top: 10px;
+
+      @include b(991) {
+        grid-area: action;
+        margin: 0;
+        padding: 0;
+      }
+
+      &-amount {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+
+        @include b(991) {
+          flex-direction: row-reverse;
+          justify-content: space-between;
+        }
+
+        &-btn {
+          border: 1.30128px solid #ffffff;
+          box-sizing: border-box;
+          border-radius: 12px;
+          font-weight: normal;
+          font-size: 12px;
+          padding: 8px 15px;
+          text-transform: uppercase;
+          cursor: pointer;
+          color: #ffffff;
+        }
+
+        &-text {
+          font-weight: normal;
+          font-size: 14px;
+          line-height: 16px;
+          display: flex;
+          align-items: center;
+          text-transform: uppercase;
+          color: rgba(255, 255, 255, 0.5);
+          margin-top: 10px;
+        }
+      }
+    }
+
+    &-shares {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding: 10px 0;
+      margin-bottom: 15px;
+
+      &__item {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+
+        &:nth-child(2) {
+          border-left: 1px dashed rgba(255, 255, 255, 0.5);
+        }
+
+        &-text {
+          margin: 5px 0;
+          display: block;
+          width: 100%;
+          font-weight: normal;
+          font-size: 14px;
+          line-height: 16px;
+          text-align: center;
+          text-transform: uppercase;
+          color: #8670fa;
+        }
+
+        &-value {
+          width: 100%;
+          margin: 5px 0;
+          display: block;
+          font-weight: 300;
+          font-size: 33px;
+          line-height: 39px;
+          text-transform: uppercase;
+          color: #ffffff;
+        }
+      }
+    }
+
+    .btn {
+      margin-top: 15px;
+      margin-bottom: 0;
+      max-width: 200px;
+      width: 100%;
+    }
   }
 }
