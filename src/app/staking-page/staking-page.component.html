@@ -21,7 +21,6 @@
               class="staking-form__item-input cl-aqua"
               autocomplete="off"
               required="required"
-              [max]="account?.balances.HEX2X.wei"
               [appBigNumber]="{
                 decimals: tokensDecimals['HEX2X'],
                 min: 1,
@@ -106,6 +105,9 @@
               }}</span>
             </div>
           </div>
+
+          {{ depositForm.invalid }}
+          {{ depositDaysInvalid }}
           <button
             class="btn btn__normal uppercase nowrap"
             (click)="openDeposit()"
@@ -171,7 +173,10 @@
     </div>
   </div>
 
-  <div class="content-block">
+  <div
+    class="content-block"
+    *ngIf="depositsLists?.opened.length && tokensDecimals"
+  >
     <div class="content-block_title text-left">
       <span>Opened deposits</span>
     </div>
