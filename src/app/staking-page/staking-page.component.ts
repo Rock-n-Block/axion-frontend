@@ -24,6 +24,7 @@ export class StakingPageComponent implements OnDestroy {
   public tokensDecimals;
   private accountSubscribe;
   public shareRate: any;
+  public stakeDays: any;
   public onChangeAccount: EventEmitter<any> = new EventEmitter();
   public formsData: {
     depositAmount?: string;
@@ -77,7 +78,6 @@ export class StakingPageComponent implements OnDestroy {
     this.contractService
       .getStakingContractInfo()
       .then((data: StakingInfoInterface) => {
-        console.log("data", data);
         this.stakingContractInfo = data;
         window.dispatchEvent(new Event("resize"));
       });
@@ -99,12 +99,12 @@ export class StakingPageComponent implements OnDestroy {
       });
   }
 
-  get stakeDays() {
-    return (
-      Number(this.stakingContractInfo.StepsFromStart) +
-      (Number(this.formsData.depositDays) || 0)
-    );
-  }
+  // get stakeDays() {
+  //   return (
+  //     Number(this.stakingContractInfo.StepsFromStart) +
+  //     (Number(this.formsData.depositDays) || 0)
+  //   );
+  // }
 
   get bonusLongerPays() {
     const currentValue = new BigNumber(this.formsData.depositAmount || 0);
@@ -137,8 +137,11 @@ export class StakingPageComponent implements OnDestroy {
       .times(this.bonusLongerPays.div(divDecimals).plus(1))
       .div(this.stakingContractInfo.ShareRate || 1)
       .times(divDecimals);
-    // this.shareRate =
-    //   Number(this.formsData.depositAmount) / this.stakingContractInfo.ShareRate;
+
+    this.stakeDays =
+      Date.now() +
+      (this.stakingContractInfo.StepsFromStart + this.formsData.depositDays) *
+        900;
   }
 
   public getProgress(deposit) {

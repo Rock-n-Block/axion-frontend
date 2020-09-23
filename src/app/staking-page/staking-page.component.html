@@ -65,6 +65,7 @@
                 max: depositMaxDays
               }"
               min="1"
+              (ngModelChange)="onChangeAmount()"
               [max]="depositMaxDays"
               placeholder="1"
               required="required"
@@ -76,7 +77,7 @@
                 <span class="staking-form__item-actions-amount-btn">DAY</span>
               </div>
               <span class="staking-form__item-text"
-                >ENDS {{ stakeDays + 1 | date }}
+                >ENDS {{ stakeDays | date: "d.M.y" }}
               </span>
             </div>
           </div>

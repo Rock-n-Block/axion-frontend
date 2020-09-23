@@ -595,12 +595,8 @@ export class ContractService {
             .stepTimestamp()
             .call()
             .then((stepTimestamp) => {
-              console.log("startContract", startContract);
-              console.log("stepTimestamp", stepTimestamp);
-
               const result =
                 (Math.round(Date.now() / 1000) - startContract) / stepTimestamp;
-              console.log("result", result);
               return {
                 key: "StepsFromStart",
                 value: result === Infinity ? 0 : result,
