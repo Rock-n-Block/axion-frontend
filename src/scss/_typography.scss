@@ -10,6 +10,29 @@
     background-size: initial;
   }
 
+  &-flex {
+    cursor: default;
+    display: flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 12px;
+    padding: 5px 15px;
+    font-size: 16px;
+    width: max-content;
+    margin: 10px auto;
+
+    &:before {
+      margin-right: 10px;
+    }
+  }
+
+  &__axion-small {
+    @include before-img(block, 18px, 16px, r) {
+      background-size: cover;
+      background-image: url("assets/images/icons/axion-icon.svg");
+    }
+  }
+
   &__axion-gray {
     padding-left: 6px;
 

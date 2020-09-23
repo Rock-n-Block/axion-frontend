@@ -122,58 +122,38 @@
                 <span></span><span></span><span></span><span></span>
               </span>
             </span>
-            <span>&nbsp;&nbsp;Deposit&nbsp;&nbsp;</span>
+            <span>Deposit</span>
           </button>
         </div>
       </form>
-
-      <!-- <div class="width-33 blocks-list_new-item">
-        <div class="blocks-list_element">
-          <div class="blocks-list_item no-padding">
-            <div class="blocks-list_item_title uppercase">
-              Big pay day pool
-              <div
-                class="question"
-                mat-raised-button
-                matTooltip="Info about the action"
-                matTooltipClass="question__tooltip"
-              ></div>
-            </div>
-            <div class="blocks-list_item_description">
-              Stake for 350 days or more and get bonus revenue
-            </div>
-            <div class="blocks-list_item_values">
-              <div class="blocks-list_item_values_item">
-                <div
-                  class="blocks-list_item_value inherit-align"
-                  fittext
-                  [maxFontSize]="38"
-                >
-                  {{
-                    stakingContractInfo.closestYearShares || 0
-                      | bigNumberFormat: tokensDecimals.HEX2X:true:false:4
-                  }}
-                </div>
-                <div class="blocks-list_item_label uppercase">Shares</div>
-              </div>
-              <div class="blocks-list_item_values_item">
-                <div
-                  class="blocks-list_item_value inherit-align"
-                  fittext
-                  [maxFontSize]="38"
-                >
-                  {{
-                    stakingContractInfo.closestPoolAmount || 0
-                      | bigNumberFormat: tokensDecimals.HEX2X:true:false:4
-                  }}
-                </div>
-                <div class="blocks-list_item_label uppercase">AXN</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> -->
     </div>
+  </div>
+
+  <div class="content-block" *ngIf="tableInfo">
+    <div style="margin: 30px 0" class="content-block_title text-center">
+      <span>Big Pay Day</span>
+    </div>
+    <table class="standard-table" cellpadding="0" cellspacing="0" border="0">
+      <thead>
+        <tr>
+          <ng-container *ngFor="let item of bpd">
+            <th *ngIf="item.show">{{ item.value }} Days left</th>
+          </ng-container>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <ng-container *ngFor="let item of bpd">
+            <td *ngIf="item.show">
+              {{ item.data | number }}
+              <span class="icon icon__axion-small icon-flex cl-red-light"
+                >AXN</span
+              >
+            </td>
+          </ng-container>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
   <div

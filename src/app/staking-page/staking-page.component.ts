@@ -21,6 +21,7 @@ interface StakingInfoInterface {
 })
 export class StakingPageComponent implements OnDestroy {
   public account;
+  public tableInfo;
   public tokensDecimals;
   private accountSubscribe;
   public shareRate: any;
@@ -52,6 +53,14 @@ export class StakingPageComponent implements OnDestroy {
     closed: {},
   };
 
+  public bpd = [
+    { value: 350, data: 0, show: true },
+    { value: 700, data: 0, show: true },
+    { value: 1050, data: 0, show: true },
+    { value: 1400, data: 0, show: true },
+    { value: 1750, data: 0, show: true },
+  ];
+
   constructor(
     private contractService: ContractService,
     private ngZone: NgZone
@@ -82,6 +91,18 @@ export class StakingPageComponent implements OnDestroy {
         window.dispatchEvent(new Event("resize"));
       });
     this.tokensDecimals = this.contractService.getCoinsDecimals();
+
+    this.contractService.getContractsInfo().then((info) => {
+      this.tableInfo = info;
+      let count = 0;
+      this.tableInfo.BPDInfo.map((value) => {
+        this.bpd[count].data = value;
+        const show =
+          this.bpd[count].value - this.stakingContractInfo.StepsFromStart;
+        this.bpd[count].show = show < this.bpd[count].value ? true : false;
+        count++;
+      });
+    });
   }
 
   public openDeposit() {
