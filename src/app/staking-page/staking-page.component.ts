@@ -23,6 +23,7 @@ export class StakingPageComponent implements OnDestroy {
   public account;
   public tokensDecimals;
   private accountSubscribe;
+  public shareRate: any;
   public onChangeAccount: EventEmitter<any> = new EventEmitter();
   public formsData: {
     depositAmount?: string;
@@ -76,6 +77,7 @@ export class StakingPageComponent implements OnDestroy {
     this.contractService
       .getStakingContractInfo()
       .then((data: StakingInfoInterface) => {
+        console.log("data", data);
         this.stakingContractInfo = data;
         window.dispatchEvent(new Event("resize"));
       });
@@ -119,12 +121,24 @@ export class StakingPageComponent implements OnDestroy {
       .div(this.stakingContractInfo.ShareRate || 1)
       .times(divDecimals);
   }
+
   get depositMaxDays() {
     return stakingMaxDays - this.stakingContractInfo.StepsFromStart;
   }
 
   get depositDaysInvalid() {
     return (this.formsData.depositDays || 0) > this.depositMaxDays;
+  }
+
+  public onChangeAmount() {
+    const divDecimals = Math.pow(10, this.tokensDecimals.HEX2X);
+    this.shareRate = new BigNumber(this.formsData.depositAmount || 0)
+      .div(divDecimals)
+      .times(this.bonusLongerPays.div(divDecimals).plus(1))
+      .div(this.stakingContractInfo.ShareRate || 1)
+      .times(divDecimals);
+    // this.shareRate =
+    //   Number(this.formsData.depositAmount) / this.stakingContractInfo.ShareRate;
   }
 
   public getProgress(deposit) {

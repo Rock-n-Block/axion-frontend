@@ -28,6 +28,7 @@
               }"
               name="deposit-amount"
               placeholder="0.0"
+              (ngModelChange)="onChangeAmount()"
               [maxValueChange]="onChangeAccount"
               [(ngModel)]="formsData.depositAmount"
             />
@@ -87,12 +88,16 @@
           <hr />
           <div class="staking-form__item-shares">
             <div class="staking-form__item-shares__item">
-              <span class="staking-form__item-shares__item-value">{{
-                userShares | bigNumberFormat: tokensDecimals.HEX2X:true:false:4
-              }}</span>
-              <span class="staking-form__item-shares__item-text"
-                >Share rate 1</span
+              <span class="staking-form__item-shares__item-value">
+                {{ shareRate || 0 }}</span
               >
+              <span class="staking-form__item-shares__item-text"
+                >Share rate
+                {{
+                  stakingContractInfo.ShareRate
+                    | bigNumberFormat: tokensDecimals.HEX2X:true:false:4 || 0
+                }}
+              </span>
             </div>
             <div class="staking-form__item-shares__item">
               <span class="staking-form__item-shares__item-text"
@@ -105,9 +110,6 @@
               }}</span>
             </div>
           </div>
-
-          {{ depositForm.invalid }}
-          {{ depositDaysInvalid }}
           <button
             class="btn btn__normal uppercase nowrap"
             (click)="openDeposit()"
