@@ -171,10 +171,7 @@
     </div>
   </div>
 
-  <div
-    class="content-block"
-    *ngIf="depositsLists?.opened.length && tokensDecimals"
-  >
+  <div class="content-block">
     <div class="content-block_title text-left">
       <span>Opened deposits</span>
     </div>
@@ -201,17 +198,6 @@
             }"
           >
             End date
-            <span class="sort-indicator"></span>
-          </th>
-          <th
-            (click)="sortDeposits('opened', 'progress')"
-            class="as-sort"
-            [ngClass]="{
-              active: currentSort['opened']['field'] === 'progress',
-              ask: currentSort['opened']['ask']
-            }"
-          >
-            Progress
             <span class="sort-indicator"></span>
           </th>
           <th
@@ -256,7 +242,6 @@
         <tr *ngFor="let deposit of depositsLists.opened">
           <td>{{ deposit.start | date: "dd.MM.yyyy" }}</td>
           <td>{{ deposit.end | date: "dd.MM.yyyy" }}</td>
-          <td>{{ getProgress(deposit) }}%</td>
           <td>
             {{
               deposit.amount

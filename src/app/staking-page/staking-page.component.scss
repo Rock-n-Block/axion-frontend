@@ -46,6 +46,35 @@
     background: rgba(0, 0, 0, 0.25);
     border-radius: 12px;
     text-align: center;
+    position: relative;
+
+    &:nth-child(1) {
+      &:before {
+        position: absolute;
+        content: "";
+        display: block;
+        width: 32px;
+        height: 32px;
+        border: 8px solid #4a2994;
+        background: url("../../assets/images/styling/block-arrow.svg") center
+          center no-repeat #4a2994;
+        background-size: contain;
+        right: -34px;
+        top: 40%;
+        border-radius: 50%;
+        z-index: 9;
+
+        @include b(991) {
+          right: 0;
+          left: 0;
+          margin: 0 auto;
+          top: auto;
+          z-index: 9;
+          bottom: -34px;
+          transform: rotate(90deg);
+        }
+      }
+    }
 
     &-deposit {
       display: grid;
