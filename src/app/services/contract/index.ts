@@ -595,8 +595,12 @@ export class ContractService {
             .stepTimestamp()
             .call()
             .then((stepTimestamp) => {
+              console.log(startContract, stepTimestamp);
+
               const result =
                 (Math.round(Date.now() / 1000) - startContract) / stepTimestamp;
+
+              console.log(result);
               return {
                 key: "StepsFromStart",
                 value: result === Infinity ? 0 : result,
@@ -639,53 +643,106 @@ export class ContractService {
       return values;
     });
   }
-  // public getStakingContractInfo() {
-  //   const promises = [
-  //     this.DailyAuctionContract.methods
-  //       .calculateStepsFromStart()
-  //       .call()
-  //       .then((result) => {
-  //         return {
-  //           key: "StepsFromStart",
-  //           value: result,
-  //         };
-  //       }),
-  //     this.StakingContract.methods
-  //       .shareRate()
-  //       .call()
-  //       .then((result) => {
-  //         return {
-  //           key: "ShareRate",
-  //           value: result,
-  //         };
-  //       }),
-  //     this.SubBalanceContract.methods
-  //       .getClosestYearShares()
-  //       .call()
-  //       .then((result) => {
-  //         return {
-  //           key: "closestYearShares",
-  //           value: result,
-  //         };
-  //       }),
-  //     this.BPDContract.methods
-  //       .getClosestPoolAmount()
-  //       .call()
-  //       .then((result) => {
-  //         return {
-  //           key: "closestPoolAmount",
-  //           value: result,
-  //         };
-  //       }),
-  //   ];
-  //   return Promise.all(promises).then((results) => {
-  //     const values = {};
-  //     results.forEach((v) => {
-  //       values[v.key] = v.value;
-  //     });
-  //     return values;
-  //   });
-  // }
+
+  public getDaysInYear() {
+    return new Promise((resolve) => {
+      this.SubBalanceContract.methods
+        .basePeriod()
+        .call()
+        .then((result) => {
+          resolve(result);
+        });
+    });
+  }
+
+  public geBPDInfo() {
+    const promises = [
+      this.getDaysInYear().then((daysInYear) => {
+        return {
+          key: "daysInYear",
+          value: daysInYear,
+        };
+      }),
+      this.getContractsInfo().then((contracts) => {
+        return {
+          key: "contracts",
+          value: contracts,
+        };
+      }),
+      this.SubBalanceContract.methods
+        .getStartTimes()
+        .call()
+        .then((getStartTimes) => {
+          return {
+            key: "contractsStartTimes",
+            value: getStartTimes,
+          };
+        }),
+      this.getEndDateTime().then((dateInfo) => {
+        return {
+          key: "dateInfo",
+          value: dateInfo,
+        };
+      }),
+      this.StakingContract.methods
+        .stepTimestamp()
+        .call()
+        .then((stepTimestamp) => {
+          return {
+            key: "stepTimestamp",
+            value: stepTimestamp,
+          };
+        }),
+    ];
+
+    return Promise.all(promises).then((results) => {
+      const values = {} as any;
+
+      results.forEach((v) => {
+        values[v.key] = v.value;
+      });
+
+      console.log(values);
+      console.log(new Date(values.dateInfo.startDate));
+
+      const bpdInfo = values as any;
+      const bpd: any = [];
+
+      let count = 0;
+
+      console.log(bpdInfo);
+
+      bpdInfo.contracts.BPDInfo.map((value) => {
+        const data = {
+          value: 0,
+          year: 0,
+          dateEnd: 0,
+          daysLeft: 0,
+          show: true,
+        };
+
+        data.value = value;
+        data.year =
+          count > 0
+            ? bpdInfo.daysInYear * (count + 1)
+            : Number(bpdInfo.daysInYear);
+
+        data.dateEnd = bpdInfo.contractsStartTimes[count] * 1000;
+
+        data.daysLeft = Math.round(
+          (data.dateEnd - Date.now()) / (bpdInfo.stepTimestamp * 1000)
+        );
+
+        data.show = !data.daysLeft;
+
+        bpd.push(data);
+
+        count++;
+      });
+
+      return bpd;
+    });
+  }
 
   public getAccountStakes(): Promise<{
     closed: DepositInterface[];
@@ -782,7 +839,7 @@ export class ContractService {
         Math.round((new Date().getTime() + 24 * 60 * 60 * 1000) / 1000),
         ref
           ? ref.toLowerCase()
-          : "0x1e1631579f5Dc88bB372DCD4bE64e7dB503e8416".toLowerCase()
+          : " 0x0000000000000000000000000000000000000000".toLowerCase()
       )
       .send({
         from: this.account.address,

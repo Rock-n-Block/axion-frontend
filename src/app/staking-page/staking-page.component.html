@@ -31,6 +31,7 @@
               (ngModelChange)="onChangeAmount()"
               [maxValueChange]="onChangeAccount"
               [(ngModel)]="formsData.depositAmount"
+              autocomplete="off"
             />
             <div class="staking-form__item-icon-wrap">
               <span
@@ -71,13 +72,19 @@
               required="required"
               name="deposit-days"
               [(ngModel)]="formsData.depositDays"
+              autocomplete="off"
             />
             <div class="staking-form__item-actions">
               <div class="staking-form__item-actions-amount">
-                <span class="staking-form__item-actions-amount-btn">DAY</span>
+                <span class="staking-form__item-actions-amount-btn">{{
+                  [null, "", 0, 1].includes(formsData.depositDays)
+                    ? "DAY"
+                    : "DAYS"
+                }}</span>
               </div>
               <span class="staking-form__item-text"
                 >ENDS {{ stakeDays | date: "d.M.y" }}
+                {{ stakeDays | date: "h:mm" }}
               </span>
             </div>
           </div>
@@ -137,7 +144,7 @@
       <thead>
         <tr>
           <ng-container *ngFor="let item of bpd">
-            <th *ngIf="item.show">{{ item.days }} Days left</th>
+            <th *ngIf="item.show">{{ item.daysLeft }} Days left</th>
           </ng-container>
         </tr>
       </thead>
@@ -145,7 +152,7 @@
         <tr>
           <ng-container *ngFor="let item of bpd">
             <td *ngIf="item.show">
-              {{ item.data | number }}
+              {{ item.value | number }}
               <span class="icon icon__axion-small icon-flex cl-red-light"
                 >AXN</span
               >

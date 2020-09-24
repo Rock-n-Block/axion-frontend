@@ -1,21 +1,17 @@
+<div class="dialog-block" mat-dialog-content>
+  <div class="dialog-block__content">
+    <div class="dialog-title">Transaction went successfully</div>
 
-    <div class="dialog-block" mat-dialog-content>
-        <div class="dialog-block__content">
-    
-          <div class="dialog-title">
-            Transaction successfully
-          </div>
-    
-          <div class="dialog-description">
-            see your transaction <a href={{ethLink}} target="_blank">here</a>
-          </div>
-    
-          <button
-          class="btn btn__normal dialog-block__btn"
-          (click)="closeModal()"
-          type="button"
-        >
-          <span>&nbsp;&nbsp;&nbsp;Close&nbsp;&nbsp;&nbsp;</span>
-        </button>
-        </div>
-      </div>
+    <div class="dialog-description">
+      see your transaction <a href="{{ ethLink }}" target="_blank">here</a>
+    </div>
+
+    <button
+      class="btn btn__normal dialog-block__btn"
+      (click)="closeModal()"
+      type="button"
+    >
+      <span>&nbsp;&nbsp;&nbsp;Close&nbsp;&nbsp;&nbsp;</span>
+    </button>
+  </div>
+</div>

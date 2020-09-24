@@ -7,6 +7,7 @@ import {
 } from "@angular/core";
 import { ContractService, stakingMaxDays } from "../services/contract";
 import BigNumber from "bignumber.js";
+import { constants } from "os";
 interface StakingInfoInterface {
   ShareRate: number;
   StepsFromStart: number;
@@ -23,6 +24,7 @@ export class StakingPageComponent implements OnDestroy {
   public account;
   public tableInfo;
   public tokensDecimals;
+  public depositMaxDays = 0;
   private accountSubscribe;
   public shareRate: any;
   public stakeDays: any;
@@ -53,13 +55,7 @@ export class StakingPageComponent implements OnDestroy {
     closed: {},
   };
 
-  public bpd = [
-    { value: 350, days: 350, data: 0, show: true },
-    { value: 700, days: 700, data: 0, show: true },
-    { value: 1050, days: 1050, data: 0, show: true },
-    { value: 1400, days: 1400, data: 0, show: true },
-    { value: 1750, days: 1750, data: 0, show: true },
-  ];
+  public bpd: any = [];
 
   constructor(
     private contractService: ContractService,
@@ -84,25 +80,21 @@ export class StakingPageComponent implements OnDestroy {
           });
         }
       });
+
     this.contractService
       .getStakingContractInfo()
       .then((data: StakingInfoInterface) => {
         this.stakingContractInfo = data;
+        this.depositMaxDays =
+          stakingMaxDays - this.stakingContractInfo.StepsFromStart;
         window.dispatchEvent(new Event("resize"));
       });
+
     this.tokensDecimals = this.contractService.getCoinsDecimals();
 
-    this.contractService.getContractsInfo().then((info) => {
-      this.tableInfo = info;
-      let count = 0;
-      this.tableInfo.BPDInfo.map((value) => {
-        this.bpd[count].data = value;
-        const show =
-          this.bpd[count].value - this.stakingContractInfo.StepsFromStart;
-        this.bpd[count].days = show.toFixed(0) as any;
-        this.bpd[count].show = show < this.bpd[count].value ? true : false;
-        count++;
-      });
+    this.contractService.geBPDInfo().then((result) => {
+      console.log(result);
+      this.bpd = result;
     });
   }
 
@@ -144,9 +136,11 @@ export class StakingPageComponent implements OnDestroy {
       .times(divDecimals);
   }
 
-  get depositMaxDays() {
-    return stakingMaxDays - this.stakingContractInfo.StepsFromStart;
-  }
+  // get depositMaxDays() {
+  //   console.log(stakingMaxDays - this.stakingContractInfo.StepsFromStart);
+  //   console.log(stakingMaxDays, this.stakingContractInfo.StepsFromStart);
+  //   return stakingMaxDays - this.stakingContractInfo.StepsFromStart;
+  // }
 
   get depositDaysInvalid() {
     return (this.formsData.depositDays || 0) > this.depositMaxDays;
@@ -160,10 +154,14 @@ export class StakingPageComponent implements OnDestroy {
       .div(this.stakingContractInfo.ShareRate || 1)
       .times(divDecimals);
 
+    // day hours = day minutes/60
+    // day minutes = day seconds/60 = 15
+    // day seconds = 900
+
     this.stakeDays =
       Date.now() +
       (this.stakingContractInfo.StepsFromStart + this.formsData.depositDays) *
-        900;
+        900000;
   }
 
   public getProgress(deposit) {

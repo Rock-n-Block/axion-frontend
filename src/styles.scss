@@ -906,6 +906,7 @@ input:-internal-autofill-selected {
   position: relative;
   white-space: nowrap;
   overflow: hidden;
+  margin-top: 15px;
   &:after,
   &:before {
     content: "";

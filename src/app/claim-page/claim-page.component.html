@@ -120,6 +120,7 @@
                 [maxValueChange]="onChangeAccount"
                 [(ngModel)]="formsData.swapAmount"
                 name="swap-amount"
+                autocomplete="off"
               />
             </div>
             <div
@@ -168,7 +169,7 @@
                     <span></span><span></span><span></span><span></span>
                   </span>
                 </span>
-                <span>Send</span>
+                <span>SEND</span>
                 <img src="assets/images/styling/arrow-right.svg" alt="" />
               </button>
             </div>
@@ -211,7 +212,7 @@
       <div class="blocks-list_group blocks-list_element width-37_4">
         <div class="list">
           <div class="blocks-list_item width-50">
-            <div class="blocks-list_item_title uppercase">For Claim</div>
+            <div class="blocks-list_item_title uppercase">TO</div>
             <div
               class="blocks-list_item_value blocks-list_item_value__positive"
               fittext
@@ -236,7 +237,7 @@
               [maxFontSize]="25"
             >
               {{
-                (swapNativeTokenInfo ? swapNativeTokenInfo[1] : 0)
+                (swapNativeTokenInfo ? swapNativeTokenInfo : 0)
                   | bigNumberFormat: tokensDecimals.HEX2X:true:false:4
               }}
             </div>
