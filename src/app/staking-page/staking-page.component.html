@@ -43,7 +43,8 @@
               <div class="staking-form__item-actions-amount">
                 <span
                   (click)="
-                    formsData.depositAmount = account?.balances.HEX2X.shortBigNumber.toString()
+                    formsData.depositAmount = account?.balances.HEX2X.shortBigNumber.toString();
+                    onChangeAmount()
                   "
                   class="staking-form__item-actions-amount-btn"
                   >Send max</span

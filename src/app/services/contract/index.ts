@@ -595,12 +595,13 @@ export class ContractService {
             .stepTimestamp()
             .call()
             .then((stepTimestamp) => {
-              console.log(startContract, stepTimestamp);
-
               const result =
                 (Math.round(Date.now() / 1000) - startContract) / stepTimestamp;
 
-              console.log(result);
+              console.log("startContract:", new Date(startContract * 1000));
+              console.log("stepTimestamp:", stepTimestamp);
+              console.log("StepsFromStart:", result);
+
               return {
                 key: "StepsFromStart",
                 value: result === Infinity ? 0 : result,
@@ -702,15 +703,9 @@ export class ContractService {
         values[v.key] = v.value;
       });
 
-      console.log(values);
-      console.log(new Date(values.dateInfo.startDate));
-
       const bpdInfo = values as any;
       const bpd: any = [];
-
       let count = 0;
-
-      console.log(bpdInfo);
 
       bpdInfo.contracts.BPDInfo.map((value) => {
         const data = {

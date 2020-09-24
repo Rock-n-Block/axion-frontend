@@ -93,8 +93,9 @@ export class StakingPageComponent implements OnDestroy {
     this.tokensDecimals = this.contractService.getCoinsDecimals();
 
     this.contractService.geBPDInfo().then((result) => {
-      console.log(result);
+      console.log("BPD data", result);
       this.bpd = result;
+      this.tableInfo = true;
     });
   }
 
@@ -137,8 +138,6 @@ export class StakingPageComponent implements OnDestroy {
   }
 
   // get depositMaxDays() {
-  //   console.log(stakingMaxDays - this.stakingContractInfo.StepsFromStart);
-  //   console.log(stakingMaxDays, this.stakingContractInfo.StepsFromStart);
   //   return stakingMaxDays - this.stakingContractInfo.StepsFromStart;
   // }
 

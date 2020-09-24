@@ -110,7 +110,7 @@
       </div>
     </form>
   </div>
-  <div class="content-block generated-link" *ngIf="auctionsList?.length">
+  <div class="content-block generated-link">
     <button
       (click)="generateRefLink()"
       class="generated-link-btn"
@@ -134,12 +134,14 @@
     >
       Copy
     </button>
-    <span style="font-size: 10px" *ngIf="addressCopy"> address copied </span>
+    <span style="font-size: 10px; margin-left: 10px" *ngIf="addressCopy">
+      address copied
+    </span>
   </div>
 
   <div class="content-block" *ngIf="auctionsList?.length">
     <div class="content-block_title text-left">
-      <span>Your Auction</span>
+      <span>Your Auctions</span>
     </div>
     <table
       class="standard-table text-left"
@@ -245,7 +247,7 @@
                   <span></span><span></span><span></span><span></span>
                 </span>
               </span>
-              <span>&nbsp;&nbsp;Withdraw&nbsp;&nbsp;</span>
+              <span>&nbsp;&nbsp;WITHDRAW&nbsp;&nbsp;</span>
             </button>
           </td>
         </tr>
