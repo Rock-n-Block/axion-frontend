@@ -47,6 +47,8 @@ export class StakingPageComponent implements OnDestroy {
     closestPoolAmount: "0",
   };
 
+  private stakingInfoChecker = false;
+
   public currentSort: {
     opened: any;
     closed: any;
@@ -75,6 +77,8 @@ export class StakingPageComponent implements OnDestroy {
                 this.applySort("opened");
                 this.applySort("closed");
                 window.dispatchEvent(new Event("resize"));
+                this.getStakingInfo();
+                this.stakingInfoChecker = true;
               });
             }
           });
@@ -99,6 +103,21 @@ export class StakingPageComponent implements OnDestroy {
     });
   }
 
+  public getStakingInfo() {
+    setTimeout(() => {
+      this.contractService
+        .getStakingContractInfo()
+        .then((data: StakingInfoInterface) => {
+          this.stakingContractInfo = data;
+          this.depositMaxDays =
+            stakingMaxDays - this.stakingContractInfo.StepsFromStart;
+          if (this.stakingInfoChecker) {
+            this.getStakingInfo();
+          }
+        });
+    }, 5000);
+  }
+
   public openDeposit() {
     this.depositTokensProgress = true;
     this.contractService
@@ -113,13 +132,6 @@ export class StakingPageComponent implements OnDestroy {
         this.depositTokensProgress = false;
       });
   }
-
-  // get stakeDays() {
-  //   return (
-  //     Number(this.stakingContractInfo.StepsFromStart) +
-  //     (Number(this.formsData.depositDays) || 0)
-  //   );
-  // }
 
   get bonusLongerPays() {
     const currentValue = new BigNumber(this.formsData.depositAmount || 0);
@@ -137,10 +149,6 @@ export class StakingPageComponent implements OnDestroy {
       .times(divDecimals);
   }
 
-  // get depositMaxDays() {
-  //   return stakingMaxDays - this.stakingContractInfo.StepsFromStart;
-  // }
-
   get depositDaysInvalid() {
     return (this.formsData.depositDays || 0) > this.depositMaxDays;
   }
@@ -152,10 +160,6 @@ export class StakingPageComponent implements OnDestroy {
       .times(this.bonusLongerPays.div(divDecimals).plus(1))
       .div(this.stakingContractInfo.ShareRate || 1)
       .times(divDecimals);
-
-    // day hours = day minutes/60
-    // day minutes = day seconds/60 = 15
-    // day seconds = 900
 
     this.stakeDays =
       Date.now() +
@@ -241,6 +245,7 @@ export class StakingPageComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
+    this.stakingInfoChecker = false;
     this.accountSubscribe.unsubscribe();
   }
 }

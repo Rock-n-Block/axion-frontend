@@ -14,18 +14,18 @@
           <span class="form-auction__item-title">auction pool</span>
           <div class="form-auction__item-blocks">
             <div class="form-auction__item-blocks__item">
-              <span class="form-auction__item-blocks__item-value"
-                >250.000.000</span
-              >
+              <span class="form-auction__item-blocks__item-value">{{
+                poolInfo.axn
+              }}</span>
               <span
                 class="form-auction__item-blocks__item-icon cl-red-light icon icon__axion"
                 >AXN</span
               >
             </div>
             <div class="form-auction__item-blocks__item">
-              <span class="form-auction__item-blocks__item-value"
-                >250.000.000</span
-              >
+              <span class="form-auction__item-blocks__item-value">{{
+                poolInfo.eth
+              }}</span>
               <span
                 class="form-auction__item-blocks__item-icon icon icon__eth-purple"
                 >ETH</span
@@ -41,7 +41,7 @@
               <span class="form-auction__item-rates__item-text">=</span>
               <span
                 class="form-auction__item-rates__item-icon icon icon__eth-purple"
-                >0.335233</span
+                >{{ poolInfo.axnToEth || 0 }}</span
               >
             </div>
             <div class="form-auction__item-rates__item cl-gray">
@@ -52,7 +52,7 @@
               <span class="form-auction__item-rates__item-text">=</span>
               <span
                 class="form-auction__item-rates__item-icon icon icon__eth-gray"
-                >33333</span
+                >{{ poolInfo.uniToEth || 0 }}</span
               >
             </div>
           </div>

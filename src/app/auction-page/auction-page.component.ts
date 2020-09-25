@@ -31,10 +31,16 @@ export class AuctionPageComponent implements OnDestroy {
 
   public referalLink = "";
   public addressCopy = false;
+  public auctionPoolChecker = false;
 
   public sendAuctionProgress: boolean;
   public auctionInfo: any;
   public auctionsList: any[];
+
+  public poolInfo: any = {
+    axn: 0,
+    eth: 0,
+  };
 
   public currentSort: any = {};
 
@@ -65,6 +71,23 @@ export class AuctionPageComponent implements OnDestroy {
         }
       });
     this.tokensDecimals = this.contractService.getCoinsDecimals();
+
+    this.contractService.getAuctionPool().then((info) => {
+      this.poolInfo = info;
+      this.getAuctionPool();
+      this.auctionPoolChecker = true;
+    });
+  }
+
+  private getAuctionPool() {
+    setTimeout(() => {
+      this.contractService.getAuctionPool().then((info) => {
+        this.poolInfo = info;
+        if (this.auctionPoolChecker) {
+          this.getAuctionPool();
+        }
+      });
+    }, 5000);
   }
 
   public sendETHToAuction() {
@@ -163,6 +186,7 @@ export class AuctionPageComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
+    this.auctionPoolChecker = false;
     this.accountSubscribe.unsubscribe();
   }
 }

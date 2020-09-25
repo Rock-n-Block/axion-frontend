@@ -34,6 +34,7 @@ export class ContractService {
   private DailyAuctionContract: Contract;
   private WeeklyAuctionContract: Contract;
   private StakingContract: Contract;
+  private UniswapV2Pair: Contract;
 
   private ForeignSwapContract: Contract;
   private BPDContract: Contract;
@@ -505,6 +506,49 @@ export class ContractService {
         info[params.key] = params.value;
       });
       return info;
+    });
+  }
+
+  public getAuctionPool() {
+    return new Promise((resolve) => {
+      this.DailyAuctionContract.methods
+        .calculateStepsFromStart()
+        .call()
+        .then((auctionId) => {
+          return this.DailyAuctionContract.methods
+            .reservesOf(auctionId)
+            .call()
+            .then((res) => {
+              const data = {} as any;
+
+              data.eth = new BigNumber(res[0])
+                .div(Math.pow(10, this.tokensDecimals.ETH))
+                .toString();
+
+              data.axn = new BigNumber(res[1])
+                .div(Math.pow(10, this.tokensDecimals.HEX2X))
+                .toString();
+
+              data.axnToEth = Number(data.axn) / Number(data.eth);
+
+              this.UniswapV2Pair.methods
+                .getReserves()
+                .call()
+                .then((value) => {
+                  const eth = new BigNumber(value[1])
+                    .div(Math.pow(10, this.tokensDecimals.ETH))
+                    .toString();
+
+                  const axn = new BigNumber(value[0])
+                    .div(Math.pow(10, this.tokensDecimals.HEX2X))
+                    .toString();
+
+                  data.uniToEth = Number(axn) / Number(eth);
+
+                  resolve(data);
+                });
+            });
+        });
     });
   }
 
@@ -986,6 +1030,11 @@ export class ContractService {
     this.SubBalanceContract = this.web3Service.getContract(
       this.CONTRACTS_PARAMS.SubBalance.ABI,
       this.CONTRACTS_PARAMS.SubBalance.ADDRESS
+    );
+
+    this.UniswapV2Pair = this.web3Service.getContract(
+      this.CONTRACTS_PARAMS.UniswapV2Pair.ABI,
+      this.CONTRACTS_PARAMS.UniswapV2Pair.ADDRESS
     );
   }
 }
