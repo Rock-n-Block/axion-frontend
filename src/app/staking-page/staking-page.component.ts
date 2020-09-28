@@ -115,8 +115,8 @@ export class StakingPageComponent implements OnDestroy {
         .then((data: StakingInfoInterface) => {
           this.stakingContractInfo = data;
           console.log(this.stakingContractInfo);
-          this.depositMaxDays =
-            stakingMaxDays - this.stakingContractInfo.StepsFromStart;
+          // this.depositMaxDays =
+          //   stakingMaxDays - this.stakingContractInfo.StepsFromStart;
           if (this.stakingInfoChecker) {
             this.getStakingInfo();
           }
