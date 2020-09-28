@@ -2,7 +2,12 @@
   <div class="content-block" [ngClass]="{ 'no-active': !account }">
     <div class="content-block_title">
       <span>Auction</span>
-      <span class="content-block_title_help"></span>
+      <div
+        class="question"
+        mat-raised-button
+        matTooltip="Provide Ethereum and get the chance to buy Axion for lower than Uniswap rate"
+        matTooltipClass="question__tooltip"
+      ></div>
     </div>
 
     <form
@@ -24,7 +29,7 @@
             </div>
             <div class="form-auction__item-blocks__item">
               <span class="form-auction__item-blocks__item-value">{{
-                poolInfo.eth
+                poolInfo.eth || 0
               }}</span>
               <span
                 class="form-auction__item-blocks__item-icon icon icon__eth-purple"
@@ -134,6 +139,12 @@
     >
       Copy
     </button>
+    <div
+      class="question"
+      mat-raised-button
+      matTooltip="Share your referral link and get extra 20% from your referrer, referrer gets extra 10% Axion"
+      matTooltipClass="question__tooltip"
+    ></div>
     <span style="font-size: 10px; margin-left: 10px" *ngIf="addressCopy">
       address copied
     </span>

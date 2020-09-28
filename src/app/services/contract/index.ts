@@ -35,6 +35,7 @@ export class ContractService {
   private WeeklyAuctionContract: Contract;
   private StakingContract: Contract;
   private UniswapV2Pair: Contract;
+  private Auction: Contract;
 
   private ForeignSwapContract: Contract;
   private BPDContract: Contract;
@@ -430,34 +431,97 @@ export class ContractService {
       });
   }
 
+  // public getContractsInfo() {
+  //   const promises = [
+  //     this.DailyAuctionContract.methods
+  //       .calculateStepsFromStart()
+  //       .call()
+  //       .then((auctionId) => {
+  //         return this.DailyAuctionContract.methods
+  //           .reservesOf(auctionId)
+  //           .call()
+  //           .then((res) => {
+  //             return {
+  //               key: "DailyAuction",
+  //               value: new BigNumber(res[1])
+  //                 .div(Math.pow(10, this.tokensDecimals.HEX2X))
+  //                 .toString(),
+  //             };
+  //           });
+  //       }),
+  //     this.WeeklyAuctionContract.methods
+  //       .calculateStepsFromStart()
+  //       .call()
+  //       .then((auctionId) => {
+  //         return this.WeeklyAuctionContract.methods
+  //           .reservesOf(auctionId)
+  //           .call()
+  //           .then((res) => {
+  //             return {
+  //               key: "WeeklyAuction",
+  //               value: new BigNumber(res[1])
+  //                 .div(Math.pow(10, this.tokensDecimals.HEX2X))
+  //                 .toString(),
+  //             };
+  //           });
+  //       }),
+  //     this.HEX2XContract.methods
+  //       .totalSupply()
+  //       .call()
+  //       .then((res) => {
+  //         return {
+  //           key: "totalSupply",
+  //           value: new BigNumber(res)
+  //             .div(Math.pow(10, this.tokensDecimals.HEX2X))
+  //             .toString(),
+  //         };
+  //       }),
+  //     this.StakingContract.methods
+  //       .sharesTotalSupply()
+  //       .call()
+  //       .then((res) => {
+  //         return {
+  //           key: "staking",
+  //           value: new BigNumber(res)
+  //             .div(Math.pow(10, this.tokensDecimals.HEX2X))
+  //             .toString(),
+  //         };
+  //       }),
+  //     this.BPDContract.methods
+  //       .getPoolYearAmounts()
+  //       .call()
+  //       .then((res) => {
+  //         return {
+  //           key: "BPDInfo",
+  //           value: res.map((oneBigPayDay) => {
+  //             return new BigNumber(oneBigPayDay)
+  //               .div(Math.pow(10, this.tokensDecimals.HEX2X))
+  //               .toString();
+  //           }),
+  //         };
+  //       }),
+  //   ];
+  //   return Promise.all(promises).then((results) => {
+  //     const info = {};
+  //     results.forEach((params) => {
+  //       info[params.key] = params.value;
+  //     });
+  //     return info;
+  //   });
+  // }
+
   public getContractsInfo() {
     const promises = [
-      this.DailyAuctionContract.methods
-        .calculateStepsFromStart()
-        .call()
-        .then((auctionId) => {
-          return this.DailyAuctionContract.methods
-            .reservesOf(auctionId)
-            .call()
-            .then((res) => {
-              return {
-                key: "DailyAuction",
-                value: new BigNumber(res[1])
-                  .div(Math.pow(10, this.tokensDecimals.HEX2X))
-                  .toString(),
-              };
-            });
-        }),
       this.WeeklyAuctionContract.methods
         .calculateStepsFromStart()
         .call()
         .then((auctionId) => {
-          return this.WeeklyAuctionContract.methods
+          return this.Auction.methods
             .reservesOf(auctionId)
             .call()
             .then((res) => {
               return {
-                key: "WeeklyAuction",
+                key: "Auction",
                 value: new BigNumber(res[1])
                   .div(Math.pow(10, this.tokensDecimals.HEX2X))
                   .toString(),
@@ -511,11 +575,11 @@ export class ContractService {
 
   public getAuctionPool() {
     return new Promise((resolve) => {
-      this.DailyAuctionContract.methods
+      this.Auction.methods
         .calculateStepsFromStart()
         .call()
         .then((auctionId) => {
-          return this.DailyAuctionContract.methods
+          return this.Auction.methods
             .reservesOf(auctionId)
             .call()
             .then((res) => {
@@ -523,13 +587,15 @@ export class ContractService {
 
               data.eth = new BigNumber(res[0])
                 .div(Math.pow(10, this.tokensDecimals.ETH))
+                .toFixed(8)
                 .toString();
 
               data.axn = new BigNumber(res[1])
                 .div(Math.pow(10, this.tokensDecimals.HEX2X))
+                .toFixed(8)
                 .toString();
 
-              data.axnToEth = Number(data.axn) / Number(data.eth);
+              data.axnToEth = (Number(data.axn) / Number(data.eth)).toFixed(8);
 
               this.UniswapV2Pair.methods
                 .getReserves()
@@ -543,7 +609,7 @@ export class ContractService {
                     .div(Math.pow(10, this.tokensDecimals.HEX2X))
                     .toString();
 
-                  data.uniToEth = Number(axn) / Number(eth);
+                  data.uniToEth = (Number(axn) / Number(eth)).toFixed(8);
 
                   resolve(data);
                 });
@@ -580,7 +646,6 @@ export class ContractService {
           });
       });
   }
-
   public readSwapNativeToken() {
     return this.swapTokenBalanceOf(true).then((value) => {
       return this.NativeSwapContract.methods
@@ -588,6 +653,17 @@ export class ContractService {
         .call()
         .then((res) => {
           return res;
+        });
+    });
+  }
+
+  public calculatePenalty(amount) {
+    return new Promise((resolve) => {
+      this.NativeSwapContract.methods
+        .calculateDeltaPenalty(amount)
+        .call()
+        .then((res) => {
+          resolve(res);
         });
     });
   }
@@ -641,11 +717,6 @@ export class ContractService {
             .then((stepTimestamp) => {
               const result =
                 (Math.round(Date.now() / 1000) - startContract) / stepTimestamp;
-
-              console.log("startContract:", new Date(startContract * 1000));
-              console.log("stepTimestamp:", stepTimestamp);
-              console.log("StepsFromStart:", result);
-
               return {
                 key: "StepsFromStart",
                 value: result === Infinity ? 0 : result,
@@ -843,12 +914,12 @@ export class ContractService {
   // Auction
   public getAuctionInfo() {
     const retData = {} as any;
-    return this.DailyAuctionContract.methods
+    return this.Auction.methods
       .calculateStepsFromStart()
       .call()
       .then((auctionId) => {
         const promises = [
-          this.DailyAuctionContract.methods
+          this.Auction.methods
             .reservesOf(auctionId)
             .call()
             .then((result) => {
@@ -858,7 +929,7 @@ export class ContractService {
         ];
         if (this.account) {
           promises.push(
-            this.DailyAuctionContract.methods
+            this.Auction.methods
               .auctionBetOf(auctionId, this.account.address)
               .call()
               .then((result) => {
@@ -871,6 +942,36 @@ export class ContractService {
         });
       });
   }
+  // public getAuctionInfo() {
+  //   const retData = {} as any;
+  //   return this.DailyAuctionContract.methods
+  //     .calculateStepsFromStart()
+  //     .call()
+  //     .then((auctionId) => {
+  //       const promises = [
+  //         this.DailyAuctionContract.methods
+  //           .reservesOf(auctionId)
+  //           .call()
+  //           .then((result) => {
+  //             retData.ethPool = result[0];
+  //             retData.axnPool = result[1];
+  //           }),
+  //       ];
+  //       if (this.account) {
+  //         promises.push(
+  //           this.Auction.methods
+  //             .auctionBetOf(auctionId, this.account.address)
+  //             .call()
+  //             .then((result) => {
+  //               retData.currentUserBalance = result;
+  //             })
+  //         );
+  //       }
+  //       return Promise.all(promises).then(() => {
+  //         return retData;
+  //       });
+  //     });
+  // }
 
   public sendETHToAuction(amount, ref?) {
     return this.DailyAuctionContract.methods
@@ -878,7 +979,7 @@ export class ContractService {
         Math.round((new Date().getTime() + 24 * 60 * 60 * 1000) / 1000),
         ref
           ? ref.toLowerCase()
-          : " 0x0000000000000000000000000000000000000000".toLowerCase()
+          : "0x0000000000000000000000000000000000000000".toLowerCase()
       )
       .send({
         from: this.account.address,
@@ -890,16 +991,16 @@ export class ContractService {
   }
 
   public getUserAuctions() {
-    return this.DailyAuctionContract.methods
+    return this.Auction.methods
       .start()
       .call()
       .then((start) => {
-        return this.DailyAuctionContract.methods
+        return this.Auction.methods
           .auctionsOf_(this.account.address)
           .call()
           .then((result) => {
             const auctionsPromises = result.map((id) => {
-              return this.DailyAuctionContract.methods
+              return this.Auction.methods
                 .reservesOf(id)
                 .call()
                 .then((auctionData) => {
@@ -911,7 +1012,7 @@ export class ContractService {
                     auctionId: id,
                     start: new Date((+start + oneDaySeconds * id) * 1000),
                   };
-                  return this.DailyAuctionContract.methods
+                  return this.Auction.methods
                     .auctionBetOf(id, this.account.address)
                     .call()
                     .then((accountBalance) => {
@@ -931,6 +1032,49 @@ export class ContractService {
           });
       });
   }
+
+  // public getUserAuctions() {
+  //   return this.DailyAuctionContract.methods
+  //     .start()
+  //     .call()
+  //     .then((start) => {
+  //       return this.DailyAuctionContract.methods
+  //         .auctionsOf_(this.account.address)
+  //         .call()
+  //         .then((result) => {
+  //           const auctionsPromises = result.map((id) => {
+  //             return this.DailyAuctionContract.methods
+  //               .reservesOf(id)
+  //               .call()
+  //               .then((auctionData) => {
+  //                 const auctionInfo = {
+  //                   eth: new BigNumber(auctionData.eth),
+  //                   token: new BigNumber(auctionData.token),
+  //                   accountETHBalance: new BigNumber(0),
+  //                   accountTokenBalance: new BigNumber(0),
+  //                   auctionId: id,
+  //                   start: new Date((+start + oneDaySeconds * id) * 1000),
+  //                 };
+  //                 return this.Auction.methods
+  //                   .auctionBetOf(id, this.account.address)
+  //                   .call()
+  //                   .then((accountBalance) => {
+  //                     auctionInfo.accountETHBalance = new BigNumber(
+  //                       accountBalance.eth
+  //                     );
+  //                     auctionInfo.accountTokenBalance = new BigNumber(
+  //                       accountBalance.eth
+  //                     )
+  //                       .multipliedBy(auctionData.token)
+  //                       .div(auctionData.eth);
+  //                     return auctionInfo;
+  //                   });
+  //               });
+  //           });
+  //           return Promise.all(auctionsPromises);
+  //         });
+  //     });
+  // }
 
   public withdrawFromAuction(auctionId) {
     return this.DailyAuctionContract.methods
@@ -1005,6 +1149,11 @@ export class ContractService {
     this.WeeklyAuctionContract = this.web3Service.getContract(
       this.CONTRACTS_PARAMS.WeeklyAuction.ABI,
       this.CONTRACTS_PARAMS.WeeklyAuction.ADDRESS
+    );
+
+    this.Auction = this.web3Service.getContract(
+      this.CONTRACTS_PARAMS.Auction.ABI,
+      this.CONTRACTS_PARAMS.Auction.ADDRESS
     );
 
     this.StakingContract = this.web3Service.getContract(

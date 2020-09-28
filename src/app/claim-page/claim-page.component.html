@@ -7,7 +7,7 @@
         <div
           class="question"
           mat-raised-button
-          matTooltip="Info about the action"
+          matTooltip="The free claim of Axion for HEX holders on the 28th of May 2020"
           matTooltipClass="question__tooltip"
         ></div>
       </span>
@@ -97,7 +97,12 @@
   <div class="content-block" [ngClass]="{ 'no-active': !account }">
     <div class="content-block_title">
       <span>H2T > Axion</span>
-      <span class="content-block_title_help"></span>
+      <div
+        class="question"
+        mat-raised-button
+        matTooltip="Burn your HEX2T tokens and get Axion"
+        matTooltipClass="question__tooltip"
+      ></div>
     </div>
 
     <form #sendForm="ngForm" class="blocks-list">
@@ -118,6 +123,7 @@
                   max: account?.balances.H2T.wei
                 }"
                 [maxValueChange]="onChangeAccount"
+                (ngModelChange)="onChangeAmount()"
                 [(ngModel)]="formsData.swapAmount"
                 name="swap-amount"
                 autocomplete="off"
@@ -236,10 +242,7 @@
               fittext
               [maxFontSize]="25"
             >
-              {{
-                (swapNativeTokenInfo ? swapNativeTokenInfo : 0)
-                  | bigNumberFormat: tokensDecimals.HEX2X:true:false:4
-              }}
+              {{ clacPenalty }}
             </div>
             <div
               class="blocks-list_item_currency blocks-list_item_currency__axn"

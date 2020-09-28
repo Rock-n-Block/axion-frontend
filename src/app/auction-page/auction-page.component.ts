@@ -64,6 +64,7 @@ export class AuctionPageComponent implements OnDestroy {
               });
               this.contractService.getUserAuctions().then((auctions) => {
                 this.auctionsList = auctions;
+                console.log("user auction", this.auctionsList);
                 window.dispatchEvent(new Event("resize"));
               });
             }

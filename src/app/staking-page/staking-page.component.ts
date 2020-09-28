@@ -7,7 +7,7 @@ import {
 } from "@angular/core";
 import { ContractService, stakingMaxDays } from "../services/contract";
 import BigNumber from "bignumber.js";
-import { constants } from "os";
+
 interface StakingInfoInterface {
   ShareRate: number;
   StepsFromStart: number;
@@ -74,6 +74,9 @@ export class StakingPageComponent implements OnDestroy {
               this.onChangeAccount.emit();
               this.contractService.getAccountStakes().then((res) => {
                 this.depositsLists = res;
+
+                console.log("this.depositsLists", this.depositsLists);
+
                 this.applySort("opened");
                 this.applySort("closed");
                 window.dispatchEvent(new Event("resize"));
@@ -109,6 +112,7 @@ export class StakingPageComponent implements OnDestroy {
         .getStakingContractInfo()
         .then((data: StakingInfoInterface) => {
           this.stakingContractInfo = data;
+          console.log(this.stakingContractInfo);
           this.depositMaxDays =
             stakingMaxDays - this.stakingContractInfo.StepsFromStart;
           if (this.stakingInfoChecker) {
@@ -155,16 +159,35 @@ export class StakingPageComponent implements OnDestroy {
 
   public onChangeAmount() {
     const divDecimals = Math.pow(10, this.tokensDecimals.HEX2X);
-    this.shareRate = new BigNumber(this.formsData.depositAmount || 0)
-      .div(divDecimals)
-      .times(this.bonusLongerPays.div(divDecimals).plus(1))
-      .div(this.stakingContractInfo.ShareRate || 1)
-      .times(divDecimals);
 
-    this.stakeDays =
-      Date.now() +
-      (this.stakingContractInfo.StepsFromStart + this.formsData.depositDays) *
-        900000;
+    const stareRate = new BigNumber(this.stakingContractInfo.ShareRate || 0)
+      .div(divDecimals)
+      .toString();
+
+    const amount = new BigNumber(this.formsData.depositAmount || 0)
+      .div(divDecimals)
+      .toString();
+
+    const rate = (
+      (Number(amount) *
+        (1 + (this.formsData.depositDays - 1) / stakingMaxDays)) /
+      Number(stareRate)
+    ).toFixed(4);
+
+    this.shareRate = parseFloat(rate.toString());
+
+    this.stakeDays = Date.now() + this.formsData.depositDays * 900 * 1000;
+
+    // this.shareRate = new BigNumber(this.formsData.depositAmount || 0)
+    //   .div(divDecimals)
+    //   .times(this.bonusLongerPays.div(divDecimals).plus(1))
+    //   .div(this.stakingContractInfo.ShareRate || 1)
+    //   .times(divDecimals);
+
+    // this.stakeDays =
+    //   Date.now() +
+    //   (this.stakingContractInfo.StepsFromStart + this.formsData.depositDays) *
+    //     900000;
   }
 
   public getProgress(deposit) {

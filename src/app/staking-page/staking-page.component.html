@@ -2,7 +2,12 @@
   <div class="content-block" [ngClass]="{ 'no-active': !account }">
     <div class="content-block_title">
       <span>Create deposit</span>
-      <span class="content-block_title_help"></span>
+      <div
+        class="question"
+        mat-raised-button
+        matTooltip="Stake Axion and get Shares, to participate in daily dividends distribution"
+        matTooltipClass="question__tooltip"
+      ></div>
     </div>
     <div class="blocks-list without-arrow_separator">
       <form
@@ -137,9 +142,15 @@
     </div>
   </div>
 
-  <div class="content-block" *ngIf="tableInfo">
+  <div class="content-block" *ngIf="tableInfo && bpd[0].show">
     <div style="margin: 30px 0" class="content-block_title text-center">
       <span>Big Pay Day</span>
+      <div
+        class="question"
+        mat-raised-button
+        matTooltip="Stake for more than 350 days and participate in Big Pay Day Pool token distribution"
+        matTooltipClass="question__tooltip"
+      ></div>
     </div>
     <table class="standard-table" cellpadding="0" cellspacing="0" border="0">
       <thead>
@@ -197,10 +208,10 @@
             <span class="sort-indicator"></span>
           </th>
           <th
-            (click)="sortDeposits('opened', 'amount')"
+            (click)="sortDeposits('opened', 'principal')"
             class="as-sort"
             [ngClass]="{
-              active: currentSort['opened']['field'] === 'amount',
+              active: currentSort['opened']['field'] === 'principal',
               ask: currentSort['opened']['ask']
             }"
           >
@@ -220,10 +231,10 @@
           </th>
 
           <th
-            (click)="sortDeposits('opened', 'shares')"
+            (click)="sortDeposits('opened', 'BigPayDay')"
             class="as-sort"
             [ngClass]="{
-              active: currentSort['opened']['field'] === 'shares',
+              active: currentSort['opened']['field'] === 'BigPayDay',
               ask: currentSort['opened']['ask']
             }"
           >
