@@ -212,6 +212,7 @@ export class ContractService {
         });
     });
   }
+
   public updateHEX2XBalance(callEmitter?) {
     return new Promise((resolve, reject) => {
       if (!(this.account && this.account.address)) {
@@ -609,7 +610,16 @@ export class ContractService {
                     .div(Math.pow(10, this.tokensDecimals.HEX2X))
                     .toString();
 
+                  console.log("eth", eth, "axn", axn);
+
                   data.uniToEth = (Number(axn) / Number(eth)).toFixed(8);
+
+                  console.log(
+                    "uni base",
+                    Number(axn) / Number(eth),
+                    "uniToEth",
+                    data.uniToEth
+                  );
 
                   resolve(data);
                 });

@@ -24,7 +24,7 @@ export class StakingPageComponent implements OnDestroy {
   public account;
   public tableInfo;
   public tokensDecimals;
-  public depositMaxDays = 0;
+  public depositMaxDays = stakingMaxDays;
   private accountSubscribe;
   public shareRate: any;
   public stakeDays: any;
@@ -92,8 +92,10 @@ export class StakingPageComponent implements OnDestroy {
       .getStakingContractInfo()
       .then((data: StakingInfoInterface) => {
         this.stakingContractInfo = data;
-        this.depositMaxDays =
-          stakingMaxDays - this.stakingContractInfo.StepsFromStart;
+        // this.depositMaxDays =
+        //   stakingMaxDays - this.stakingContractInfo.StepsFromStart;
+        // this.depositMaxDays =
+        //   stakingMaxDays - this.stakingContractInfo.StepsFromStart;
         window.dispatchEvent(new Event("resize"));
       });
 

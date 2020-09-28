@@ -64,6 +64,7 @@ export class AuctionPageComponent implements OnDestroy {
               });
               this.contractService.getUserAuctions().then((auctions) => {
                 this.auctionsList = auctions;
+                this.referalLink = "";
                 console.log("user auction", this.auctionsList);
                 window.dispatchEvent(new Event("resize"));
               });
@@ -72,6 +73,15 @@ export class AuctionPageComponent implements OnDestroy {
         }
       });
     this.tokensDecimals = this.contractService.getCoinsDecimals();
+
+    // this.accountSubscribe = this.contractService
+    // .accountSubscribe()
+    // .subscribe((account) => {
+    //   if (account) {
+    //     this.accountSubscribe.unsubscribe();
+    //     this.subscribeAccount();
+    //   }
+    // });
 
     this.contractService.getAuctionPool().then((info) => {
       this.poolInfo = info;

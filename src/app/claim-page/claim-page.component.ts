@@ -129,9 +129,9 @@ export class ClaimPageComponent implements OnDestroy {
       .claimFromForeign()
       .then(() => {
         this.claimTokensProgress = false;
-        // this.contractService.updateH2TBalance(true).then(() => {
-        //   this.burnTokensProgress = false;
-        // });
+        this.contractService.updateH2TBalance(true).then(() => {
+          this.claimTokensProgress = false;
+        });
       })
       .catch(() => {
         this.claimTokensProgress = false;

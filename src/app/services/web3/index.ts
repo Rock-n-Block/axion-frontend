@@ -46,20 +46,25 @@ export class MetamaskService {
   public getAccounts(noEnable?) {
     const usedNetworkVersion = IS_PRODUCTION ? 1 : 4;
     const net = usedNetworkVersion === 1 ? "mainnet" : "rinkeby";
+
     const isValidMetaMaskNetwork = (observer) => {
-      const networkVersion = Number(this.metaMaskWeb3.networkVersion);
-
-      alert(usedNetworkVersion);
-      alert(networkVersion);
-
-      if (usedNetworkVersion !== networkVersion) {
-        observer.error({
-          code: 2,
-          msg: "Please choose " + net + " network in Metamask.",
+      return this.metaMaskWeb3
+        .request({
+          method: "net_version",
+        })
+        .then((result) => {
+          console.log(result);
+          if (usedNetworkVersion !== Number(result)) {
+            observer.error({
+              code: 2,
+              msg: "Please choose " + net + " network in Metamask.",
+            });
+            console.log(false);
+            return false;
+          }
+          console.log(true);
+          return true;
         });
-        return false;
-      }
-      return true;
     };
 
     const onAuth = (observer, address) => {
