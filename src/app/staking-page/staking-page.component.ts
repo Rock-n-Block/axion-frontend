@@ -100,7 +100,7 @@ export class StakingPageComponent implements OnDestroy {
     this.contractService.geBPDInfo().then((result) => {
       console.log("BPD data", result);
       this.bpd = result;
-      this.tableInfo = result[0].show;
+      this.tableInfo = result[4].show;
     });
   }
 

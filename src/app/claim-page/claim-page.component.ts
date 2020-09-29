@@ -20,7 +20,10 @@ export class ClaimPageComponent implements OnDestroy {
   public formsData: {
     swapAmount?: string;
   } = {};
-  public swapContractBalance;
+  public swapContractBalance = {
+    value: 0,
+    fullValue: 0,
+  };
   public onChangeAccount: EventEmitter<any> = new EventEmitter();
   public swapTokensProgress: boolean;
   public updateSwapBalanceProgress: boolean;
@@ -51,6 +54,8 @@ export class ClaimPageComponent implements OnDestroy {
               this.readSwapNativeToken();
               this.contractService.swapTokenBalanceOf().then((balance) => {
                 this.swapContractBalance = balance;
+                console.log(this.swapContractBalance);
+                this.readPenalty();
                 this.updateSwapBalanceProgress = false;
                 window.dispatchEvent(new Event("resize"));
               });
@@ -67,6 +72,15 @@ export class ClaimPageComponent implements OnDestroy {
       console.log("this.swapNativeTokenInfo", this.swapNativeTokenInfo);
       window.dispatchEvent(new Event("resize"));
     });
+  }
+
+  private readPenalty() {
+    this.contractService
+      .calculatePenalty(this.swapContractBalance.fullValue)
+      .then((res) => {
+        this.clacPenalty = res as number;
+        console.log("this.clacPenalty", this.clacPenalty);
+      });
   }
 
   public swapH2T() {
@@ -100,12 +114,6 @@ export class ClaimPageComponent implements OnDestroy {
 
   public onChangeAmount() {
     console.log(this.formsData.swapAmount);
-
-    this.contractService
-      .calculatePenalty(Number(this.formsData.swapAmount))
-      .then((res) => {
-        this.clacPenalty = res as number;
-      });
   }
 
   public burnH2T() {

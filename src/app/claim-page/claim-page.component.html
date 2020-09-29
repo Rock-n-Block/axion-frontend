@@ -96,7 +96,7 @@
 
   <div class="content-block" [ngClass]="{ 'no-active': !account }">
     <div class="content-block_title">
-      <span>H2T > Axion</span>
+      <span>HEX2T > Axion</span>
       <div
         class="question"
         mat-raised-button
@@ -132,7 +132,7 @@
             <div
               class="blocks-list_item_currency blocks-list_item_currency__h2t"
             >
-              <span>H2T</span>
+              <span>HEX2T</span>
             </div>
 
             <div
@@ -190,10 +190,13 @@
         <div class="blocks-list_item">
           <div class="blocks-list_item_title uppercase">SWAP Contract</div>
           <div class="blocks-list_item_value" fittext [maxFontSize]="38">
-            {{ swapContractBalance || 0 | bigNumberFormat: 0:true:false:false }}
+            {{
+              swapContractBalance.value || 0
+                | bigNumberFormat: 0:true:false:false
+            }}
           </div>
           <div class="blocks-list_item_currency blocks-list_item_currency__h2t">
-            <span>H2T</span>
+            <span>HEX2T</span>
           </div>
         </div>
 
@@ -202,7 +205,7 @@
             class="btn btn__transparent btn__back-img"
             (click)="withdrawH2T()"
             [ngClass]="{ progress: withdrawH2TProgress }"
-            [disabled]="+swapContractBalance === 0 || withdrawH2TProgress"
+            [disabled]="+swapContractBalance.value === 0 || withdrawH2TProgress"
           >
             <span class="lds-ellipsis" *ngIf="withdrawH2TProgress">
               <span class="lds-ellipsis-container">
@@ -242,7 +245,10 @@
               fittext
               [maxFontSize]="25"
             >
-              {{ clacPenalty }}
+              {{
+                clacPenalty || 0
+                  | bigNumberFormat: tokensDecimals.HEX2X:true:false:4
+              }}
             </div>
             <div
               class="blocks-list_item_currency blocks-list_item_currency__axn"

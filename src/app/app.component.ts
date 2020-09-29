@@ -51,7 +51,7 @@ export class AppComponent implements OnInit {
 
     this.contractService.getEndDateTime().then((result) => {
       this.leftDaysInfo = result;
-      this.leftDaysInfoShow = !!this.leftDaysInfo.leftDays;
+      this.leftDaysInfoShow = !this.leftDaysInfo.leftDays;
 
       console.log(result, this.leftDaysInfoShow);
     });

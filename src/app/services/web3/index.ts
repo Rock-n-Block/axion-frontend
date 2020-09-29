@@ -2,7 +2,8 @@ import { Injectable } from "@angular/core";
 import Web3 from "web3";
 import { Observable } from "rxjs";
 import { WEB3_CONSTANTS } from "./constants";
-const IS_PRODUCTION = location.protocol === "https:";
+// const IS_PRODUCTION = location.protocol === "https:";
+const IS_PRODUCTION = false;
 
 const networks = {
   production: "mainnet",
@@ -75,22 +76,32 @@ export class MetamaskService {
     const usedNetworkVersion = IS_PRODUCTION ? 1 : 4;
     const net = usedNetworkVersion === 1 ? "mainnet" : "rinkeby";
 
+    // const isValidMetaMaskNetwork = (observer) => {
+    //   const networkVersion = Number(this.metaMaskWeb3.networkVersion);
+
+    //   if (usedNetworkVersion !== networkVersion) {
+    //     observer.error({
+    //       code: 2,
+    //       msg: "Please choose " + net + " network in Metamask.",
+    //     });
+    //     return false;
+    //   }
+    //   return true;
+    // };
+
     const isValidMetaMaskNetwork = (observer) => {
       return this.metaMaskWeb3
         .request({
           method: "net_version",
         })
         .then((result) => {
-          console.log(result);
           if (usedNetworkVersion !== Number(result)) {
             observer.error({
               code: 2,
               msg: "Please choose " + net + " network in Metamask.",
             });
-            console.log(false);
             return false;
           }
-          console.log(true);
           return true;
         });
     };

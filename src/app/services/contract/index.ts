@@ -59,7 +59,8 @@ export class ContractService {
         .get(`/assets/js/constants.json`)
         .toPromise()
         .then((result) => {
-          const IS_PRODUCTION = location.protocol === "https:";
+          // const IS_PRODUCTION = location.protocol === "https:";
+          const IS_PRODUCTION = false;
           const CONTRACTS_PARAMS =
             result[IS_PRODUCTION ? "mainnet" : "rinkeby"];
 
@@ -403,9 +404,13 @@ export class ContractService {
         if (noConverted) {
           return balance;
         }
-        return new BigNumber(balance).div(
-          new BigNumber(10).pow(this.tokensDecimals.H2T)
-        );
+
+        return {
+          value: new BigNumber(balance).div(
+            new BigNumber(10).pow(this.tokensDecimals.H2T)
+          ),
+          fullValue: balance,
+        };
       });
   }
 
@@ -611,16 +616,16 @@ export class ContractService {
                     .div(Math.pow(10, this.tokensDecimals.HEX2X))
                     .toString();
 
-                  console.log("eth", eth, "axn", axn);
+                  // console.log("eth", eth, "axn", axn);
 
                   data.uniToEth = (Number(axn) / Number(eth)).toFixed(8);
 
-                  console.log(
-                    "uni base",
-                    Number(axn) / Number(eth),
-                    "uniToEth",
-                    data.uniToEth
-                  );
+                  // console.log(
+                  //   "uni base",
+                  //   Number(axn) / Number(eth),
+                  //   "uniToEth",
+                  //   data.uniToEth
+                  // );
 
                   resolve(data);
                 });
@@ -652,12 +657,12 @@ export class ContractService {
                 const a = moment(new Date(endDateTime)); // end
                 const b = moment(new Date()); // now
 
-                console.log(a.diff(b, "minutes")); // 44700
-                console.log(a.diff(b, "hours")); // 745
-                console.log(a.diff(b, "days")); // 31
+                // console.log(a.diff(b, "minutes")); // 44700
+                // console.log(a.diff(b, "hours")); // 745
+                // console.log(a.diff(b, "days")); // 31
 
-                const leftDays = a.diff(b, "days");
-                // const leftDays = a.diff(b, "seconds");
+                // const leftDays = a.diff(b, "days");
+                const leftDays = a.diff(b, "seconds");
 
                 const dateEnd =
                   a.diff(b, "days") +
@@ -671,7 +676,7 @@ export class ContractService {
                   startDate: fullStartDate,
                   endDate: endDateTime,
                   dateEnd,
-                  leftDays: leftDays === 0 ? 1 : leftDays,
+                  leftDays, //: leftDays === 0 ? 1 : leftDays,
                 };
               });
           });
@@ -874,7 +879,17 @@ export class ContractService {
           (data.dateEnd - Date.now()) / (bpdInfo.stepTimestamp * 1000)
         );
 
-        data.show = !!data.daysLeft;
+        const a = moment(new Date(data.dateEnd)); // end
+        const b = moment(new Date()); // now
+
+        console.log(a.diff(b, "seconds")); // 44700
+        // console.log(a.diff(b, "minutes")); // 44700
+        // console.log(a.diff(b, "hours")); // 745
+        // console.log(a.diff(b, "days")); // 31
+
+        data.daysLeft = a.diff(b, "days");
+
+        data.show = a.diff(b, "seconds") < 0 ? false : true;
 
         bpd.push(data);
 
