@@ -245,10 +245,7 @@
               fittext
               [maxFontSize]="25"
             >
-              {{
-                clacPenalty || 0
-                  | bigNumberFormat: tokensDecimals.HEX2X:true:false:4
-              }}
+              {{ clacPenalty || 0 }}
             </div>
             <div
               class="blocks-list_item_currency blocks-list_item_currency__axn"

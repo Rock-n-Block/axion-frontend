@@ -253,12 +253,24 @@ export class StakingPageComponent implements OnDestroy {
 
   public depositWithdraw(deposit) {
     deposit.withdrawProgress = true;
+
     this.contractService
       .unstake(deposit.sessionId)
       .then((res) => {
-        console.log(res);
+        console.log("unstake step 1", res);
+        this.contractService.getSessionStats(deposit.sessionId).then((res2) => {
+          console.log("unstake step 2", res2);
 
-        this.contractService.updateHEX2XBalance(true);
+          if (res2 > 0) {
+            this.contractService
+              .stakingWithdraw(deposit.sessionId)
+              .then((res3) => {
+                console.log("unstake step 3", res3);
+                this.contractService.updateHEX2XBalance(true);
+                deposit.withdrawProgress = false;
+              });
+          }
+        });
       })
       .catch(() => {
         deposit.withdrawProgress = false;

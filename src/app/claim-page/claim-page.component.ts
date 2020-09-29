@@ -54,7 +54,10 @@ export class ClaimPageComponent implements OnDestroy {
               this.readSwapNativeToken();
               this.contractService.swapTokenBalanceOf().then((balance) => {
                 this.swapContractBalance = balance;
-                console.log(this.swapContractBalance);
+                console.log(
+                  "this.swapContractBalance",
+                  this.swapContractBalance
+                );
                 this.readPenalty();
                 this.updateSwapBalanceProgress = false;
                 window.dispatchEvent(new Event("resize"));
@@ -75,8 +78,10 @@ export class ClaimPageComponent implements OnDestroy {
   }
 
   private readPenalty() {
+    console.log("this.clacPenalty", this.clacPenalty);
+
     this.contractService
-      .calculatePenalty(this.swapContractBalance.fullValue)
+      .calculatePenalty(this.swapContractBalance.value)
       .then((res) => {
         this.clacPenalty = res as number;
         console.log("this.clacPenalty", this.clacPenalty);

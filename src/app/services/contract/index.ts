@@ -604,31 +604,67 @@ export class ContractService {
 
               data.axnToEth = (Number(data.axn) / Number(data.eth)).toFixed(8);
 
+              const amount = "1000000000000000000";
+
+              console.log("HEX2X ADDRESS", this.CONTRACTS_PARAMS.HEX2X.ADDRESS);
+              console.log("WETH ADDRESS", this.CONTRACTS_PARAMS.WETH.ADDRESS);
+
               this.UniswapV2Pair.methods
-                .getReserves()
+                .getAmountsOut(amount, [
+                  this.CONTRACTS_PARAMS.HEX2X.ADDRESS,
+                  this.CONTRACTS_PARAMS.WETH.ADDRESS,
+                ])
                 .call()
                 .then((value) => {
+                  console.log(value);
+
                   const eth = new BigNumber(value[1])
                     .div(Math.pow(10, this.tokensDecimals.ETH))
                     .toString();
 
-                  const axn = new BigNumber(value[0])
+                  const axn = new BigNumber(value[1])
                     .div(Math.pow(10, this.tokensDecimals.HEX2X))
                     .toString();
 
                   console.log("eth", eth, "axn", axn);
 
-                  data.uniToEth = (Number(axn) / Number(eth)).toFixed(8);
+                  // data.uniToEth = (Number(axn) / Number(eth)).toFixed(8);
+                  data.uniToEth = parseFloat(Number(axn).toFixed(8).toString());
 
-                  console.log(
-                    "uni base",
-                    Number(axn) / Number(eth),
-                    "uniToEth",
-                    data.uniToEth
-                  );
+                  // console.log(
+                  //   "uni base",
+                  //   Number(axn) / Number(eth),
+                  //   "uniToEth",
+                  //   data.uniToEth
+                  // );
 
                   resolve(data);
                 });
+              // this.UniswapV2Pair.methods
+              //   .getReserves()
+              //   .call()
+              //   .then((value) => {
+              //     const eth = new BigNumber(value[1])
+              //       .div(Math.pow(10, this.tokensDecimals.ETH))
+              //       .toString();
+
+              //     const axn = new BigNumber(value[0])
+              //       .div(Math.pow(10, this.tokensDecimals.HEX2X))
+              //       .toString();
+
+              //     console.log("eth", eth, "axn", axn);
+
+              //     data.uniToEth = (Number(axn) / Number(eth)).toFixed(8);
+
+              //     console.log(
+              //       "uni base",
+              //       Number(axn) / Number(eth),
+              //       "uniToEth",
+              //       data.uniToEth
+              //     );
+
+              //     resolve(data);
+              //   });
             });
         });
     });
@@ -979,6 +1015,15 @@ export class ContractService {
       });
   }
 
+  public stakingWithdraw(sessionId) {
+    return this.SubBalanceContract.methods
+      .withdraw(sessionId)
+      .call()
+      .then((res) => {
+        return res;
+      });
+  }
+
   // Auction
   public getAuctionInfo() {
     const retData = {} as any;
@@ -1200,7 +1245,7 @@ export class ContractService {
   // }
 
   public withdrawFromAuction(auctionId) {
-    return this.DailyAuctionContract.methods
+    return this.Auction.methods
       .withdraw(auctionId)
       .send({
         from: this.account.address,
