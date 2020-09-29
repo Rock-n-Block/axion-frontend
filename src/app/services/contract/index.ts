@@ -602,7 +602,9 @@ export class ContractService {
                 .toFixed(8)
                 .toString();
 
-              data.axnToEth = (Number(data.axn) / Number(data.eth)).toFixed(8);
+              data.axnToEth = parseFloat(
+                (Number(data.eth) / Number(data.axn)).toFixed(8).toString()
+              );
 
               const amount = "1000000000000000000";
 
@@ -724,14 +726,17 @@ export class ContractService {
   }
 
   public calculatePenalty(amount) {
-    return new Promise((resolve) => {
-      this.NativeSwapContract.methods
-        .calculateDeltaPenalty(amount)
-        .call()
-        .then((res) => {
-          resolve(res);
-        });
-    });
+    console.log(amount);
+
+    // return new Promise((resolve) => {
+    return this.NativeSwapContract.methods
+      .calculateDeltaPenalty(amount)
+      .call()
+      .then((res) => {
+        console.log(res);
+        return res;
+      });
+    // });
   }
 
   /* Staking */

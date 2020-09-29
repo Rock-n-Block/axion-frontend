@@ -228,8 +228,8 @@
               [maxFontSize]="36"
             >
               {{
-                (swapNativeTokenInfo ? swapNativeTokenInfo : 0)
-                  | bigNumberFormat: tokensDecimals.HEX2X:true:false:4
+                (swapContractBalance.value || 0
+                  | bigNumberFormat: 0:true:false:false) - clacPenalty
               }}
             </div>
             <div
