@@ -255,7 +255,9 @@ export class StakingPageComponent implements OnDestroy {
     deposit.withdrawProgress = true;
     this.contractService
       .unstake(deposit.sessionId)
-      .then(() => {
+      .then((res) => {
+        console.log(res);
+
         this.contractService.updateHEX2XBalance(true);
       })
       .catch(() => {

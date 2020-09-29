@@ -409,7 +409,7 @@ export class ContractService {
           value: new BigNumber(balance).div(
             new BigNumber(10).pow(this.tokensDecimals.H2T)
           ),
-          fullValue: balance,
+          fullValue: Number(balance),
         };
       });
   }
@@ -616,16 +616,16 @@ export class ContractService {
                     .div(Math.pow(10, this.tokensDecimals.HEX2X))
                     .toString();
 
-                  // console.log("eth", eth, "axn", axn);
+                  console.log("eth", eth, "axn", axn);
 
                   data.uniToEth = (Number(axn) / Number(eth)).toFixed(8);
 
-                  // console.log(
-                  //   "uni base",
-                  //   Number(axn) / Number(eth),
-                  //   "uniToEth",
-                  //   data.uniToEth
-                  // );
+                  console.log(
+                    "uni base",
+                    Number(axn) / Number(eth),
+                    "uniToEth",
+                    data.uniToEth
+                  );
 
                   resolve(data);
                 });
@@ -664,13 +664,7 @@ export class ContractService {
                 // const leftDays = a.diff(b, "days");
                 const leftDays = a.diff(b, "seconds");
 
-                const dateEnd =
-                  a.diff(b, "days") +
-                  "d " +
-                  a.diff(b, "hours") +
-                  "h " +
-                  a.diff(b, "minutes") +
-                  "m";
+                const dateEnd = a.diff(b, "minutes") + "m";
 
                 return {
                   startDate: fullStartDate,
@@ -913,7 +907,25 @@ export class ContractService {
             return this.StakingContract.methods
               .sessionDataOf(this.account.address, sessionId)
               .call()
-              .then((oneSession) => {
+              .then(async (oneSession) => {
+                let interest = 1;
+                await this.StakingContract.methods
+                  .calculateStakingInterest(
+                    sessionId,
+                    this.account.address,
+                    oneSession.shares
+                  )
+                  .call()
+                  .then((res) => {
+                    this.StakingContract.methods
+                      .getAmountOutAndPenalty(sessionId, res)
+                      .call()
+                      .then((result) => {
+                        console.log("interest", result);
+                        interest = result[0];
+                      });
+                  });
+
                 return this.SubBalanceContract.methods
                   .calculateSessionPayout(sessionId)
                   .call()
@@ -926,6 +938,7 @@ export class ContractService {
                       isActive: oneSession.sessionIsActive,
                       sessionId,
                       bigPayDay: new BigNumber(result[0]),
+                      interest,
                     };
                   });
               });
@@ -954,6 +967,15 @@ export class ContractService {
       })
       .then((res) => {
         return this.checkTransaction(res);
+      });
+  }
+
+  public getSessionStats(sessionId) {
+    return this.SubBalanceContract.methods
+      .getSessionStats(sessionId)
+      .call()
+      .then((res) => {
+        return res;
       });
   }
 
@@ -1097,26 +1119,32 @@ export class ContractService {
                         .multipliedBy(auctionData.token)
                         .div(auctionData.token);
 
-                      if (
-                        new BigNumber(auctionInfo.winnings)
-                          .div(Math.pow(10, this.tokensDecimals.HEX2X))
-                          .toString() === "NaN"
-                      ) {
-                        auctionInfo.winnings = 0 as any;
-                      } else {
-                        auctionInfo.winnings = new BigNumber(
-                          auctionInfo.winnings
-                        )
-                          .div(Math.pow(10, this.tokensDecimals.HEX2X))
-                          .toString() as any;
-                      }
+                      auctionInfo.winnings = ((Number(
+                        auctionInfo.eth_bet.toString()
+                      ) /
+                        Number(auctionInfo.eth_pool)) *
+                        Number(auctionInfo.axn_pool)) as any;
+
+                      // if (
+                      //   new BigNumber(auctionInfo.winnings)
+                      //     .div(Math.pow(10, this.tokensDecimals.HEX2X))
+                      //     .toString() === "NaN"
+                      // ) {
+                      //   auctionInfo.winnings = 0 as any;
+                      // } else {
+                      //   auctionInfo.winnings = new BigNumber(
+                      //     auctionInfo.winnings
+                      //   )
+                      //     .div(Math.pow(10, this.tokensDecimals.HEX2X))
+                      //     .toString() as any;
+                      // }
 
                       if (
                         accountBalance.ref !==
                         "0x0000000000000000000000000000000000000000"
                       ) {
                         auctionInfo.winnings = (Number(auctionInfo.winnings) *
-                          0.1) as any;
+                          1.1) as any;
                       }
 
                       return auctionInfo;

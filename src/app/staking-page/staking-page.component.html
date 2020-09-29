@@ -305,6 +305,7 @@
           <th>Shares</th>
           <th>BigPayDay</th>
           <th>Interest</th>
+          <th width="10">&nbsp;</th>
         </tr>
       </thead>
       <tbody>
@@ -330,7 +331,22 @@
                 | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:5
             }}&nbsp;AXN
           </td>
-          <td></td>
+          <td>{{ deposit.interest }}</td>
+          <td class="action-button">
+            <button
+              class="btn btn__transparent"
+              (click)="depositWithdraw(deposit)"
+              [ngClass]="{ progress: deposit.withdrawProgress }"
+              [disabled]="deposit.withdrawProgress"
+            >
+              <span class="lds-ellipsis" *ngIf="deposit.withdrawProgress">
+                <span class="lds-ellipsis-container">
+                  <span></span><span></span><span></span><span></span>
+                </span>
+              </span>
+              <span>&nbsp;&nbsp;WITHDRAW&nbsp;&nbsp;</span>
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>

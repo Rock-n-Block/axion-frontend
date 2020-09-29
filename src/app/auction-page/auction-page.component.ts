@@ -30,6 +30,7 @@ export class AuctionPageComponent implements OnDestroy {
   } = {};
 
   public referalLink = "";
+  public referalAddress = "";
   public addressCopy = false;
   public auctionPoolChecker = false;
 
@@ -49,6 +50,8 @@ export class AuctionPageComponent implements OnDestroy {
     private cookieService: CookieService,
     private ngZone: NgZone
   ) {
+    this.referalAddress = this.cookieService.get("ref");
+
     this.accountSubscribe = this.contractService
       .accountSubscribe()
       .subscribe((account: any) => {
@@ -85,9 +88,15 @@ export class AuctionPageComponent implements OnDestroy {
 
     this.contractService.getAuctionPool().then((info) => {
       this.poolInfo = info;
+      console.log("this.poolInfo", this.poolInfo);
       this.getAuctionPool();
       this.auctionPoolChecker = true;
     });
+  }
+
+  public resetRef() {
+    this.referalAddress = "";
+    this.cookieService.set("ref", "");
   }
 
   private getAuctionPool() {

@@ -1,3 +1,4 @@
+import { async } from "@angular/core/testing";
 import { Injectable } from "@angular/core";
 import Web3 from "web3";
 import { Observable } from "rxjs";
@@ -9,6 +10,9 @@ const networks = {
   production: "mainnet",
   testnet: "rinkeby",
 };
+
+const usedNetworkVersion = IS_PRODUCTION ? 1 : 4;
+const net = usedNetworkVersion === 1 ? "mainnet" : "rinkeby";
 
 @Injectable({
   providedIn: "root",
@@ -36,33 +40,33 @@ export class MetamaskService {
     return new this.Web3.eth.Contract(abi, address);
   }
 
-  public getFeeRate(to, amount) {
-    return new Promise((resolve) => {
-      return this.Web3.eth
-        .transfer(to, amount)
-        .estimateGas(
-          { from: "0x600462abbf45f79c271d10ad5d4C9F66b79f38c6" },
-          function (gasAmount) {
-            console.log(gasAmount);
-            resolve(gasAmount);
-          }
-        );
-    });
-    // return new Promise((resolve) => {
-    //   return this.Web3.eth
-    //     .estimateGas({
-    //       to: "0x600462abbf45f79c271d10ad5d4C9F66b79f38c6",
-    //       from: this.Web3.eth.coinbase,
-    //       value: amount,
-    //       // to: "0x110FA81Cc7141df15e5E5B5cE188e5a00E077aCE",
-    //       // data,
-    //     })
-    //     .then((res) => {
-    //       console.log("gas fee rate:", res);
-    //       resolve(res);
-    //     });
-    // });
-  }
+  // public getFeeRate(to, amount) {
+  //   return new Promise((resolve) => {
+  //     return this.Web3.eth
+  //       .transfer(to, amount)
+  //       .estimateGas(
+  //         { from: "0x600462abbf45f79c271d10ad5d4C9F66b79f38c6" },
+  //         function (gasAmount) {
+  //           console.log(gasAmount);
+  //           resolve(gasAmount);
+  //         }
+  //       );
+  //   });
+  // return new Promise((resolve) => {
+  //   return this.Web3.eth
+  //     .estimateGas({
+  //       to: "0x600462abbf45f79c271d10ad5d4C9F66b79f38c6",
+  //       from: this.Web3.eth.coinbase,
+  //       value: amount,
+  //       // to: "0x110FA81Cc7141df15e5E5B5cE188e5a00E077aCE",
+  //       // data,
+  //     })
+  //     .then((res) => {
+  //       console.log("gas fee rate:", res);
+  //       resolve(res);
+  //     });
+  // });
+  // }
 
   public getBalance(address) {
     return this.Web3.eth.getBalance(address);
@@ -73,11 +77,13 @@ export class MetamaskService {
   }
 
   public getAccounts(noEnable?) {
-    const usedNetworkVersion = IS_PRODUCTION ? 1 : 4;
-    const net = usedNetworkVersion === 1 ? "mainnet" : "rinkeby";
+    // const usedNetworkVersion = IS_PRODUCTION ? 1 : 4;
+    // const net = usedNetworkVersion === 1 ? "mainnet" : "rinkeby";
 
     // const isValidMetaMaskNetwork = (observer) => {
     //   const networkVersion = Number(this.metaMaskWeb3.networkVersion);
+
+    //   console.log(networkVersion);
 
     //   if (usedNetworkVersion !== networkVersion) {
     //     observer.error({
@@ -127,20 +133,24 @@ export class MetamaskService {
 
     return new Observable((observer) => {
       if (this.metaMaskWeb3 && this.metaMaskWeb3.isMetaMask) {
-        if (!isValidMetaMaskNetwork(observer)) {
-          return;
-        }
-
-        this.metaMaskWeb3.on("accountsChanged", (accounts) => {
-          if (isValidMetaMaskNetwork(observer)) {
-            if (accounts.length) {
-              onAuth(observer, accounts[0]);
-            } else {
-              onError(observer, {
-                code: 3,
-                msg: "Not authorized",
+        isValidMetaMaskNetwork(observer).then((res) => {
+          if (!res) {
+            return;
+          } else {
+            this.metaMaskWeb3.on("accountsChanged", (accounts) => {
+              isValidMetaMaskNetwork(observer).then((result) => {
+                if (result) {
+                  if (accounts.length) {
+                    onAuth(observer, accounts[0]);
+                  } else {
+                    onError(observer, {
+                      code: 3,
+                      msg: "Not authorized",
+                    });
+                  }
+                }
               });
-            }
+            });
           }
         });
 

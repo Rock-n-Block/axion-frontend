@@ -199,9 +199,41 @@
 
 .generated-link {
   display: flex;
+  flex-direction: column;
+  grid-gap: 20px;
   justify-content: center;
   align-items: center;
   padding: 15px;
+
+  &-user {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+  &-used {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &-button {
+      background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2));
+      border: 1px solid #37c8b4;
+      box-sizing: border-box;
+      border-radius: 6px;
+      font-size: 16px;
+      text-align: center;
+      text-transform: uppercase;
+      color: #ffffff;
+      padding: 10px 15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+  }
 
   &-btn {
     background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2));

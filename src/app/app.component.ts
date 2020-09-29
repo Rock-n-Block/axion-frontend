@@ -18,6 +18,7 @@ export class AppComponent implements OnInit {
   private accountSubscribe;
   public leftDaysInfo;
   public leftDaysInfoShow = false;
+  public leftDaysInfoChecker = false;
   public tableInfo;
   public runLineCountArray = new Array(1);
   @ViewChild("runString", { static: false }) runString;
@@ -51,8 +52,11 @@ export class AppComponent implements OnInit {
 
     this.contractService.getEndDateTime().then((result) => {
       this.leftDaysInfo = result;
-      this.leftDaysInfoShow = !this.leftDaysInfo.leftDays;
-
+      this.leftDaysInfoShow = this.leftDaysInfo.leftDays > 0;
+      if (this.leftDaysInfoShow) {
+        this.leftDaysInfoChecker = true;
+        this.checkDays();
+      }
       console.log(result, this.leftDaysInfoShow);
     });
     this.isNavbarOpen = false;
@@ -75,6 +79,23 @@ export class AppComponent implements OnInit {
         window.scrollTo(0, 0);
       }
     });
+  }
+
+  public checkDays() {
+    if (this.leftDaysInfoChecker) {
+      setTimeout(() => {
+        this.contractService.getEndDateTime().then((result) => {
+          this.leftDaysInfo = result;
+          this.leftDaysInfoShow = this.leftDaysInfo.leftDays > 0;
+          if (!this.leftDaysInfoShow) {
+            this.leftDaysInfoChecker = false;
+          } else {
+            this.checkDays();
+          }
+          console.log(result);
+        });
+      }, 5000);
+    }
   }
 
   public openNavbar() {

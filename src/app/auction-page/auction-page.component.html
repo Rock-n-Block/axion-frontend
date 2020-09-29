@@ -116,38 +116,47 @@
     </form>
   </div>
   <div class="content-block generated-link" *ngIf="account">
-    <button
-      (click)="generateRefLink()"
-      class="generated-link-btn"
-      *ngIf="referalLink === ''"
-    >
-      Generate referral link
-    </button>
-    <input
-      class="generated-link-text"
-      *ngIf="referalLink != ''"
-      (click)="$event.target.select()"
-      readonly
-      [value]="referalLink"
-    />
-    <button
-      *ngIf="referalLink != ''"
-      class="generated-link-btn-copy"
-      ngxClipboard
-      [cbContent]="referalLink"
-      (cbOnSuccess)="onCopied()"
-    >
-      Copy
-    </button>
-    <div
-      class="question"
-      mat-raised-button
-      matTooltip="Share your referral link and get extra 20% from your referrer, referrer gets extra 10% Axion"
-      matTooltipClass="question__tooltip"
-    ></div>
-    <span style="font-size: 10px; margin-left: 10px" *ngIf="addressCopy">
-      address copied
-    </span>
+    <div *ngIf="referalAddress" class="generated-link-used">
+      <span class="generated-link-used-text"
+        >Referrer address: {{ referalAddress }}</span
+      >
+      <span class="generated-link-used-button" (click)="resetRef()">reset</span>
+    </div>
+
+    <div class="generated-link-user">
+      <button
+        (click)="generateRefLink()"
+        class="generated-link-btn"
+        *ngIf="referalLink === ''"
+      >
+        Generate referral link
+      </button>
+      <input
+        class="generated-link-text"
+        *ngIf="referalLink != ''"
+        (click)="$event.target.select()"
+        readonly
+        [value]="referalLink"
+      />
+      <button
+        *ngIf="referalLink != ''"
+        class="generated-link-btn-copy"
+        ngxClipboard
+        [cbContent]="referalLink"
+        (cbOnSuccess)="onCopied()"
+      >
+        Copy
+      </button>
+      <div
+        class="question"
+        mat-raised-button
+        matTooltip="Share your referral link and get extra 20% from your referrer, referrer gets extra 10% Axion"
+        matTooltipClass="question__tooltip"
+      ></div>
+      <span style="font-size: 10px; margin-left: 10px" *ngIf="addressCopy">
+        address copied
+      </span>
+    </div>
   </div>
 
   <div class="content-block" *ngIf="account && auctionsList?.length">
@@ -242,7 +251,10 @@
             }}
           </td>
           <td [colSpan]="auction.winnings === 0 ? 2 : 1">
-            {{ auction.winnings }}
+            {{
+              auction.winnings
+                | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:4
+            }}
           </td>
           <td class="action-button" *ngIf="auction.winnings !== 0">
             <button
