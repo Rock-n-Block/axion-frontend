@@ -943,39 +943,53 @@ export class ContractService {
             return this.StakingContract.methods
               .sessionDataOf(this.account.address, sessionId)
               .call()
-              .then(async (oneSession) => {
-                let interest = 1;
-                await this.StakingContract.methods
-                  .calculateStakingInterest(
-                    sessionId,
-                    this.account.address,
-                    oneSession.shares
-                  )
-                  .call()
-                  .then((res) => {
-                    this.StakingContract.methods
-                      .getAmountOutAndPenalty(sessionId, res)
-                      .call()
-                      .then((result) => {
-                        console.log("interest", result);
-                        interest = result[0];
-                      });
-                  });
-
+              .then((oneSession) => {
                 return this.SubBalanceContract.methods
                   .calculateSessionPayout(sessionId)
                   .call()
                   .then((result) => {
-                    return {
-                      start: new Date(oneSession.start * 1000),
-                      end: new Date(oneSession.end * 1000),
-                      shares: new BigNumber(oneSession.shares),
-                      amount: new BigNumber(oneSession.amount),
-                      isActive: oneSession.sessionIsActive,
-                      sessionId,
-                      bigPayDay: new BigNumber(result[0]),
-                      interest,
-                    };
+                    let interest = 1;
+
+                    return this.StakingContract.methods
+                      .calculateStakingInterest(
+                        sessionId,
+                        this.account.address,
+                        oneSession.shares
+                      )
+                      .call()
+                      .then((res) => {
+                        return this.StakingContract.methods
+                          .getAmountOutAndPenalty(sessionId, res)
+                          .call()
+                          .then((resultInterest) => {
+                            console.log("interest", resultInterest);
+                            console.log(
+                              "interest",
+                              new BigNumber(resultInterest[1])
+                                .div(Math.pow(10, this.tokensDecimals.HEX2X))
+                                .toString()
+                            );
+
+                            interest = parseFloat(
+                              new BigNumber(resultInterest[1])
+                                .div(Math.pow(10, this.tokensDecimals.HEX2X))
+                                .toNumber()
+                                .toFixed(4)
+                                .toString()
+                            );
+
+                            return {
+                              start: new Date(oneSession.start * 1000),
+                              end: new Date(oneSession.end * 1000),
+                              shares: new BigNumber(oneSession.shares),
+                              amount: new BigNumber(oneSession.amount),
+                              isActive: oneSession.sessionIsActive,
+                              sessionId,
+                              bigPayDay: new BigNumber(result[0]),
+                              interest,
+                            };
+                          });
+                      });
                   });
               });
           }
