@@ -92,11 +92,11 @@
   <div
     class="left-days-info"
     #runString
-    [ngClass]="{ visibility: leftDaysInfo && leftDaysInfo?.leftDays > 0 }"
+    [ngClass]="{ visibility: leftDaysInfoShow }"
   >
     <span class="repeat-content" *ngFor="let item of runLineCountArray">
-      <b>{{ leftDaysInfo?.leftDays || 350 }}</b
-      >&nbsp;<b>days</b>
+      <b>{{ leftDaysInfo?.dateEnd || 350 }}</b
+      >&nbsp;<b></b>
       left for Claiming H2X
     </span>
   </div>

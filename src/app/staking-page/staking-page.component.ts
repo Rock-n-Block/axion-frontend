@@ -92,10 +92,6 @@ export class StakingPageComponent implements OnDestroy {
       .getStakingContractInfo()
       .then((data: StakingInfoInterface) => {
         this.stakingContractInfo = data;
-        // this.depositMaxDays =
-        //   stakingMaxDays - this.stakingContractInfo.StepsFromStart;
-        // this.depositMaxDays =
-        //   stakingMaxDays - this.stakingContractInfo.StepsFromStart;
         window.dispatchEvent(new Event("resize"));
       });
 
@@ -104,7 +100,7 @@ export class StakingPageComponent implements OnDestroy {
     this.contractService.geBPDInfo().then((result) => {
       console.log("BPD data", result);
       this.bpd = result;
-      this.tableInfo = true;
+      this.tableInfo = result[0].show;
     });
   }
 
@@ -115,8 +111,6 @@ export class StakingPageComponent implements OnDestroy {
         .then((data: StakingInfoInterface) => {
           this.stakingContractInfo = data;
           console.log(this.stakingContractInfo);
-          // this.depositMaxDays =
-          //   stakingMaxDays - this.stakingContractInfo.StepsFromStart;
           if (this.stakingInfoChecker) {
             this.getStakingInfo();
           }

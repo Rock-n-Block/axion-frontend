@@ -222,31 +222,29 @@
       </thead>
       <tbody class="text-left">
         <tr *ngFor="let auction of auctionsList">
-          <td>{{ auction.start | date: "dd.MM.yyyy" }}</td>
+          <td>{{ auction.start_date | date: "dd.MM.yyyy" }}</td>
           <td>
             {{
-              auction.token
+              auction.axn_pool
                 | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:4
             }}
           </td>
           <td>
             {{
-              auction.eth | bigNumberFormat: tokensDecimals["ETH"]:true:false:4
+              auction.eth_pool
+                | bigNumberFormat: tokensDecimals["ETH"]:true:false:4
             }}
           </td>
-          <td [colSpan]="auction.accountETHBalance.isZero() ? 2 : 1">
+          <td [colSpan]="auction.eth_bet.isZero() ? 2 : 1">
             {{
-              auction.accountTokenBalance
+              auction.eth_bet
                 | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:4
             }}
           </td>
-          <td [colSpan]="auction.accountETHBalance.isZero() ? 2 : 1">
-            {{
-              auction.accountTokenBalance
-                | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:4
-            }}
+          <td [colSpan]="auction.winnings === 0 ? 2 : 1">
+            {{ auction.winnings }}
           </td>
-          <td class="action-button" *ngIf="!auction.accountETHBalance.isZero()">
+          <td class="action-button" *ngIf="auction.winnings !== 0">
             <button
               class="btn btn__transparent"
               (click)="auctionWithdraw(auction)"

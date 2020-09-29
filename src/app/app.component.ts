@@ -17,6 +17,7 @@ export class AppComponent implements OnInit {
   public account;
   private accountSubscribe;
   public leftDaysInfo;
+  public leftDaysInfoShow = false;
   public tableInfo;
   public runLineCountArray = new Array(1);
   @ViewChild("runString", { static: false }) runString;
@@ -50,6 +51,9 @@ export class AppComponent implements OnInit {
 
     this.contractService.getEndDateTime().then((result) => {
       this.leftDaysInfo = result;
+      this.leftDaysInfoShow = !!this.leftDaysInfo.leftDays;
+
+      console.log(result, this.leftDaysInfoShow);
     });
     this.isNavbarOpen = false;
 

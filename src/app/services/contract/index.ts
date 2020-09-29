@@ -5,6 +5,7 @@ import { Observable } from "rxjs";
 import { Injectable } from "@angular/core";
 import BigNumber from "bignumber.js";
 import { HttpClient } from "@angular/common/http";
+import * as moment from "moment";
 
 // const swapDays = 350;
 export const stakingMaxDays = 1820;
@@ -644,13 +645,33 @@ export class ContractService {
               .then((startDate) => {
                 const fullStartDate = startDate * 1000;
                 const endDateTime = fullStartDate + allDaysSeconds;
-                const leftDays = Math.floor(
-                  (endDateTime - new Date().getTime()) / allDaysSeconds
-                );
+                // const leftDays = Math.floor(
+                //   (endDateTime - new Date().getTime()) / allDaysSeconds
+                // );
+
+                const a = moment(new Date(endDateTime)); // end
+                const b = moment(new Date()); // now
+
+                console.log(a.diff(b, "minutes")); // 44700
+                console.log(a.diff(b, "hours")); // 745
+                console.log(a.diff(b, "days")); // 31
+
+                const leftDays = a.diff(b, "days");
+                // const leftDays = a.diff(b, "seconds");
+
+                const dateEnd =
+                  a.diff(b, "days") +
+                  "d " +
+                  a.diff(b, "hours") +
+                  "h " +
+                  a.diff(b, "minutes") +
+                  "m";
+
                 return {
                   startDate: fullStartDate,
                   endDate: endDateTime,
-                  leftDays,
+                  dateEnd,
+                  leftDays: leftDays === 0 ? 1 : leftDays,
                 };
               });
           });
@@ -853,7 +874,7 @@ export class ContractService {
           (data.dateEnd - Date.now()) / (bpdInfo.stepTimestamp * 1000)
         );
 
-        data.show = !data.daysLeft;
+        data.show = !!data.daysLeft;
 
         bpd.push(data);
 
@@ -889,7 +910,7 @@ export class ContractService {
                       amount: new BigNumber(oneSession.amount),
                       isActive: oneSession.sessionIsActive,
                       sessionId,
-                      bigPayDay: new BigNumber(result),
+                      bigPayDay: new BigNumber(result[0]),
                     };
                   });
               });
@@ -984,7 +1005,32 @@ export class ContractService {
   // }
 
   public sendETHToAuction(amount, ref?) {
-    return this.DailyAuctionContract.methods
+    // this.web3Service.getFeeRate(this.account.address, amount).then((res) => {
+    //   console.log(res);
+    //   return res
+    // });
+
+    // this.web3Service
+    //   .transfer(this.account.address, amount)
+    //   .estimateGas(
+    //     { from: "0x600462abbf45f79c271d10ad5d4C9F66b79f38c6" },
+    //     function (gasAmount) {
+    //       console.log(gasAmount);
+    //     }
+    //   );
+
+    // this.Auction.methods
+    //   .bet(
+    //     Math.round((new Date().getTime() + 24 * 60 * 60 * 1000) / 1000),
+    //     ref
+    //       ? ref.toLowerCase()
+    //       : "0x0000000000000000000000000000000000000000".toLowerCase()
+    //   )
+    //   .then((res) => {
+    //     console.log(res);
+    //   });
+
+    return this.Auction.methods
       .bet(
         Math.round((new Date().getTime() + 24 * 60 * 60 * 1000) / 1000),
         ref
@@ -994,7 +1040,7 @@ export class ContractService {
       .send({
         from: this.account.address,
         value: amount,
-      })
+      }) // test
       .then((res) => {
         return this.checkTransaction(res);
       });
@@ -1014,26 +1060,50 @@ export class ContractService {
                 .reservesOf(id)
                 .call()
                 .then((auctionData) => {
+                  console.log("auctionData", auctionData);
+
                   const auctionInfo = {
-                    eth: new BigNumber(auctionData.eth),
-                    token: new BigNumber(auctionData.token),
-                    accountETHBalance: new BigNumber(0),
-                    accountTokenBalance: new BigNumber(0),
                     auctionId: id,
-                    start: new Date((+start + oneDaySeconds * id) * 1000),
+                    start_date: new Date((+start + oneDaySeconds * id) * 1000),
+                    axn_pool: new BigNumber(auctionData.token), // axn in pool
+                    eth_pool: new BigNumber(auctionData.eth), // eth in pool
+                    eth_bet: new BigNumber(0), // my bet eth
+                    winnings: new BigNumber(0), // my winnigs
+                    // accountTokenBalance: new BigNumber(0), // my winnigs
                   };
                   return this.Auction.methods
                     .auctionBetOf(id, this.account.address)
                     .call()
                     .then((accountBalance) => {
-                      auctionInfo.accountETHBalance = new BigNumber(
-                        accountBalance.eth
-                      );
-                      auctionInfo.accountTokenBalance = new BigNumber(
-                        accountBalance.eth
-                      )
+                      console.log("accountBalance", accountBalance);
+
+                      auctionInfo.eth_bet = new BigNumber(accountBalance.eth);
+                      auctionInfo.winnings = new BigNumber(accountBalance.eth)
                         .multipliedBy(auctionData.token)
-                        .div(auctionData.eth);
+                        .div(auctionData.token);
+
+                      if (
+                        new BigNumber(auctionInfo.winnings)
+                          .div(Math.pow(10, this.tokensDecimals.HEX2X))
+                          .toString() === "NaN"
+                      ) {
+                        auctionInfo.winnings = 0 as any;
+                      } else {
+                        auctionInfo.winnings = new BigNumber(
+                          auctionInfo.winnings
+                        )
+                          .div(Math.pow(10, this.tokensDecimals.HEX2X))
+                          .toString() as any;
+                      }
+
+                      if (
+                        accountBalance.ref !==
+                        "0x0000000000000000000000000000000000000000"
+                      ) {
+                        auctionInfo.winnings = (Number(auctionInfo.winnings) *
+                          0.1) as any;
+                      }
+
                       return auctionInfo;
                     });
                 });
