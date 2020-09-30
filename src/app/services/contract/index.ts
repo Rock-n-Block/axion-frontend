@@ -438,85 +438,6 @@ export class ContractService {
       });
   }
 
-  // public getContractsInfo() {
-  //   const promises = [
-  //     this.DailyAuctionContract.methods
-  //       .calculateStepsFromStart()
-  //       .call()
-  //       .then((auctionId) => {
-  //         return this.DailyAuctionContract.methods
-  //           .reservesOf(auctionId)
-  //           .call()
-  //           .then((res) => {
-  //             return {
-  //               key: "DailyAuction",
-  //               value: new BigNumber(res[1])
-  //                 .div(Math.pow(10, this.tokensDecimals.HEX2X))
-  //                 .toString(),
-  //             };
-  //           });
-  //       }),
-  //     this.WeeklyAuctionContract.methods
-  //       .calculateStepsFromStart()
-  //       .call()
-  //       .then((auctionId) => {
-  //         return this.WeeklyAuctionContract.methods
-  //           .reservesOf(auctionId)
-  //           .call()
-  //           .then((res) => {
-  //             return {
-  //               key: "WeeklyAuction",
-  //               value: new BigNumber(res[1])
-  //                 .div(Math.pow(10, this.tokensDecimals.HEX2X))
-  //                 .toString(),
-  //             };
-  //           });
-  //       }),
-  //     this.HEX2XContract.methods
-  //       .totalSupply()
-  //       .call()
-  //       .then((res) => {
-  //         return {
-  //           key: "totalSupply",
-  //           value: new BigNumber(res)
-  //             .div(Math.pow(10, this.tokensDecimals.HEX2X))
-  //             .toString(),
-  //         };
-  //       }),
-  //     this.StakingContract.methods
-  //       .sharesTotalSupply()
-  //       .call()
-  //       .then((res) => {
-  //         return {
-  //           key: "staking",
-  //           value: new BigNumber(res)
-  //             .div(Math.pow(10, this.tokensDecimals.HEX2X))
-  //             .toString(),
-  //         };
-  //       }),
-  //     this.BPDContract.methods
-  //       .getPoolYearAmounts()
-  //       .call()
-  //       .then((res) => {
-  //         return {
-  //           key: "BPDInfo",
-  //           value: res.map((oneBigPayDay) => {
-  //             return new BigNumber(oneBigPayDay)
-  //               .div(Math.pow(10, this.tokensDecimals.HEX2X))
-  //               .toString();
-  //           }),
-  //         };
-  //       }),
-  //   ];
-  //   return Promise.all(promises).then((results) => {
-  //     const info = {};
-  //     results.forEach((params) => {
-  //       info[params.key] = params.value;
-  //     });
-  //     return info;
-  //   });
-  // }
-
   public getContractsInfo() {
     const promises = [
       this.Auction.methods
@@ -1034,36 +955,6 @@ export class ContractService {
         });
       });
   }
-  // public getAuctionInfo() {
-  //   const retData = {} as any;
-  //   return this.DailyAuctionContract.methods
-  //     .calculateStepsFromStart()
-  //     .call()
-  //     .then((auctionId) => {
-  //       const promises = [
-  //         this.DailyAuctionContract.methods
-  //           .reservesOf(auctionId)
-  //           .call()
-  //           .then((result) => {
-  //             retData.ethPool = result[0];
-  //             retData.axnPool = result[1];
-  //           }),
-  //       ];
-  //       if (this.account) {
-  //         promises.push(
-  //           this.Auction.methods
-  //             .auctionBetOf(auctionId, this.account.address)
-  //             .call()
-  //             .then((result) => {
-  //               retData.currentUserBalance = result;
-  //             })
-  //         );
-  //       }
-  //       return Promise.all(promises).then(() => {
-  //         return retData;
-  //       });
-  //     });
-  // }
 
   public async sendMaxETHToAuction(amount, ref?) {
     const date = Math.round(
@@ -1148,8 +1039,6 @@ export class ContractService {
                 .reservesOf(id)
                 .call()
                 .then((auctionData) => {
-                  console.log("auction data", auctionData);
-
                   const auctionInfo = {
                     auctionId: id,
                     start_date: new Date((+start + oneDaySeconds * id) * 1000),
@@ -1193,49 +1082,6 @@ export class ContractService {
           });
       });
   }
-
-  // public getUserAuctions() {
-  //   return this.DailyAuctionContract.methods
-  //     .start()
-  //     .call()
-  //     .then((start) => {
-  //       return this.DailyAuctionContract.methods
-  //         .auctionsOf_(this.account.address)
-  //         .call()
-  //         .then((result) => {
-  //           const auctionsPromises = result.map((id) => {
-  //             return this.DailyAuctionContract.methods
-  //               .reservesOf(id)
-  //               .call()
-  //               .then((auctionData) => {
-  //                 const auctionInfo = {
-  //                   eth: new BigNumber(auctionData.eth),
-  //                   token: new BigNumber(auctionData.token),
-  //                   accountETHBalance: new BigNumber(0),
-  //                   accountTokenBalance: new BigNumber(0),
-  //                   auctionId: id,
-  //                   start: new Date((+start + oneDaySeconds * id) * 1000),
-  //                 };
-  //                 return this.Auction.methods
-  //                   .auctionBetOf(id, this.account.address)
-  //                   .call()
-  //                   .then((accountBalance) => {
-  //                     auctionInfo.accountETHBalance = new BigNumber(
-  //                       accountBalance.eth
-  //                     );
-  //                     auctionInfo.accountTokenBalance = new BigNumber(
-  //                       accountBalance.eth
-  //                     )
-  //                       .multipliedBy(auctionData.token)
-  //                       .div(auctionData.eth);
-  //                     return auctionInfo;
-  //                   });
-  //               });
-  //           });
-  //           return Promise.all(auctionsPromises);
-  //         });
-  //     });
-  // }
 
   public withdrawFromAuction(auctionId) {
     return this.Auction.methods

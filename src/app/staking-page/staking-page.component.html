@@ -142,7 +142,7 @@
     </div>
   </div>
 
-  <div class="content-block" *ngIf="tableInfo && bpd[4].show">
+  <div class="content-block" *ngIf="tableInfo && bpd[4].show && account">
     <div style="margin: 30px 0" class="content-block_title text-center">
       <span>Big Pay Day</span>
       <div
@@ -209,6 +209,17 @@
             <span class="sort-indicator"></span>
           </th>
           <th
+            (click)="sortDeposits('opened', 'progress')"
+            class="as-sort"
+            [ngClass]="{
+              active: currentSort['opened']['field'] === 'progress',
+              ask: currentSort['opened']['ask']
+            }"
+          >
+            Progress
+            <span class="sort-indicator"></span>
+          </th>
+          <th
             (click)="sortDeposits('opened', 'principal')"
             class="as-sort"
             [ngClass]="{
@@ -250,6 +261,7 @@
         <tr *ngFor="let deposit of depositsLists.opened">
           <td>{{ deposit.start | date: "dd.MM.yyyy" }}</td>
           <td>{{ deposit.end | date: "dd.MM.yyyy" }}</td>
+          <td>{{ getProgress(deposit) }}%</td>
           <td>
             {{
               deposit.amount
@@ -301,7 +313,6 @@
         <tr>
           <th>Start date</th>
           <th>End date</th>
-          <th>Progress</th>
           <th>Principal</th>
           <th>Shares</th>
           <th>BigPayDay</th>
@@ -312,7 +323,6 @@
         <tr *ngFor="let deposit of depositsLists.closed">
           <td>{{ deposit.start | date: "dd.MM.yyyy" }}</td>
           <td>{{ deposit.end | date: "dd.MM.yyyy" }}</td>
-          <td>{{ getProgress(deposit) }}%</td>
           <td>
             {{
               deposit.amount
