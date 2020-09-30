@@ -54,10 +54,6 @@ export class ClaimPageComponent implements OnDestroy {
               this.readSwapNativeToken();
               this.contractService.swapTokenBalanceOf().then((balance) => {
                 this.swapContractBalance = balance;
-                console.log(
-                  "this.swapContractBalance",
-                  this.swapContractBalance
-                );
                 this.readPenalty();
                 this.updateSwapBalanceProgress = false;
                 window.dispatchEvent(new Event("resize"));
@@ -72,19 +68,17 @@ export class ClaimPageComponent implements OnDestroy {
   private readSwapNativeToken() {
     this.contractService.readSwapNativeToken().then((result) => {
       this.swapNativeTokenInfo = result;
-      console.log("this.swapNativeTokenInfo", this.swapNativeTokenInfo);
+      console.log("swap native token info", this.swapNativeTokenInfo);
       window.dispatchEvent(new Event("resize"));
     });
   }
 
   private readPenalty() {
-    console.log("this.clacPenalty before", this.clacPenalty);
-
     this.contractService
       .calculatePenalty(this.swapContractBalance.value)
       .then((res) => {
         this.clacPenalty = res as number;
-        console.log("this.clacPenalty after", this.clacPenalty);
+        console.log("claculate penalty", this.clacPenalty);
       });
   }
 
@@ -117,10 +111,6 @@ export class ClaimPageComponent implements OnDestroy {
       });
   }
 
-  public onChangeAmount() {
-    console.log(this.formsData.swapAmount);
-  }
-
   public burnH2T() {
     this.burnTokensProgress = true;
     this.contractService
@@ -135,7 +125,7 @@ export class ClaimPageComponent implements OnDestroy {
           this.burnTokensProgress = false;
         });
 
-        console.log("this.swapContractBalance", this.swapContractBalance);
+        console.log("swap contract balance", this.swapContractBalance);
       })
       .catch(() => {
         this.burnTokensProgress = false;

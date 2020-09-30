@@ -606,35 +606,6 @@ export class ContractService {
                 (Number(data.eth) / Number(data.axn)).toFixed(8).toString()
               );
 
-              const eth = new BigNumber(res[0])
-                .div(Math.pow(10, this.tokensDecimals.ETH))
-                .toFixed(8)
-                .toString();
-
-              const axn = new BigNumber(res[1])
-                .div(Math.pow(10, this.tokensDecimals.HEX2X))
-                .toFixed(8)
-                .toString();
-
-              console.log(eth, axn);
-
-              console.log(
-                "data.axnToEth",
-                Number(
-                  new BigNumber(res[0])
-                    .div(Math.pow(10, this.tokensDecimals.ETH))
-                    .toFixed(8)
-                    .toString()
-                ) /
-                  Number(
-                    new BigNumber(res[1])
-                      .div(Math.pow(10, this.tokensDecimals.HEX2X))
-                      .toFixed(8)
-                      .toString()
-                  )
-              );
-              console.log("data.axnToEth", data.axnToEth);
-
               data.eth = parseFloat(data.eth);
               data.axn = parseFloat(data.axn);
 
@@ -647,55 +618,15 @@ export class ContractService {
                 ])
                 .call()
                 .then((value) => {
-                  console.log(value);
-
-                  const eth = new BigNumber(value[1])
-                    .div(Math.pow(10, this.tokensDecimals.ETH))
-                    .toString();
-
+                  console.log("uniswap value request", value);
                   const axn = new BigNumber(value[1])
                     .div(Math.pow(10, this.tokensDecimals.HEX2X))
                     .toString();
 
-                  console.log("eth", eth, "axn", axn);
-
-                  // data.uniToEth = (Number(axn) / Number(eth)).toFixed(8);
                   data.uniToEth = parseFloat(Number(axn).toFixed(8).toString());
-
-                  // console.log(
-                  //   "uni base",
-                  //   Number(axn) / Number(eth),
-                  //   "uniToEth",
-                  //   data.uniToEth
-                  // );
 
                   resolve(data);
                 });
-              // this.UniswapV2Router02.methods
-              //   .getReserves()
-              //   .call()
-              //   .then((value) => {
-              //     const eth = new BigNumber(value[1])
-              //       .div(Math.pow(10, this.tokensDecimals.ETH))
-              //       .toString();
-
-              //     const axn = new BigNumber(value[0])
-              //       .div(Math.pow(10, this.tokensDecimals.HEX2X))
-              //       .toString();
-
-              //     console.log("eth", eth, "axn", axn);
-
-              //     data.uniToEth = (Number(axn) / Number(eth)).toFixed(8);
-
-              //     console.log(
-              //       "uni base",
-              //       Number(axn) / Number(eth),
-              //       "uniToEth",
-              //       data.uniToEth
-              //     );
-
-              //     resolve(data);
-              //   });
             });
         });
     });
@@ -721,23 +652,18 @@ export class ContractService {
                 //   (endDateTime - new Date().getTime()) / allDaysSeconds
                 // );
 
-                const a = moment(new Date(endDateTime)); // end
-                const b = moment(new Date()); // now
-
-                // console.log(a.diff(b, "minutes")); // 44700
-                // console.log(a.diff(b, "hours")); // 745
-                // console.log(a.diff(b, "days")); // 31
+                const a = moment(new Date(endDateTime));
+                const b = moment(new Date());
 
                 // const leftDays = a.diff(b, "days");
                 const leftDays = a.diff(b, "seconds");
-
                 const dateEnd = a.diff(b, "minutes") + "m";
 
                 return {
                   startDate: fullStartDate,
                   endDate: endDateTime,
                   dateEnd,
-                  leftDays, //: leftDays === 0 ? 1 : leftDays,
+                  leftDays,
                 };
               });
           });
@@ -755,17 +681,15 @@ export class ContractService {
   }
 
   public calculatePenalty(amount) {
-    console.log(amount);
+    console.log("send panalty amount", amount);
 
-    // return new Promise((resolve) => {
     return this.NativeSwapContract.methods
       .calculateDeltaPenalty(amount)
       .call()
       .then((res) => {
-        console.log(res);
+        console.log("penalty value from request", res);
         return res;
       });
-    // });
   }
 
   /* Staking */
@@ -929,6 +853,7 @@ export class ContractService {
           dateEnd: 0,
           daysLeft: "0",
           show: true,
+          seconds: 0,
         };
 
         data.value = value;
@@ -943,16 +868,12 @@ export class ContractService {
           (data.dateEnd - Date.now()) / (bpdInfo.stepTimestamp * 1000)
         ).toString();
 
-        const a = moment(new Date(data.dateEnd)); // end
-        const b = moment(new Date()); // now
-
-        console.log(a.diff(b, "seconds")); // 44700
-        // console.log(a.diff(b, "minutes")); // 44700
-        // console.log(a.diff(b, "hours")); // 745
-        // console.log(a.diff(b, "days")); // 31
+        const a = moment(new Date(data.dateEnd));
+        const b = moment(new Date());
 
         // data.daysLeft = a.diff(b, "days");
         data.daysLeft = a.diff(b, "minutes") + " Minutes left";
+        data.seconds = a.diff(b, "seconds");
 
         data.show = a.diff(b, "seconds") < 0 ? false : true;
 
@@ -997,9 +918,18 @@ export class ContractService {
                           .getAmountOutAndPenalty(sessionId, res)
                           .call()
                           .then((resultInterest) => {
-                            console.log("interest", resultInterest);
                             console.log(
-                              "interest",
+                              "interest from request",
+                              resultInterest
+                            );
+                            console.log(
+                              "interest[0] with bignumber",
+                              new BigNumber(resultInterest[0])
+                                .div(Math.pow(10, this.tokensDecimals.HEX2X))
+                                .toString()
+                            );
+                            console.log(
+                              "interest[1] with bignumber",
                               new BigNumber(resultInterest[1])
                                 .div(Math.pow(10, this.tokensDecimals.HEX2X))
                                 .toString()
@@ -1012,8 +942,6 @@ export class ContractService {
                                 .toFixed(4)
                                 .toString()
                             );
-
-                            console.log("oneSession", oneSession);
 
                             return {
                               start: new Date(oneSession.start * 1000),
@@ -1220,15 +1148,7 @@ export class ContractService {
                 .reservesOf(id)
                 .call()
                 .then((auctionData) => {
-                  console.log("auctionData", auctionData);
-                  console.log(
-                    "auctionData token",
-                    new BigNumber(auctionData.token)
-                  );
-                  console.log(
-                    "auctionData eth",
-                    new BigNumber(auctionData.eth)
-                  );
+                  console.log("auction data", auctionData);
 
                   const auctionInfo = {
                     auctionId: id,
@@ -1246,8 +1166,6 @@ export class ContractService {
                     .auctionBetOf(id, this.account.address)
                     .call()
                     .then((accountBalance) => {
-                      console.log("accountBalance", accountBalance);
-
                       auctionInfo.eth_bet = new BigNumber(accountBalance.eth);
                       auctionInfo.winnings = new BigNumber(accountBalance.eth)
                         .multipliedBy(auctionData.token)
@@ -1258,20 +1176,6 @@ export class ContractService {
                       ) /
                         Number(auctionInfo.eth_pool)) *
                         Number(auctionInfo.axn_pool)) as any;
-
-                      // if (
-                      //   new BigNumber(auctionInfo.winnings)
-                      //     .div(Math.pow(10, this.tokensDecimals.HEX2X))
-                      //     .toString() === "NaN"
-                      // ) {
-                      //   auctionInfo.winnings = 0 as any;
-                      // } else {
-                      //   auctionInfo.winnings = new BigNumber(
-                      //     auctionInfo.winnings
-                      //   )
-                      //     .div(Math.pow(10, this.tokensDecimals.HEX2X))
-                      //     .toString() as any;
-                      // }
 
                       if (
                         accountBalance.ref !==

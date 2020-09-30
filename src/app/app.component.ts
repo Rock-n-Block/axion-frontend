@@ -5,6 +5,7 @@ import { ContractService } from "./services/contract";
 import { MatDialog } from "@angular/material/dialog";
 import { ActivationStart, NavigationStart, Router } from "@angular/router";
 import { CookieService } from "ngx-cookie-service";
+import { chackerDays } from "./params";
 
 @Component({
   selector: "app-root",
@@ -59,7 +60,7 @@ export class AppComponent implements OnInit {
           this.checkDays();
         }
       }
-      console.log(result, this.leftDaysInfoShow);
+      console.log("days left info", result);
     });
 
     this.isNavbarOpen = false;
@@ -95,9 +96,9 @@ export class AppComponent implements OnInit {
           } else {
             this.checkDays();
           }
-          console.log(result);
+          console.log("days left info", result);
         });
-      }, 5000);
+      }, chackerDays);
     }
   }
 

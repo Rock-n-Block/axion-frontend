@@ -66,34 +66,6 @@ export class MetamaskService {
       });
   }
 
-  // public getFeeRate(to, amount) {
-  //   return new Promise((resolve) => {
-  //     return this.Web3.eth
-  //       .transfer(to, amount)
-  //       .estimateGas(
-  //         { from: "0x600462abbf45f79c271d10ad5d4C9F66b79f38c6" },
-  //         function (gasAmount) {
-  //           console.log(gasAmount);
-  //           resolve(gasAmount);
-  //         }
-  //       );
-  //   });
-  // return new Promise((resolve) => {
-  //   return this.Web3.eth
-  //     .estimateGas({
-  //       to: "0x600462abbf45f79c271d10ad5d4C9F66b79f38c6",
-  //       from: this.Web3.eth.coinbase,
-  //       value: amount,
-  //       // to: "0x110FA81Cc7141df15e5E5B5cE188e5a00E077aCE",
-  //       // data,
-  //     })
-  //     .then((res) => {
-  //       console.log("gas fee rate:", res);
-  //       resolve(res);
-  //     });
-  // });
-  // }
-
   public getBalance(address) {
     return this.Web3.eth.getBalance(address);
   }
@@ -108,8 +80,6 @@ export class MetamaskService {
 
     // const isValidMetaMaskNetwork = (observer) => {
     //   const networkVersion = Number(this.metaMaskWeb3.networkVersion);
-
-    //   console.log(networkVersion);
 
     //   if (usedNetworkVersion !== networkVersion) {
     //     observer.error({

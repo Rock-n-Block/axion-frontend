@@ -7,6 +7,7 @@ import {
   TemplateRef,
 } from "@angular/core";
 import { CookieService } from "ngx-cookie-service";
+import { chackerAuctionPool } from "../params";
 import { ContractService } from "../services/contract";
 
 @Component({
@@ -71,12 +72,12 @@ export class AuctionPageComponent implements OnDestroy {
               this.contractService.getUserAuctions().then((auctions) => {
                 this.auctionsList = auctions;
                 this.referalLink = "";
-                console.log("user auction", this.auctionsList);
+                console.log("user auction list", this.auctionsList);
                 window.dispatchEvent(new Event("resize"));
               });
               this.contractService.getAuctionPool().then((info) => {
                 this.poolInfo = info;
-                console.log("this.poolInfo", this.poolInfo);
+                console.log("pool info", this.poolInfo);
                 this.getAuctionPool();
                 this.auctionPoolChecker = true;
               });
@@ -108,13 +109,11 @@ export class AuctionPageComponent implements OnDestroy {
           this.getAuctionPool();
         }
       });
-    }, 5000);
+    }, chackerAuctionPool);
   }
 
   public sendETHToAuction() {
     this.sendAuctionProgress = true;
-
-    console.log(this.formsData.auctionAmount, this.account.balances.ETH.wei);
 
     if (this.formsData.auctionAmount === this.account.balances.ETH.wei) {
       this.contractService

@@ -7,6 +7,7 @@ import {
 } from "@angular/core";
 import { ContractService, stakingMaxDays } from "../services/contract";
 import BigNumber from "bignumber.js";
+import { chackerBPD, chackerStakingInfo } from "../params";
 
 interface StakingInfoInterface {
   ShareRate: number;
@@ -48,6 +49,7 @@ export class StakingPageComponent implements OnDestroy {
   };
 
   private stakingInfoChecker = false;
+  private bpdInfoChecker = false;
 
   public currentSort: {
     opened: any;
@@ -75,7 +77,7 @@ export class StakingPageComponent implements OnDestroy {
               this.contractService.getAccountStakes().then((res) => {
                 this.depositsLists = res;
 
-                console.log("this.depositsLists", this.depositsLists);
+                console.log("user deposits lists", this.depositsLists);
 
                 this.applySort("opened");
                 this.applySort("closed");
@@ -91,9 +93,11 @@ export class StakingPageComponent implements OnDestroy {
                   window.dispatchEvent(new Event("resize"));
                 });
               this.contractService.geBPDInfo().then((result) => {
-                console.log("BPD data", result);
                 this.bpd = result;
+                console.log("BPD data", this.bpd);
                 this.tableInfo = result[4].show;
+                this.getBPDInfo();
+                this.bpdInfoChecker = true;
               });
             }
           });
@@ -109,12 +113,26 @@ export class StakingPageComponent implements OnDestroy {
         .getStakingContractInfo()
         .then((data: StakingInfoInterface) => {
           this.stakingContractInfo = data;
-          console.log(this.stakingContractInfo);
-          if (this.stakingInfoChecker) {
+          console.log("staking contract info", this.stakingContractInfo);
+          if (this.stakingInfoChecker && this.account) {
             this.getStakingInfo();
           }
         });
-    }, 5000);
+    }, chackerStakingInfo);
+  }
+
+  public getBPDInfo() {
+    setTimeout(() => {
+      this.contractService.geBPDInfo().then((result) => {
+        console.log("BPD data", result);
+        this.bpd = result;
+        this.tableInfo = result[4].show;
+        this.getBPDInfo();
+        if (this.bpdInfoChecker && this.account) {
+          this.getStakingInfo();
+        }
+      });
+    }, chackerBPD);
   }
 
   public openDeposit() {
@@ -256,15 +274,15 @@ export class StakingPageComponent implements OnDestroy {
     this.contractService
       .unstake(deposit.sessionId)
       .then((res) => {
-        console.log("unstake step 1", res);
+        console.log("deposit unstake step 1", res);
         this.contractService.getSessionStats(deposit.sessionId).then((res2) => {
-          console.log("unstake step 2", res2);
+          console.log("deposit unstake step 2", res2);
 
           if (res2 > 0) {
             this.contractService
               .stakingWithdraw(deposit.sessionId)
               .then((res3) => {
-                console.log("unstake step 3", res3);
+                console.log("deposit unstake step 3", res3);
                 this.contractService.updateHEX2XBalance(true);
                 deposit.withdrawProgress = false;
               });
@@ -278,6 +296,7 @@ export class StakingPageComponent implements OnDestroy {
 
   ngOnDestroy() {
     this.stakingInfoChecker = false;
+    this.bpdInfoChecker = false;
     this.accountSubscribe.unsubscribe();
   }
 }
