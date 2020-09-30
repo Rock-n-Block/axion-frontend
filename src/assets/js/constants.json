@@ -248,7 +248,7 @@
       "ADDRESS": "0xc778417E063141139Fce010982780140Aa0cD5Ab"
     },
     "HEX2X": {
-      "ADDRESS": "0x8697578FB72e5d8B0395C257CEfc68A6B5Ea12EB",
+      "ADDRESS": "0x45C1Bf19Ff5d344c0A86F76d119bB1c7C6bd17E4",
       "ABI": [
         {
           "inputs": [
@@ -905,7 +905,7 @@
       ]
     },
     "NativeSwap": {
-      "ADDRESS": "0xB1642490BF4510465BEAeb655718720fE75dD9F9",
+      "ADDRESS": "0x1592C6b0e9dC793Ca78ce589Eb153d7aeCcC7aa0",
       "ABI": [
         {
           "inputs": [],
@@ -1051,7 +1051,7 @@
       ]
     },
     "DailyAuction": {
-      "ADDRESS": "0x63dad8c2E41E50D8BaEB8D957843A3ed997A5d45",
+      "ADDRESS": "0xdfA7D2FF1F0AA9E074761d4De93f3d5Bd91433e5",
       "ABI": [
         {
           "inputs": [],
@@ -1485,7 +1485,7 @@
       ]
     },
     "WeeklyAuction": {
-      "ADDRESS": "0x63dad8c2E41E50D8BaEB8D957843A3ed997A5d45",
+      "ADDRESS": "0xdfA7D2FF1F0AA9E074761d4De93f3d5Bd91433e5",
       "ABI": [
         {
           "inputs": [],
@@ -1919,7 +1919,7 @@
       ]
     },
     "Staking": {
-      "ADDRESS": "0xF7bd7aeDd596628AcAcDEEd3648B70040c63e5d8",
+      "ADDRESS": "0x3cdB1E312d41fDa38e7312140B8cD4acdE002497",
       "ABI": [
         {
           "inputs": [],
@@ -2390,7 +2390,7 @@
       ]
     },
     "BPD": {
-      "ADDRESS": "0x60940e22e42A6A6354af41601B6eAFC0591A7ecd",
+      "ADDRESS": "0xA896Fb58a3e0ACf475248F2EC8CDbF86b52765Df",
       "ABI": [
         {
           "inputs": [
@@ -2717,7 +2717,7 @@
       ]
     },
     "ForeignSwap": {
-      "ADDRESS": "0x33B0B5a24d156EdC4A5AB8963464B0c7835a2197",
+      "ADDRESS": "0x7a118eA569C8e8fdbf37297AfaB459C2f302460f",
       "ABI": [
         {
           "inputs": [
@@ -3171,7 +3171,7 @@
       ]
     },
     "SubBalance": {
-      "ADDRESS": "0x1570359bA13215B7510C813c5D43B5f353bCc440",
+      "ADDRESS": "0x7969774fa46CAd490F2e2c69135F6Ad82Ab58b23",
       "ABI": [
         {
           "inputs": [
@@ -4377,7 +4377,7 @@
       ]
     },
     "Auction": {
-      "ADDRESS": "0xB9800ca16A29D6EEfecf28Ed5525E59e583081E1",
+      "ADDRESS": "0xdfA7D2FF1F0AA9E074761d4De93f3d5Bd91433e5",
       "ABI": [
         {
           "inputs": [],
