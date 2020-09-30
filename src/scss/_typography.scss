@@ -47,6 +47,12 @@
     }
   }
 
+  &__hex2t {
+    @include before-img(block, 28px, 24px, r) {
+      background-image: url("assets/images/icons/hex2t-icon.jpeg");
+    }
+  }
+
   &__eth-purple {
     @include before-img(block, 12px, 19px, r) {
       background-image: url("assets/images/icons/eth-purple-icon.svg");
