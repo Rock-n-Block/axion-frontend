@@ -156,7 +156,8 @@
       <thead>
         <tr>
           <ng-container *ngFor="let item of bpd">
-            <th *ngIf="item.show">{{ item.daysLeft }} Days left</th>
+            <!-- <th *ngIf="item.show">{{ item.daysLeft }} Days left</th> -->
+            <th *ngIf="item.show">{{ item.daysLeft }}</th>
           </ng-container>
         </tr>
       </thead>
@@ -267,7 +268,7 @@
                 | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:5
             }}&nbsp;AXN
           </td>
-          <td></td>
+          <td>{{ deposit.interest }}</td>
           <td class="action-button">
             <button
               class="btn btn__transparent"

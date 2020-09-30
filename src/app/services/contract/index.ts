@@ -898,7 +898,7 @@ export class ContractService {
           value: 0,
           year: 0,
           dateEnd: 0,
-          daysLeft: 0,
+          daysLeft: "0",
           show: true,
         };
 
@@ -912,7 +912,7 @@ export class ContractService {
 
         data.daysLeft = Math.round(
           (data.dateEnd - Date.now()) / (bpdInfo.stepTimestamp * 1000)
-        );
+        ).toString();
 
         const a = moment(new Date(data.dateEnd)); // end
         const b = moment(new Date()); // now
@@ -922,7 +922,8 @@ export class ContractService {
         // console.log(a.diff(b, "hours")); // 745
         // console.log(a.diff(b, "days")); // 31
 
-        data.daysLeft = a.diff(b, "days");
+        // data.daysLeft = a.diff(b, "days");
+        data.daysLeft = a.diff(b, "minutes") + " Minutes left";
 
         data.show = a.diff(b, "seconds") < 0 ? false : true;
 
@@ -983,6 +984,8 @@ export class ContractService {
                                 .toString()
                             );
 
+                            console.log("oneSession", oneSession);
+
                             return {
                               start: new Date(oneSession.start * 1000),
                               end: new Date(oneSession.end * 1000),
@@ -1003,10 +1006,10 @@ export class ContractService {
           (allDeposits: DepositInterface[]) => {
             return {
               closed: allDeposits.filter((deposit: DepositInterface) => {
-                return !deposit.isActive;
+                return Number(deposit.shares) <= 0;
               }),
               opened: allDeposits.filter((deposit: DepositInterface) => {
-                return deposit.isActive;
+                return Number(deposit.shares) > 0;
               }),
             };
           }

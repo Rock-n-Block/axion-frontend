@@ -127,6 +127,7 @@ export class ClaimPageComponent implements OnDestroy {
       .swapNativeToken()
       .then(() => {
         this.burnTokensProgress = false;
+        this.readPenalty();
         // this.contractService.updateH2TBalance(true).then(() => {
         //   this.burnTokensProgress = false;
         // });
