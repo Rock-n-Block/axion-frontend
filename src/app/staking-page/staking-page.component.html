@@ -186,73 +186,12 @@
     <table class="standard-table" cellpadding="0" cellspacing="0" border="0">
       <thead>
         <tr>
-          <th
-            (click)="sortDeposits('opened', 'start')"
-            class="as-sort"
-            [ngClass]="{
-              active: currentSort['opened']['field'] === 'start',
-              ask: currentSort['opened']['ask']
-            }"
-          >
-            Start date
-            <span class="sort-indicator"></span>
-          </th>
-          <th
-            (click)="sortDeposits('opened', 'end')"
-            class="as-sort"
-            [ngClass]="{
-              active: currentSort['opened']['field'] === 'end',
-              ask: currentSort['opened']['ask']
-            }"
-          >
-            End date
-            <span class="sort-indicator"></span>
-          </th>
-          <th
-            (click)="sortDeposits('opened', 'progress')"
-            class="as-sort"
-            [ngClass]="{
-              active: currentSort['opened']['field'] === 'progress',
-              ask: currentSort['opened']['ask']
-            }"
-          >
-            Progress
-            <span class="sort-indicator"></span>
-          </th>
-          <th
-            (click)="sortDeposits('opened', 'principal')"
-            class="as-sort"
-            [ngClass]="{
-              active: currentSort['opened']['field'] === 'principal',
-              ask: currentSort['opened']['ask']
-            }"
-          >
-            Principal
-            <span class="sort-indicator"></span>
-          </th>
-          <th
-            (click)="sortDeposits('opened', 'shares')"
-            class="as-sort"
-            [ngClass]="{
-              active: currentSort['opened']['field'] === 'shares',
-              ask: currentSort['opened']['ask']
-            }"
-          >
-            Shares
-            <span class="sort-indicator"></span>
-          </th>
-
-          <th
-            (click)="sortDeposits('opened', 'BigPayDay')"
-            class="as-sort"
-            [ngClass]="{
-              active: currentSort['opened']['field'] === 'BigPayDay',
-              ask: currentSort['opened']['ask']
-            }"
-          >
-            BigPayDay
-            <span class="sort-indicator"></span>
-          </th>
+          <th>Start date</th>
+          <th>End date</th>
+          <th>Progress</th>
+          <th>Principal</th>
+          <th>Shares</th>
+          <th>BigPayDay</th>
           <th>Interest</th>
           <th width="10">&nbsp;</th>
         </tr>
@@ -265,19 +204,19 @@
           <td>
             {{
               deposit.amount
-                | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:5
+                | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
             }}&nbsp;AXN
           </td>
           <td>
             {{
               deposit.shares
-                | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:5
+                | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
             }}
           </td>
           <td>
             {{
               deposit.bigPayDay
-                | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:5
+                | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
             }}&nbsp;AXN
           </td>
           <td>{{ deposit.interest }}</td>
@@ -326,19 +265,19 @@
           <td>
             {{
               deposit.amount
-                | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:5
+                | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
             }}
           </td>
           <td>
             {{
               deposit.shares
-                | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:5
+                | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
             }}
           </td>
           <td>
             {{
               deposit.bigPayDay
-                | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:5
+                | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
             }}&nbsp;AXN
           </td>
           <td>{{ deposit.interest }}</td>

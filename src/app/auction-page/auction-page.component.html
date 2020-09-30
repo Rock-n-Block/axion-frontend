@@ -172,61 +172,11 @@
     >
       <thead class="text-left">
         <tr>
-          <th
-            (click)="sortAuctions('start_date', 'date')"
-            class="as-sort"
-            [ngClass]="{
-              active: sortData['start_date'] && changeSort,
-              ask: sortData['start_date'] && !changeSort
-            }"
-          >
-            Date
-            <span class="sort-indicator"></span>
-          </th>
-          <th
-            (click)="sortAuctions('axn_pool')"
-            class="as-sort"
-            [ngClass]="{
-              active: sortData['axn_pool'] && changeSort,
-              ask: sortData['axn_pool'] && !changeSort
-            }"
-          >
-            AXN in pool
-            <span class="sort-indicator"></span>
-          </th>
-          <th
-            (click)="sortAuctions('eth_pool')"
-            class="as-sort"
-            [ngClass]="{
-              active: sortData['eth_pool'] && changeSort,
-              ask: sortData['eth_pool'] && !changeSort
-            }"
-          >
-            ETH in pool
-            <span class="sort-indicator"></span>
-          </th>
-          <th
-            (click)="sortAuctions('eth_bet')"
-            class="as-sort"
-            [ngClass]="{
-              active: sortData['eth_bet'] && changeSort,
-              ask: sortData['eth_bet'] && !changeSort
-            }"
-          >
-            My bet ETH
-            <span class="sort-indicator"></span>
-          </th>
-          <th
-            (click)="sortAuctions('winnings')"
-            class="as-sort"
-            [ngClass]="{
-              active: sortData['winnings'] && changeSort,
-              ask: sortData['winnings'] && !changeSort
-            }"
-          >
-            Your Winnings
-            <span class="sort-indicator"></span>
-          </th>
+          <th>Date</th>
+          <th>AXN in pool</th>
+          <th>ETH in pool</th>
+          <th>My bet ETH</th>
+          <th>Your Winnings</th>
           <th width="10">&nbsp;</th>
         </tr>
       </thead>

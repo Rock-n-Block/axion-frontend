@@ -551,8 +551,6 @@ export class ContractService {
                     .uniswapPercent()
                     .call()
                     .then((res) => {
-                      console.log("uniswapPercent", res);
-
                       const v = Number(data.uniToEth) * (1 - res / 100);
 
                       if ((data.axnToEth || 0) < v) {
