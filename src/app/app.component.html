@@ -45,7 +45,7 @@
       </div>
     </div>
     <div class="header-navbar" [ngClass]="{ active: isNavbarOpen }">
-      <div class="header-navbar-item">
+      <div *ngIf="leftDaysInfoShow" class="header-navbar-item">
         <a
           routerLink="claim"
           routerLinkActive="active-link"

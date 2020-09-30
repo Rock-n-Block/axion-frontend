@@ -83,25 +83,24 @@ export class StakingPageComponent implements OnDestroy {
                 this.getStakingInfo();
                 this.stakingInfoChecker = true;
               });
+
+              this.contractService
+                .getStakingContractInfo()
+                .then((data: StakingInfoInterface) => {
+                  this.stakingContractInfo = data;
+                  window.dispatchEvent(new Event("resize"));
+                });
+              this.contractService.geBPDInfo().then((result) => {
+                console.log("BPD data", result);
+                this.bpd = result;
+                this.tableInfo = result[4].show;
+              });
             }
           });
         }
       });
 
-    this.contractService
-      .getStakingContractInfo()
-      .then((data: StakingInfoInterface) => {
-        this.stakingContractInfo = data;
-        window.dispatchEvent(new Event("resize"));
-      });
-
     this.tokensDecimals = this.contractService.getCoinsDecimals();
-
-    this.contractService.geBPDInfo().then((result) => {
-      console.log("BPD data", result);
-      this.bpd = result;
-      this.tableInfo = result[4].show;
-    });
   }
 
   public getStakingInfo() {

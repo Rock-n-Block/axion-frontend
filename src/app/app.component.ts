@@ -55,10 +55,13 @@ export class AppComponent implements OnInit {
       this.leftDaysInfoShow = this.leftDaysInfo.leftDays > 0;
       if (this.leftDaysInfoShow) {
         this.leftDaysInfoChecker = true;
-        this.checkDays();
+        if (this.account) {
+          this.checkDays();
+        }
       }
       console.log(result, this.leftDaysInfoShow);
     });
+
     this.isNavbarOpen = false;
 
     this.contractService.getContractsInfo().then((info) => {

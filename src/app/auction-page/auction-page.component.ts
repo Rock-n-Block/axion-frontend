@@ -74,27 +74,17 @@ export class AuctionPageComponent implements OnDestroy {
                 console.log("user auction", this.auctionsList);
                 window.dispatchEvent(new Event("resize"));
               });
+              this.contractService.getAuctionPool().then((info) => {
+                this.poolInfo = info;
+                console.log("this.poolInfo", this.poolInfo);
+                this.getAuctionPool();
+                this.auctionPoolChecker = true;
+              });
             }
           });
         }
       });
     this.tokensDecimals = this.contractService.getCoinsDecimals();
-
-    // this.accountSubscribe = this.contractService
-    // .accountSubscribe()
-    // .subscribe((account) => {
-    //   if (account) {
-    //     this.accountSubscribe.unsubscribe();
-    //     this.subscribeAccount();
-    //   }
-    // });
-
-    this.contractService.getAuctionPool().then((info) => {
-      this.poolInfo = info;
-      console.log("this.poolInfo", this.poolInfo);
-      this.getAuctionPool();
-      this.auctionPoolChecker = true;
-    });
   }
 
   public resetRef() {
