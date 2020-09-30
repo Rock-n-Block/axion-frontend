@@ -7,7 +7,7 @@ const IS_PRODUCTION = false;
 
 const networks = {
   production: "mainnet",
-  testnet: "rinkeby",
+  testnet: "ropsten",
 };
 
 const usedNetworkVersion = IS_PRODUCTION ? 1 : 3;
