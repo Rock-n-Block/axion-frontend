@@ -34,6 +34,8 @@ export class AuctionPageComponent implements OnDestroy {
   public addressCopy = false;
   public auctionPoolChecker = false;
 
+  public dataSendForm = false;
+
   public sendAuctionProgress: boolean;
   public auctionInfo: any;
   public auctionsList: any[];
@@ -51,6 +53,7 @@ export class AuctionPageComponent implements OnDestroy {
     private ngZone: NgZone
   ) {
     this.referalAddress = this.cookieService.get("ref");
+    this.onChangeAmount();
 
     this.accountSubscribe = this.contractService
       .accountSubscribe()
@@ -97,6 +100,14 @@ export class AuctionPageComponent implements OnDestroy {
   public resetRef() {
     this.referalAddress = "";
     this.cookieService.set("ref", "");
+  }
+
+  public onChangeAmount() {
+    this.dataSendForm =
+      Number(this.formsData.auctionAmount) <= 0 ||
+      this.formsData.auctionAmount === undefined
+        ? false
+        : true;
   }
 
   private getAuctionPool() {

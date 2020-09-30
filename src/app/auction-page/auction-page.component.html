@@ -76,6 +76,7 @@
               max: account?.balances.ETH.wei
             }"
             [maxValueChange]="onChangeAccount"
+            (ngModelChange)="onChangeAmount()"
             [(ngModel)]="formsData.auctionAmount"
             name="swap-amount"
             autocomplete="off"
@@ -99,7 +100,7 @@
             <button
               class="btn btn__normal btn__normal-img"
               [ngClass]="{ progress: sendAuctionProgress }"
-              [disabled]="sendForm.invalid || sendAuctionProgress"
+              [disabled]="!dataSendForm || sendAuctionProgress"
               (click)="sendETHToAuction()"
             >
               <span class="lds-ellipsis" *ngIf="sendAuctionProgress">

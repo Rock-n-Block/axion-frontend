@@ -32,10 +32,9 @@ export class ContractService {
   private HEX2XContract: Contract;
   private HEXContract: Contract;
   private NativeSwapContract: Contract;
-  private DailyAuctionContract: Contract;
-  private WeeklyAuctionContract: Contract;
+
   private StakingContract: Contract;
-  private UniswapV2Pair: Contract;
+  private UniswapV2Router02: Contract;
   private Auction: Contract;
 
   private ForeignSwapContract: Contract;
@@ -519,7 +518,7 @@ export class ContractService {
 
   public getContractsInfo() {
     const promises = [
-      this.WeeklyAuctionContract.methods
+      this.Auction.methods
         .calculateStepsFromStart()
         .call()
         .then((auctionId) => {
@@ -606,12 +605,41 @@ export class ContractService {
                 (Number(data.eth) / Number(data.axn)).toFixed(8).toString()
               );
 
+              const eth = new BigNumber(res[0])
+                .div(Math.pow(10, this.tokensDecimals.ETH))
+                .toFixed(8)
+                .toString();
+
+              const axn = new BigNumber(res[1])
+                .div(Math.pow(10, this.tokensDecimals.HEX2X))
+                .toFixed(8)
+                .toString();
+
+              console.log(eth, axn);
+
+              console.log(
+                "data.axnToEth",
+                Number(
+                  new BigNumber(res[0])
+                    .div(Math.pow(10, this.tokensDecimals.ETH))
+                    .toFixed(8)
+                    .toString()
+                ) /
+                  Number(
+                    new BigNumber(res[1])
+                      .div(Math.pow(10, this.tokensDecimals.HEX2X))
+                      .toFixed(8)
+                      .toString()
+                  )
+              );
+              console.log("data.axnToEth", data.axnToEth);
+
+              data.eth = parseFloat(data.eth);
+              data.axn = parseFloat(data.axn);
+
               const amount = "1000000000000000000";
 
-              console.log("HEX2X ADDRESS", this.CONTRACTS_PARAMS.HEX2X.ADDRESS);
-              console.log("WETH ADDRESS", this.CONTRACTS_PARAMS.WETH.ADDRESS);
-
-              this.UniswapV2Pair.methods
+              this.UniswapV2Router02.methods
                 .getAmountsOut(amount, [
                   this.CONTRACTS_PARAMS.HEX2X.ADDRESS,
                   this.CONTRACTS_PARAMS.WETH.ADDRESS,
@@ -642,7 +670,7 @@ export class ContractService {
 
                   resolve(data);
                 });
-              // this.UniswapV2Pair.methods
+              // this.UniswapV2Router02.methods
               //   .getReserves()
               //   .call()
               //   .then((value) => {
@@ -1165,15 +1193,26 @@ export class ContractService {
                 .call()
                 .then((auctionData) => {
                   console.log("auctionData", auctionData);
+                  console.log(
+                    "auctionData token",
+                    new BigNumber(auctionData.token)
+                  );
+                  console.log(
+                    "auctionData eth",
+                    new BigNumber(auctionData.eth)
+                  );
 
                   const auctionInfo = {
                     auctionId: id,
                     start_date: new Date((+start + oneDaySeconds * id) * 1000),
-                    axn_pool: new BigNumber(auctionData.token), // axn in pool
-                    eth_pool: new BigNumber(auctionData.eth), // eth in pool
-                    eth_bet: new BigNumber(0), // my bet eth
-                    winnings: new BigNumber(0), // my winnigs
-                    // accountTokenBalance: new BigNumber(0), // my winnigs
+                    axn_pool: parseFloat(
+                      new BigNumber(auctionData.token).toString()
+                    ),
+                    eth_pool: parseFloat(
+                      new BigNumber(auctionData.eth).toString()
+                    ),
+                    eth_bet: new BigNumber(0),
+                    winnings: new BigNumber(0),
                   };
                   return this.Auction.methods
                     .auctionBetOf(id, this.account.address)
@@ -1331,16 +1370,6 @@ export class ContractService {
       this.CONTRACTS_PARAMS.NativeSwap.ADDRESS
     );
 
-    this.DailyAuctionContract = this.web3Service.getContract(
-      this.CONTRACTS_PARAMS.DailyAuction.ABI,
-      this.CONTRACTS_PARAMS.DailyAuction.ADDRESS
-    );
-
-    this.WeeklyAuctionContract = this.web3Service.getContract(
-      this.CONTRACTS_PARAMS.WeeklyAuction.ABI,
-      this.CONTRACTS_PARAMS.WeeklyAuction.ADDRESS
-    );
-
     this.Auction = this.web3Service.getContract(
       this.CONTRACTS_PARAMS.Auction.ABI,
       this.CONTRACTS_PARAMS.Auction.ADDRESS
@@ -1371,9 +1400,9 @@ export class ContractService {
       this.CONTRACTS_PARAMS.SubBalance.ADDRESS
     );
 
-    this.UniswapV2Pair = this.web3Service.getContract(
-      this.CONTRACTS_PARAMS.UniswapV2Pair.ABI,
-      this.CONTRACTS_PARAMS.UniswapV2Pair.ADDRESS
+    this.UniswapV2Router02 = this.web3Service.getContract(
+      this.CONTRACTS_PARAMS.UniswapV2Router02.ABI,
+      this.CONTRACTS_PARAMS.UniswapV2Router02.ADDRESS
     );
   }
 }

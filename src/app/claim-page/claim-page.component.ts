@@ -78,13 +78,13 @@ export class ClaimPageComponent implements OnDestroy {
   }
 
   private readPenalty() {
-    console.log("this.clacPenalty", this.clacPenalty);
+    console.log("this.clacPenalty before", this.clacPenalty);
 
     this.contractService
       .calculatePenalty(this.swapContractBalance.value)
       .then((res) => {
         this.clacPenalty = res as number;
-        console.log("this.clacPenalty", this.clacPenalty);
+        console.log("this.clacPenalty after", this.clacPenalty);
       });
   }
 
@@ -127,11 +127,15 @@ export class ClaimPageComponent implements OnDestroy {
       .swapNativeToken()
       .then(() => {
         this.burnTokensProgress = false;
+
         this.readPenalty();
         this.swapContractBalance = { value: 0, fullValue: 0 };
-        // this.contractService.updateH2TBalance(true).then(() => {
-        //   this.burnTokensProgress = false;
-        // });
+
+        this.contractService.updateH2TBalance(true).then(() => {
+          this.burnTokensProgress = false;
+        });
+
+        console.log("this.swapContractBalance", this.swapContractBalance);
       })
       .catch(() => {
         this.burnTokensProgress = false;
