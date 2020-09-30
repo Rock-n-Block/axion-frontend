@@ -197,7 +197,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let deposit of depositsLists.opened">
+        <tr *ngFor="let deposit of depositsLists.opened.reverse()">
           <td>{{ deposit.start | date: "dd.MM.yyyy" }}</td>
           <td>{{ deposit.end | date: "dd.MM.yyyy" }}</td>
           <td>{{ getProgress(deposit) }}%</td>
@@ -259,7 +259,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let deposit of depositsLists.closed">
+        <tr *ngFor="let deposit of depositsLists.closed.reverse()">
           <td>{{ deposit.start | date: "dd.MM.yyyy" }}</td>
           <td>{{ deposit.end | date: "dd.MM.yyyy" }}</td>
           <td>

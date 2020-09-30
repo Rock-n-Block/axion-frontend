@@ -92,6 +92,7 @@ export class StakingPageComponent implements OnDestroy {
                   this.stakingContractInfo = data;
                   window.dispatchEvent(new Event("resize"));
                 });
+
               this.contractService.geBPDInfo().then((result) => {
                 this.bpd = result;
                 console.log("BPD data", this.bpd);
@@ -132,6 +133,20 @@ export class StakingPageComponent implements OnDestroy {
         }
       });
     }, chackerBPD);
+  }
+
+  public depositList() {
+    this.contractService.getAccountStakes().then((res) => {
+      this.depositsLists = res;
+
+      console.log("user deposits lists", this.depositsLists);
+
+      this.applySort("opened");
+      this.applySort("closed");
+      window.dispatchEvent(new Event("resize"));
+      this.getStakingInfo();
+      this.stakingInfoChecker = true;
+    });
   }
 
   public openDeposit() {
@@ -189,17 +204,6 @@ export class StakingPageComponent implements OnDestroy {
     this.shareRate = parseFloat(rate.toString());
 
     this.stakeDays = Date.now() + this.formsData.depositDays * 900 * 1000;
-
-    // this.shareRate = new BigNumber(this.formsData.depositAmount || 0)
-    //   .div(divDecimals)
-    //   .times(this.bonusLongerPays.div(divDecimals).plus(1))
-    //   .div(this.stakingContractInfo.ShareRate || 1)
-    //   .times(divDecimals);
-
-    // this.stakeDays =
-    //   Date.now() +
-    //   (this.stakingContractInfo.StepsFromStart + this.formsData.depositDays) *
-    //     900000;
   }
 
   public getProgress(deposit) {
@@ -284,8 +288,11 @@ export class StakingPageComponent implements OnDestroy {
                 console.log("deposit unstake step 3", res3);
                 this.contractService.updateHEX2XBalance(true);
                 deposit.withdrawProgress = false;
+                this.depositList();
               });
           }
+
+          this.depositList();
         });
       })
       .catch(() => {
