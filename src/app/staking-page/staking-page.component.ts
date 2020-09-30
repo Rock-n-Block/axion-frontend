@@ -127,9 +127,8 @@ export class StakingPageComponent implements OnDestroy {
         console.log("BPD data", result);
         this.bpd = result;
         this.tableInfo = result[4].show;
-        this.getBPDInfo();
         if (this.bpdInfoChecker && this.account) {
-          this.getStakingInfo();
+          this.getBPDInfo();
         }
       });
     }, chackerBPD);
