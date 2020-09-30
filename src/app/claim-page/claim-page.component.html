@@ -115,6 +115,24 @@
                 type="text"
                 *ngIf="account"
                 required="required"
+                class="blocks-list_item_input"
+                placeholder="0.0"
+                [appBigNumber]="{
+                  decimals: tokensDecimals['H2T'],
+                  min: 1,
+                  max: account?.balances.H2T.wei
+                }"
+                [maxValueChange]="onChangeAccount"
+                (ngModelChange)="onChangeAmount()"
+                [(ngModel)]="formsData.swapAmount"
+                name="swap-amount"
+                autocomplete="off"
+              />
+
+              <!-- <input
+                type="text"
+                *ngIf="account"
+                required="required"
                 placeholder="0"
                 class="blocks-list_item_input"
                 [appBigNumber]="{
@@ -126,7 +144,7 @@
                 [(ngModel)]="formsData.swapAmount"
                 name="swap-amount"
                 autocomplete="off"
-              />
+              /> -->
             </div>
             <div
               class="blocks-list_item_currency blocks-list_item_currency__h2t"
@@ -165,7 +183,7 @@
               <button
                 class="btn btn__normal btn__normal-img"
                 [ngClass]="{ progress: swapTokensProgress }"
-                [disabled]="sendForm.invalid || swapTokensProgress"
+                [disabled]="!dataSendForm || swapTokensProgress"
                 (click)="swapH2T()"
                 style="max-width: 130px; width: 100%"
               >
@@ -190,8 +208,7 @@
           <div class="blocks-list_item_title uppercase">SWAP Contract</div>
           <div class="blocks-list_item_value" fittext [maxFontSize]="38">
             {{
-              swapContractBalance.value || 0
-                | bigNumberFormat: 0:true:false:false
+              swapContractBalance.value || 0 | bigNumberFormat: 0:true:false:3
             }}
           </div>
           <div class="blocks-list_item_currency blocks-list_item_currency__h2t">
@@ -227,8 +244,7 @@
               [maxFontSize]="36"
             >
               {{
-                (swapContractBalance.value || 0
-                  | bigNumberFormat: 0:true:false:false) - clacPenalty
+                toSwap || 0 | bigNumberFormat: tokensDecimals.HEX2X:true:false:3
               }}
             </div>
             <div
@@ -244,7 +260,10 @@
               fittext
               [maxFontSize]="25"
             >
-              {{ clacPenalty || 0 }}
+              {{
+                clacPenalty || 0
+                  | bigNumberFormat: tokensDecimals.HEX2X:true:false:3
+              }}
             </div>
             <div
               class="blocks-list_item_currency blocks-list_item_currency__axn"

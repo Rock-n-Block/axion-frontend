@@ -1,5 +1,3 @@
-import { resolve } from "url";
-import { async } from "@angular/core/testing";
 import { Injectable } from "@angular/core";
 import Web3 from "web3";
 import { Observable } from "rxjs";
@@ -12,8 +10,8 @@ const networks = {
   testnet: "rinkeby",
 };
 
-const usedNetworkVersion = IS_PRODUCTION ? 1 : 4;
-const net = usedNetworkVersion === 1 ? "mainnet" : "rinkeby";
+const usedNetworkVersion = IS_PRODUCTION ? 1 : 3;
+const net = usedNetworkVersion === 1 ? "mainnet" : "ropsten";
 
 @Injectable({
   providedIn: "root",
@@ -75,37 +73,23 @@ export class MetamaskService {
   }
 
   public getAccounts(noEnable?) {
-    // const usedNetworkVersion = IS_PRODUCTION ? 1 : 4;
-    // const net = usedNetworkVersion === 1 ? "mainnet" : "rinkeby";
-
-    // const isValidMetaMaskNetwork = (observer) => {
-    //   const networkVersion = Number(this.metaMaskWeb3.networkVersion);
-
-    //   if (usedNetworkVersion !== networkVersion) {
-    //     observer.error({
-    //       code: 2,
-    //       msg: "Please choose " + net + " network in Metamask.",
-    //     });
-    //     return false;
-    //   }
-    //   return true;
-    // };
-
     const isValidMetaMaskNetwork = (observer) => {
-      return this.metaMaskWeb3
-        .request({
-          method: "net_version",
-        })
-        .then((result) => {
-          if (usedNetworkVersion !== Number(result)) {
-            observer.error({
-              code: 2,
-              msg: "Please choose " + net + " network in Metamask.",
-            });
-            return false;
-          }
-          return true;
-        });
+      return new Promise((resolve, reject) => {
+        this.metaMaskWeb3
+          .request({
+            method: "net_version",
+          })
+          .then((result) => {
+            if (usedNetworkVersion !== Number(result)) {
+              observer.error({
+                code: 2,
+                msg: "Please choose " + net + " network in Metamask.",
+              });
+              reject();
+            }
+            resolve();
+          });
+      });
     };
 
     const onAuth = (observer, address) => {
@@ -130,43 +114,35 @@ export class MetamaskService {
     return new Observable((observer) => {
       if (this.metaMaskWeb3 && this.metaMaskWeb3.isMetaMask) {
         isValidMetaMaskNetwork(observer).then((res) => {
-          if (!res) {
-            return;
-          } else {
-            this.metaMaskWeb3.on("accountsChanged", (accounts) => {
-              isValidMetaMaskNetwork(observer).then((result) => {
-                if (result) {
-                  if (accounts.length) {
-                    onAuth(observer, accounts[0]);
-                  } else {
-                    onError(observer, {
-                      code: 3,
-                      msg: "Not authorized",
-                    });
-                  }
-                }
+          this.metaMaskWeb3.on("accountsChanged", (accounts) => {
+            if (accounts.length) {
+              onAuth(observer, accounts[0]);
+            } else {
+              onError(observer, {
+                code: 3,
+                msg: "Not authorized",
+              });
+            }
+          });
+
+          if (!this.metaMaskWeb3.selectedAddress && !noEnable) {
+            this.metaMaskWeb3.enable().catch(() => {
+              onError(observer, {
+                code: 3,
+                msg: "Not authorized",
               });
             });
+          } else {
+            if (this.metaMaskWeb3.selectedAddress) {
+              onAuth(observer, this.metaMaskWeb3.selectedAddress);
+            } else {
+              onError(observer, {
+                code: 3,
+                msg: "Not authorized",
+              });
+            }
           }
         });
-
-        if (!this.metaMaskWeb3.selectedAddress && !noEnable) {
-          this.metaMaskWeb3.enable().catch(() => {
-            onError(observer, {
-              code: 3,
-              msg: "Not authorized",
-            });
-          });
-        } else {
-          if (this.metaMaskWeb3.selectedAddress) {
-            onAuth(observer, this.metaMaskWeb3.selectedAddress);
-          } else {
-            onError(observer, {
-              code: 3,
-              msg: "Not authorized",
-            });
-          }
-        }
       } else {
         onError(observer, {
           code: 1,

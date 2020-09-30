@@ -83,12 +83,12 @@ export class AuctionPageComponent implements OnDestroy {
               this.contractService.getUserAuctions().then((auctions) => {
                 this.auctionsList = auctions;
                 this.referalLink = "";
-                console.log("user auction list", this.auctionsList);
+                // console.log("user auction list", this.auctionsList);
                 window.dispatchEvent(new Event("resize"));
               });
               this.contractService.getAuctionPool().then((info) => {
                 this.poolInfo = info;
-                console.log("pool info", this.poolInfo);
+                // console.log("pool info", this.poolInfo);
                 this.getAuctionPool();
                 this.auctionPoolChecker = true;
               });

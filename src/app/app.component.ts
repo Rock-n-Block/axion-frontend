@@ -60,7 +60,7 @@ export class AppComponent implements OnInit {
           this.checkDays();
         }
       }
-      console.log("days left info", result);
+      // console.log("days left info", result);
     });
 
     this.isNavbarOpen = false;
@@ -96,7 +96,7 @@ export class AppComponent implements OnInit {
           } else {
             this.checkDays();
           }
-          console.log("days left info", result);
+          // console.log("days left info", result);
         });
       }, chackerDays);
     }

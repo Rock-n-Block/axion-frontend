@@ -77,7 +77,7 @@ export class StakingPageComponent implements OnDestroy {
               this.contractService.getAccountStakes().then((res) => {
                 this.depositsLists = res;
 
-                console.log("user deposits lists", this.depositsLists);
+                // console.log("user deposits lists", this.depositsLists);
 
                 this.applySort("opened");
                 this.applySort("closed");
@@ -95,7 +95,7 @@ export class StakingPageComponent implements OnDestroy {
 
               this.contractService.geBPDInfo().then((result) => {
                 this.bpd = result;
-                console.log("BPD data", this.bpd);
+                // console.log("BPD data", this.bpd);
                 this.tableInfo = result[4].show;
                 this.getBPDInfo();
                 this.bpdInfoChecker = true;
@@ -114,7 +114,7 @@ export class StakingPageComponent implements OnDestroy {
         .getStakingContractInfo()
         .then((data: StakingInfoInterface) => {
           this.stakingContractInfo = data;
-          console.log("staking contract info", this.stakingContractInfo);
+          // console.log("staking contract info", this.stakingContractInfo);
           if (this.stakingInfoChecker && this.account) {
             this.getStakingInfo();
           }
@@ -125,7 +125,7 @@ export class StakingPageComponent implements OnDestroy {
   public getBPDInfo() {
     setTimeout(() => {
       this.contractService.geBPDInfo().then((result) => {
-        console.log("BPD data", result);
+        // console.log("BPD data", result);
         this.bpd = result;
         this.tableInfo = result[4].show;
         if (this.bpdInfoChecker && this.account) {
@@ -139,7 +139,7 @@ export class StakingPageComponent implements OnDestroy {
     this.contractService.getAccountStakes().then((res) => {
       this.depositsLists = res;
 
-      console.log("user deposits lists", this.depositsLists);
+      // console.log("user deposits lists", this.depositsLists);
 
       this.applySort("opened");
       this.applySort("closed");
@@ -203,7 +203,7 @@ export class StakingPageComponent implements OnDestroy {
 
     this.shareRate = parseFloat(rate.toString());
 
-    this.stakeDays = Date.now() + this.formsData.depositDays * 900 * 1000;
+    this.stakeDays = Date.now() + this.formsData.depositDays * 86400 * 1000;
   }
 
   public getProgress(deposit) {
@@ -277,15 +277,15 @@ export class StakingPageComponent implements OnDestroy {
     this.contractService
       .unstake(deposit.sessionId)
       .then((res) => {
-        console.log("deposit unstake step 1", res);
+        // console.log("deposit unstake step 1", res);
         this.contractService.getSessionStats(deposit.sessionId).then((res2) => {
-          console.log("deposit unstake step 2", res2);
+          // console.log("deposit unstake step 2", res2);
 
           if (res2 > 0) {
             this.contractService
               .stakingWithdraw(deposit.sessionId)
               .then((res3) => {
-                console.log("deposit unstake step 3", res3);
+                // console.log("deposit unstake step 3", res3);
                 this.contractService.updateHEX2XBalance(true);
                 deposit.withdrawProgress = false;
                 this.depositList();

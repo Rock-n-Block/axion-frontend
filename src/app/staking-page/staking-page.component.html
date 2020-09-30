@@ -90,7 +90,6 @@
               </div>
               <span class="staking-form__item-text"
                 >ENDS {{ stakeDays | date: "dd.MM.y" }}
-                {{ stakeDays | date: "HH:mm" }}
               </span>
             </div>
           </div>
@@ -156,8 +155,7 @@
       <thead>
         <tr>
           <ng-container *ngFor="let item of bpd">
-            <!-- <th *ngIf="item.show">{{ item.daysLeft }} Days left</th> -->
-            <th *ngIf="item.show">{{ item.daysLeft }}</th>
+            <th *ngIf="item.show">{{ item.daysLeft }} Days left</th>
           </ng-container>
         </tr>
       </thead>
@@ -197,7 +195,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let deposit of depositsLists.opened.reverse()">
+        <tr *ngFor="let deposit of depositsLists.opened">
           <td>{{ deposit.start | date: "dd.MM.yyyy" }}</td>
           <td>{{ deposit.end | date: "dd.MM.yyyy" }}</td>
           <td>{{ getProgress(deposit) }}%</td>
@@ -219,7 +217,12 @@
                 | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
             }}&nbsp;AXN
           </td>
-          <td>{{ deposit.interest }}</td>
+          <td>
+            {{
+              deposit.interest
+                | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
+            }}
+          </td>
           <td class="action-button">
             <button
               class="btn btn__transparent"
@@ -259,7 +262,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let deposit of depositsLists.closed.reverse()">
+        <tr *ngFor="let deposit of depositsLists.closed">
           <td>{{ deposit.start | date: "dd.MM.yyyy" }}</td>
           <td>{{ deposit.end | date: "dd.MM.yyyy" }}</td>
           <td>
@@ -280,7 +283,12 @@
                 | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
             }}&nbsp;AXN
           </td>
-          <td>{{ deposit.interest }}</td>
+          <td>
+            {{
+              deposit.interest
+                | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
+            }}
+          </td>
         </tr>
       </tbody>
     </table>

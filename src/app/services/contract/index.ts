@@ -62,7 +62,7 @@ export class ContractService {
           // const IS_PRODUCTION = location.protocol === "https:";
           const IS_PRODUCTION = false;
           const CONTRACTS_PARAMS =
-            result[IS_PRODUCTION ? "mainnet" : "rinkeby"];
+            result[IS_PRODUCTION ? "mainnet" : "ropsten"];
 
           this.CONTRACTS_PARAMS = CONTRACTS_PARAMS;
           this.web3Service = new MetamaskService();
@@ -539,7 +539,7 @@ export class ContractService {
                 ])
                 .call()
                 .then((value) => {
-                  console.log("uniswap value request", value);
+                  // console.log("uniswap value request", value);
 
                   const axn = new BigNumber(value[1])
                     .div(Math.pow(10, this.tokensDecimals.HEX2X))
@@ -590,7 +590,7 @@ export class ContractService {
 
                 // const leftDays = a.diff(b, "days");
                 const leftDays = a.diff(b, "seconds");
-                const dateEnd = a.diff(b, "minutes") + "m";
+                const dateEnd = a.diff(b, "days");
 
                 return {
                   startDate: fullStartDate,
@@ -614,13 +614,13 @@ export class ContractService {
   }
 
   public calculatePenalty(amount) {
-    console.log("send panalty amount", amount);
+    // console.log("send panalty amount", amount);
 
     return this.NativeSwapContract.methods
-      .calculateDeltaPenalty(amount)
+      .calculateDeltaPenalty(amount.toString())
       .call()
       .then((res) => {
-        console.log("penalty value from request", res);
+        // console.log("penalty value from request", res);
         return res;
       });
   }
@@ -784,7 +784,7 @@ export class ContractService {
           value: 0,
           year: 0,
           dateEnd: 0,
-          daysLeft: "0",
+          daysLeft: 0,
           show: true,
           seconds: 0,
         };
@@ -799,13 +799,13 @@ export class ContractService {
 
         data.daysLeft = Math.round(
           (data.dateEnd - Date.now()) / (bpdInfo.stepTimestamp * 1000)
-        ).toString();
+        );
 
         const a = moment(new Date(data.dateEnd));
         const b = moment(new Date());
 
-        // data.daysLeft = a.diff(b, "days");
-        data.daysLeft = a.diff(b, "minutes") + " Minutes left";
+        data.daysLeft = a.diff(b, "days");
+        // data.daysLeft = a.diff(b, "minutes") + " Minutes left";
         data.seconds = a.diff(b, "seconds");
 
         data.show = a.diff(b, "seconds") < 0 ? false : true;
@@ -851,30 +851,29 @@ export class ContractService {
                           .getAmountOutAndPenalty(sessionId, res)
                           .call()
                           .then((resultInterest) => {
-                            console.log(
-                              "interest from request",
-                              resultInterest
-                            );
-                            console.log(
-                              "interest[0] with bignumber",
-                              new BigNumber(resultInterest[0])
-                                .div(Math.pow(10, this.tokensDecimals.HEX2X))
-                                .toString()
-                            );
-                            console.log(
-                              "interest[1] with bignumber",
-                              new BigNumber(resultInterest[1])
-                                .div(Math.pow(10, this.tokensDecimals.HEX2X))
-                                .toString()
-                            );
+                            // console.log(
+                            //   "interest from request",
+                            //   resultInterest
+                            // );
+                            // console.log(
+                            //   "interest[0] with bignumber",
+                            //   new BigNumber(resultInterest[0])
+                            //     .div(Math.pow(10, this.tokensDecimals.HEX2X))
+                            //     .toString()
+                            // );
+                            // console.log(
+                            //   "interest[1] with bignumber",
+                            //   new BigNumber(resultInterest[1])
+                            //     .div(Math.pow(10, this.tokensDecimals.HEX2X))
+                            //     .toString()
+                            // );
 
-                            interest = parseFloat(
-                              new BigNumber(resultInterest[1])
-                                .div(Math.pow(10, this.tokensDecimals.HEX2X))
-                                .toNumber()
-                                .toFixed(4)
-                                .toString()
-                            );
+                            // console.log(resultInterest[1].length);
+
+                            interest =
+                              resultInterest[1].length < 40
+                                ? resultInterest[1]
+                                : 0;
 
                             return {
                               start: new Date(oneSession.start * 1000),
@@ -1051,6 +1050,8 @@ export class ContractService {
                 .reservesOf(id)
                 .call()
                 .then((auctionData) => {
+                  // console.log("auctionData", auctionData);
+
                   const auctionInfo = {
                     auctionId: id,
                     start_date: new Date((+start + oneDaySeconds * id) * 1000),
@@ -1068,9 +1069,9 @@ export class ContractService {
                     .call()
                     .then((accountBalance) => {
                       auctionInfo.eth_bet = new BigNumber(accountBalance.eth);
-                      auctionInfo.winnings = new BigNumber(accountBalance.eth)
-                        .multipliedBy(auctionData.token)
-                        .div(auctionData.token);
+                      // auctionInfo.winnings = new BigNumber(accountBalance.eth)
+                      //   .multipliedBy(auctionData.token)
+                      //   .div(auctionData.token);
 
                       auctionInfo.winnings = ((Number(
                         auctionInfo.eth_bet.toString()

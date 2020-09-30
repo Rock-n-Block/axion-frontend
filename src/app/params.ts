@@ -1,4 +1,4 @@
-export const chackerDays = 5000;
-export const chackerAuctionPool = 5000;
-export const chackerStakingInfo = 5000;
-export const chackerBPD = 5000;
+export const chackerDays = 3600000;
+export const chackerAuctionPool = 15000;
+export const chackerStakingInfo = 3600000;
+export const chackerBPD = 3600000;

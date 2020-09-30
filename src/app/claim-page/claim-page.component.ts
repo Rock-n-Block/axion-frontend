@@ -31,7 +31,10 @@ export class ClaimPageComponent implements OnDestroy {
   public burnTokensProgress: boolean;
   public claimTokensProgress: boolean;
 
+  public dataSendForm = false;
+
   public clacPenalty = 0;
+  public toSwap = 0;
 
   public swapNativeTokenInfo: any;
 
@@ -49,6 +52,7 @@ export class ClaimPageComponent implements OnDestroy {
             this.account = account;
             window.dispatchEvent(new Event("resize"));
             if (account) {
+              this.onChangeAmount();
               this.onChangeAccount.emit();
               this.updateSwapBalanceProgress = true;
               this.readSwapNativeToken();
@@ -68,17 +72,49 @@ export class ClaimPageComponent implements OnDestroy {
   private readSwapNativeToken() {
     this.contractService.readSwapNativeToken().then((result) => {
       this.swapNativeTokenInfo = result;
-      console.log("swap native token info", this.swapNativeTokenInfo);
+      // console.log("swap native token info", this.swapNativeTokenInfo);
       window.dispatchEvent(new Event("resize"));
     });
   }
 
+  public onChangeAmount() {
+    // console.log(this.formsData.swapAmount);
+    // console.log(this.account.balances.H2T.wei);
+    // console.log(this.account.balances.H2T.shortBigNumber.toString());
+
+    if (
+      this.formsData.swapAmount >
+      this.account.balances.H2T.shortBigNumber.toString()
+    ) {
+      this.formsData.swapAmount = this.account.balances.H2T.shortBigNumber.toString();
+      // console.log("HIGH!!!!");
+    }
+
+    this.dataSendForm =
+      Number(this.formsData.swapAmount) <= 0 ||
+      this.formsData.swapAmount === undefined
+        ? false
+        : true;
+  }
+
   private readPenalty() {
+    // console.log(this.swapContractBalance);
+
     this.contractService
-      .calculatePenalty(this.swapContractBalance.value)
+      .calculatePenalty(this.swapContractBalance.fullValue)
       .then((res) => {
-        this.clacPenalty = res as number;
-        console.log("claculate penalty", this.clacPenalty);
+        this.clacPenalty = res;
+
+        // this.clacPenalty = new BigNumber(this.clacPenalty)
+        //   .div(Math.pow(10, this.tokensDecimals.HEX2X))
+        //   .toNumber()
+        //   .toFixed(3) as any;
+
+        this.toSwap = this.swapContractBalance.fullValue - this.clacPenalty;
+
+        // console.log("claculate penalty", this.clacPenalty);
+        // console.log("toSwap", this.toSwap);
+        // console.log("account?.balances.H2T", this.account.balances.H2T);
       });
   }
 
