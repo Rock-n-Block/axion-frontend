@@ -173,55 +173,55 @@
       <thead class="text-left">
         <tr>
           <th
-            (click)="sortAuctions('start')"
+            (click)="sortAuctions('start_date', 'date')"
             class="as-sort"
             [ngClass]="{
-              active: currentSort['field'] === 'start',
-              ask: currentSort['ask']
+              active: sortData['start_date'] && changeSort,
+              ask: sortData['start_date'] && !changeSort
             }"
           >
             Date
             <span class="sort-indicator"></span>
           </th>
           <th
-            (click)="sortAuctions('token')"
+            (click)="sortAuctions('axn_pool')"
             class="as-sort"
             [ngClass]="{
-              active: currentSort['field'] === 'token',
-              ask: currentSort['ask']
+              active: sortData['axn_pool'] && changeSort,
+              ask: sortData['axn_pool'] && !changeSort
             }"
           >
             AXN in pool
             <span class="sort-indicator"></span>
           </th>
           <th
-            (click)="sortAuctions('eth')"
+            (click)="sortAuctions('eth_pool')"
             class="as-sort"
             [ngClass]="{
-              active: currentSort['field'] === 'eth',
-              ask: currentSort['ask']
+              active: sortData['eth_pool'] && changeSort,
+              ask: sortData['eth_pool'] && !changeSort
             }"
           >
             ETH in pool
             <span class="sort-indicator"></span>
           </th>
           <th
-            (click)="sortAuctions('accountTokenBalance')"
+            (click)="sortAuctions('eth_bet')"
             class="as-sort"
             [ngClass]="{
-              active: currentSort['field'] === 'accountTokenBalance',
-              ask: currentSort['ask']
+              active: sortData['eth_bet'] && changeSort,
+              ask: sortData['eth_bet'] && !changeSort
             }"
           >
             My bet ETH
             <span class="sort-indicator"></span>
           </th>
           <th
-            (click)="sortAuctions('accountTokenBalance')"
+            (click)="sortAuctions('winnings')"
             class="as-sort"
             [ngClass]="{
-              active: currentSort['field'] === 'accountTokenBalance',
-              ask: currentSort['ask']
+              active: sortData['winnings'] && changeSort,
+              ask: sortData['winnings'] && !changeSort
             }"
           >
             Your Winnings

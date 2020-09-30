@@ -540,11 +540,25 @@ export class ContractService {
                 .call()
                 .then((value) => {
                   console.log("uniswap value request", value);
+
                   const axn = new BigNumber(value[1])
                     .div(Math.pow(10, this.tokensDecimals.HEX2X))
                     .toString();
 
                   data.uniToEth = parseFloat(Number(axn).toFixed(8).toString());
+
+                  this.Auction.methods
+                    .uniswapPercent()
+                    .call()
+                    .then((res) => {
+                      console.log("uniswapPercent", res);
+
+                      const v = Number(data.uniToEth) * (1 - res / 100);
+
+                      if ((data.axnToEth || 0) < v) {
+                        data.axnToEth = parseFloat(v.toFixed(8).toString());
+                      }
+                    });
 
                   resolve(data);
                 });

@@ -21,6 +21,17 @@ export class AuctionPageComponent implements OnDestroy {
   })
   successModal: TemplateRef<any>;
 
+  public changeSort = true;
+
+  public sortData = {
+    auctionId: true,
+    axn_pool: false,
+    eth_bet: false,
+    eth_pool: false,
+    start_date: false,
+    winnings: false,
+  } as any;
+
   public account;
   public tokensDecimals;
   private accountSubscribe;
@@ -209,21 +220,53 @@ export class AuctionPageComponent implements OnDestroy {
     }
   }
 
-  public sortAuctions(field) {
-    const currentUseField = this.currentSort.field;
+  public sortAuctions(type: string, tdate?: string) {
+    this.sortData[type] && this.changeSort
+      ? (this.changeSort = false)
+      : (this.changeSort = true);
+    Object.keys(this.sortData).forEach((v) => (this.sortData[v] = v === type));
 
-    if (currentUseField !== field) {
-      this.currentSort.field = field;
-      this.currentSort.ask = false;
-    } else {
-      if (!this.currentSort.ask) {
-        this.currentSort.ask = true;
+    this.auctionsList.sort((auctionsList1, auctionsList2) => {
+      let sortauctionsList1: any;
+      let sortauctionsList2: any;
+
+      if (tdate) {
+        sortauctionsList1 =
+          tdate === "date"
+            ? new Date(auctionsList1[type]).getDate()
+            : new Date(auctionsList1[type]).getTime();
+        sortauctionsList2 =
+          tdate === "date"
+            ? new Date(auctionsList2[type]).getDate()
+            : new Date(auctionsList2[type]).getTime();
       } else {
-        this.currentSort.field = undefined;
+        sortauctionsList1 = auctionsList1[type];
+        sortauctionsList2 = auctionsList2[type];
       }
-    }
-    this.applySort();
+
+      if (this.changeSort) {
+        return sortauctionsList1 > sortauctionsList2 ? 1 : -1;
+      } else {
+        return sortauctionsList1 < sortauctionsList2 ? 1 : -1;
+      }
+    });
   }
+
+  // public sortAuctions(field) {
+  //   const currentUseField = this.currentSort.field;
+
+  //   if (currentUseField !== field) {
+  //     this.currentSort.field = field;
+  //     this.currentSort.ask = false;
+  //   } else {
+  //     if (!this.currentSort.ask) {
+  //       this.currentSort.ask = true;
+  //     } else {
+  //       this.currentSort.field = undefined;
+  //     }
+  //   }
+  //   this.applySort();
+  // }
 
   ngOnDestroy() {
     this.auctionPoolChecker = false;
