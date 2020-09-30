@@ -1,3 +1,4 @@
+import { resolve } from "url";
 import { async } from "@angular/core/testing";
 import { Injectable } from "@angular/core";
 import Web3 from "web3";
@@ -38,6 +39,31 @@ export class MetamaskService {
 
   public getContract(abi, address) {
     return new this.Web3.eth.Contract(abi, address);
+  }
+
+  public encodeFunctionCall(name, type, inputs, params) {
+    return this.Web3.eth.abi.encodeFunctionCall(
+      {
+        name,
+        type,
+        inputs,
+      },
+      params
+    );
+  }
+
+  public gasPrice() {
+    return this.Web3.eth.getGasPrice().then((res) => {
+      return res;
+    });
+  }
+
+  public estimateGas(from, to, value, data, gasPrice) {
+    return this.Web3.eth
+      .estimateGas({ from, to, value, data, gasPrice })
+      .then((res) => {
+        return res;
+      });
   }
 
   // public getFeeRate(to, amount) {

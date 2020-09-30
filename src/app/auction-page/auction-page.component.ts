@@ -123,20 +123,40 @@ export class AuctionPageComponent implements OnDestroy {
 
   public sendETHToAuction() {
     this.sendAuctionProgress = true;
-    this.contractService
-      .sendETHToAuction(
-        this.formsData.auctionAmount,
-        this.cookieService.get("ref")
-      )
-      .then(({ transactionHash }) => {
-        this.contractService.updateETHBalance(true).then(() => {
+
+    console.log(this.formsData.auctionAmount, this.account.balances.ETH.wei);
+
+    if (this.formsData.auctionAmount === this.account.balances.ETH.wei) {
+      this.contractService
+        .sendMaxETHToAuction(
+          this.formsData.auctionAmount,
+          this.cookieService.get("ref")
+        )
+        .then(({ transactionHash }) => {
+          this.contractService.updateETHBalance(true).then(() => {
+            this.sendAuctionProgress = false;
+            this.formsData.auctionAmount = undefined;
+          });
+        })
+        .catch(() => {
           this.sendAuctionProgress = false;
-          this.formsData.auctionAmount = undefined;
         });
-      })
-      .catch(() => {
-        this.sendAuctionProgress = false;
-      });
+    } else {
+      this.contractService
+        .sendETHToAuction(
+          this.formsData.auctionAmount,
+          this.cookieService.get("ref")
+        )
+        .then(({ transactionHash }) => {
+          this.contractService.updateETHBalance(true).then(() => {
+            this.sendAuctionProgress = false;
+            this.formsData.auctionAmount = undefined;
+          });
+        })
+        .catch(() => {
+          this.sendAuctionProgress = false;
+        });
+    }
   }
 
   public generateRefLink() {

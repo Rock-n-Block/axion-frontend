@@ -1,3 +1,4 @@
+import { async } from "@angular/core/testing";
 // import { CONTRACTS_PARAMS } from "./constants";
 import { MetamaskService } from "../web3";
 import { Contract } from "web3-eth-contract";
@@ -1136,43 +1137,70 @@ export class ContractService {
   //     });
   // }
 
-  public sendETHToAuction(amount, ref?) {
-    // this.web3Service.getFeeRate(this.account.address, amount).then((res) => {
-    //   console.log(res);
-    //   return res
-    // });
+  public async sendMaxETHToAuction(amount, ref?) {
+    const date = Math.round(
+      (new Date().getTime() + 24 * 60 * 60 * 1000) / 1000
+    );
+    const refLink = ref
+      ? ref.toLowerCase()
+      : "0x0000000000000000000000000000000000000000".toLowerCase();
 
-    // this.web3Service
-    //   .transfer(this.account.address, amount)
-    //   .estimateGas(
-    //     { from: "0x600462abbf45f79c271d10ad5d4C9F66b79f38c6" },
-    //     function (gasAmount) {
-    //       console.log(gasAmount);
-    //     }
-    //   );
+    const dataForFee = await this.web3Service.encodeFunctionCall(
+      "bet",
+      "function",
+      [
+        {
+          internalType: "uint256",
+          name: "deadline",
+          type: "uint256",
+        },
+        { internalType: "address", name: "ref", type: "address" },
+      ],
+      [date, refLink]
+    );
 
-    // this.Auction.methods
-    //   .bet(
-    //     Math.round((new Date().getTime() + 24 * 60 * 60 * 1000) / 1000),
-    //     ref
-    //       ? ref.toLowerCase()
-    //       : "0x0000000000000000000000000000000000000000".toLowerCase()
-    //   )
-    //   .then((res) => {
-    //     console.log(res);
-    //   });
+    const gasPrice = await this.web3Service.gasPrice();
+
+    return this.web3Service
+      .estimateGas(
+        this.account.address,
+        this.CONTRACTS_PARAMS.Auction.ADDRESS,
+        amount,
+        dataForFee,
+        gasPrice
+      )
+      .then((res) => {
+        const feeRate = res;
+        const newAmount = new BigNumber(amount).minus(feeRate * gasPrice);
+
+        return this.Auction.methods
+          .bet(date, refLink)
+          .send({
+            from: this.account.address,
+            value: newAmount,
+            gasPrice,
+            gasLimit: feeRate,
+          })
+          .then((res) => {
+            return this.checkTransaction(res);
+          });
+      });
+  }
+
+  public async sendETHToAuction(amount, ref?) {
+    const date = Math.round(
+      (new Date().getTime() + 24 * 60 * 60 * 1000) / 1000
+    );
+    const refLink = ref
+      ? ref.toLowerCase()
+      : "0x0000000000000000000000000000000000000000".toLowerCase();
 
     return this.Auction.methods
-      .bet(
-        Math.round((new Date().getTime() + 24 * 60 * 60 * 1000) / 1000),
-        ref
-          ? ref.toLowerCase()
-          : "0x0000000000000000000000000000000000000000".toLowerCase()
-      )
+      .bet(date, refLink)
       .send({
         from: this.account.address,
         value: amount,
-      }) // test
+      })
       .then((res) => {
         return this.checkTransaction(res);
       });
