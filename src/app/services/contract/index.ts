@@ -1,4 +1,3 @@
-import { async } from "@angular/core/testing";
 // import { CONTRACTS_PARAMS } from "./constants";
 import { MetamaskService } from "../web3";
 import { Contract } from "web3-eth-contract";

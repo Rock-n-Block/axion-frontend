@@ -1,4 +1,4 @@
-<section class="axn-section axn-page-claim">
+<section class="axn-section axn-page-claim" *ngIf="account">
   <div class="axn-title-block">
     <span class="axn-title">HEX > Axion</span>
     <div
@@ -176,7 +176,7 @@
   </div>
 </section>
 
-<section class="axn-section axn-page-claim axn-page-form">
+<section class="axn-section axn-page-claim axn-page-form" *ngIf="account">
   <div class="axn-title-block">
     <span class="axn-title">HEX > Axion</span>
     <div
@@ -393,6 +393,24 @@
           auction.
         </span>
       </div>
+    </div>
+  </div>
+</section>
+
+<section class="axn-section axn-page-claim" *ngIf="account">
+  <div class="axn-title-block">
+    <span class="axn-title">HEX > Axion</span>
+    <div
+      class="question"
+      mat-raised-button
+      matTooltip="The free claim of Axion for HEX holders on the 28th of May 2020"
+      matTooltipClass="question__tooltip"
+    ></div>
+  </div>
+
+  <div class="axn-container axn-container-dark" *ngIf="!account">
+    <div class="axn-page-claim-date">
+      <span class="axn-text">Enter by Metamask</span>
     </div>
   </div>
 </section>

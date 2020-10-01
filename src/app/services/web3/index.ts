@@ -10,7 +10,7 @@ const networks = {
   testnet: "rinkeby",
 };
 
-const usedNetworkVersion = IS_PRODUCTION ? 1 : 3;
+const usedNetworkVersion = IS_PRODUCTION ? 1 : 4;
 const net = usedNetworkVersion === 1 ? "mainnet" : "rinkeby";
 
 @Injectable({
