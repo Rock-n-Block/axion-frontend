@@ -41,7 +41,7 @@
       "ABI": []
     }
   },
-  "ropsten": {
+  "rinkeby": {
     "H2T": {
       "ADDRESS": "0xcc8c88cF7c74faCF31D3425E5c92cF2D0F26732D",
       "ABI": [

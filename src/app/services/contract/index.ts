@@ -62,7 +62,7 @@ export class ContractService {
           // const IS_PRODUCTION = location.protocol === "https:";
           const IS_PRODUCTION = false;
           const CONTRACTS_PARAMS =
-            result[IS_PRODUCTION ? "mainnet" : "ropsten"];
+            result[IS_PRODUCTION ? "mainnet" : "rinkeby"];
 
           this.CONTRACTS_PARAMS = CONTRACTS_PARAMS;
           this.web3Service = new MetamaskService();

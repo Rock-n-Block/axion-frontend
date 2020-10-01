@@ -7,11 +7,11 @@ const IS_PRODUCTION = false;
 
 const networks = {
   production: "mainnet",
-  testnet: "ropsten",
+  testnet: "rinkeby",
 };
 
 const usedNetworkVersion = IS_PRODUCTION ? 1 : 3;
-const net = usedNetworkVersion === 1 ? "mainnet" : "ropsten";
+const net = usedNetworkVersion === 1 ? "mainnet" : "rinkeby";
 
 @Injectable({
   providedIn: "root",
