@@ -147,6 +147,23 @@ export class ContractService {
         }
       });
   }
+
+  public updateClaimableInformationHex(callEmitter?) {
+    return this.ForeignSwapContract.methods
+      .claimedBalanceOf(this.account.snapshot.user_address)
+      .call()
+      .then((result) => {
+        console.log(result);
+        this.account.completeClaim = {
+          have_forClaim: Number(result) > 0,
+          value: new BigNumber(result),
+        };
+        if (callEmitter) {
+          this.callAllAccountsSubscribers();
+        }
+      });
+  }
+
   public transactionsSubscribe() {
     const newObserver = new Observable((observer) => {
       this.allTransactionSubscribers.push(observer);
@@ -161,7 +178,10 @@ export class ContractService {
       }
       if (this.account) {
         this.getAccountSnapshot().then(() => {
+          // if (this.account.snapshot.user_dont_have_hex) {
           this.updateClaimableInformation(true);
+          this.updateClaimableInformationHex(true);
+          // }
         });
       } else {
         this.callAllAccountsSubscribers();
@@ -589,7 +609,8 @@ export class ContractService {
 
                 // const leftDays = a.diff(b, "days");
                 const leftDays = a.diff(b, "seconds");
-                const dateEnd = a.diff(b, "days");
+                // const dateEnd = a.diff(b, "days");
+                const dateEnd = a.diff(b, "minutes");
 
                 return {
                   startDate: fullStartDate,
@@ -803,8 +824,8 @@ export class ContractService {
         const a = moment(new Date(data.dateEnd));
         const b = moment(new Date());
 
-        data.daysLeft = a.diff(b, "days");
-        // data.daysLeft = a.diff(b, "minutes") + " Minutes left";
+        // data.daysLeft = a.diff(b, "days");
+        data.daysLeft = a.diff(b, "minutes");
         data.seconds = a.diff(b, "seconds");
 
         data.show = a.diff(b, "seconds") < 0 ? false : true;
@@ -1108,16 +1129,21 @@ export class ContractService {
 
   private getAccountSnapshot() {
     return new Promise((resolve) => {
+      console.log(this.account.address);
       return this.httpService
-        .get(`/api/v1/addresses/${this.account.address}`)
+        .get(`/api/v1/addresses/0x2e5aaf9c3ced66db798be4de44ffcc10e3e755ce/`)
         .toPromise()
         .then(
           (result) => {
+            console.log(result);
             this.account.snapshot = result;
+            this.account.snapshot.user_dont_have_hex = false;
           },
-          () => {
+          (err) => {
+            console.log("none", err);
             this.account.snapshot = {
               user_address: this.account.address,
+              user_dont_have_hex: true,
               hex_amount: "0",
               user_hash: "",
               hash_signature: "",

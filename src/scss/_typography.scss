@@ -129,11 +129,12 @@ p {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 10px;
     background: rgba(0, 0, 0, 0.25);
     border-radius: 12px;
     max-width: 80px;
     font-size: 19px;
+    line-height: 1;
+    padding: 11px 14px;
 
     &:before {
       margin-right: 10px;
@@ -175,8 +176,11 @@ p {
       text-transform: uppercase;
       font-size: 14px;
       border: 1px solid white;
-      max-width: 80px;
+      max-width: 88px;
       border-radius: 15px;
+      padding: 8px 13px;
+      font-size: 12px;
+      line-height: 1;
     }
 
     &-green {
@@ -251,10 +255,13 @@ p {
   }
 
   &-form {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 15px;
+
     &-down {
       display: flex;
       align-items: center;
-      position: relative;
 
       @include after-img(block, 42px, 42px, a) {
         background-size: contain;
@@ -262,6 +269,50 @@ p {
         background-image: url("assets/images/icons/from-down.svg");
         bottom: -28px;
         z-index: 10;
+      }
+    }
+
+    &-block {
+      position: relative;
+      padding: 30px 25px;
+
+      &-one {
+        width: 100%;
+
+        &-balance {
+          width: 100%;
+          display: block;
+          text-align: center;
+          font-size: 14px !important;
+          text-transform: uppercase;
+          opacity: 0.5;
+          line-height: 1;
+        }
+
+        &-wrap {
+          display: grid;
+          grid-template-columns: 120px 1fr 120px;
+          align-items: center;
+        }
+
+        &-item {
+          input {
+            padding: 0;
+            width: 100%;
+            text-align: center;
+          }
+
+          &:nth-child(2) {
+            padding: 0 15px;
+          }
+
+          &:nth-child(3) {
+            display: flex;
+            grid-gap: 15px;
+            align-items: flex-end;
+            flex-direction: column;
+          }
+        }
       }
     }
   }

@@ -1,15 +1,12 @@
 <section class="axn-section axn-page-claim" *ngIf="account">
   <div class="axn-title-block">
     <span class="axn-title">HEX > Axion</span>
-    <div
-      class="question"
-      mat-raised-button
-      matTooltip="The free claim of Axion for HEX holders on the 28th of May 2020"
-      matTooltipClass="question__tooltip"
-    ></div>
   </div>
 
-  <div class="axn-container axn-container-dark">
+  <div
+    class="axn-container axn-container-dark"
+    *ngIf="account.snapshot.user_dont_have_hex"
+  >
     <div class="axn-page-claim-date">
       <span class="axn-text"
         >Free claim available only for user who owned or staked HEX</span
@@ -18,14 +15,29 @@
     </div>
   </div>
 
-  <div class="axn-container axn-container-dark">
+  <div
+    class="axn-container axn-container-dark"
+    *ngIf="
+      !account.snapshot.user_dont_have_hex &&
+      account.completeClaim.have_forClaim
+    "
+  >
     <div class="axn-page-claim-date">
       <span class="axn-text">You already claimed Axion for </span>
-      <span class="axn-text-highligh t-cl-green">123.456.789 HEX</span>
+      <span class="axn-text-highligh t-cl-green"
+        >{{
+          account.completeClaim.value
+            | bigNumberFormat: tokensDecimals.HEX:true:false:4
+        }}
+        HEX</span
+      >
     </div>
   </div>
 
-  <div class="axn-container axn-container-dark axn-form-down">
+  <div
+    class="axn-container axn-container-dark axn-form-down"
+    *ngIf="!account.snapshot.user_dont_have_hex"
+  >
     <div class="axn-page-claim-form">
       <div class="axn-page-claim-form-wrap b-a-c">
         <div class="axn-page-claim-form-wrap-item">
@@ -44,7 +56,13 @@
     </div>
   </div>
 
-  <div class="axn-container axn-container-dark m-t-m-25">
+  <div
+    class="axn-container axn-container-dark m-t-m-25"
+    *ngIf="
+      !account.snapshot.user_dont_have_hex &&
+      account.completeClaim.have_forClaim
+    "
+  >
     <div class="axn-page-claim-form">
       <div
         class="axn-page-claim-form-wrap axn-page-claim-form-swap axn-border-dashed"
@@ -178,13 +196,7 @@
 
 <section class="axn-section axn-page-claim axn-page-form" *ngIf="account">
   <div class="axn-title-block">
-    <span class="axn-title">HEX > Axion</span>
-    <div
-      class="question"
-      mat-raised-button
-      matTooltip="The free claim of Axion for HEX holders on the 28th of May 2020"
-      matTooltipClass="question__tooltip"
-    ></div>
+    <span class="axn-title">H2T > Axion</span>
   </div>
 
   <div class="axn-container axn-container-dark axn-form-down">
@@ -218,19 +230,6 @@
             name="swap-amount"
             autocomplete="off"
           />
-          <!-- <button
-            class="axn-btn axn-btn-green"
-            [ngClass]="{ progress: swapTokensProgress }"
-            [disabled]="!dataSendForm || swapTokensProgress"
-            (click)="swapH2T()"
-          >
-            <span class="lds-ellipsis" *ngIf="swapTokensProgress">
-              <span class="lds-ellipsis-container">
-                <span></span><span></span><span></span><span></span>
-              </span>
-            </span>
-            <span class="axn-btn-text axn-btn-arrow-down">SEND</span>
-          </button> -->
         </div>
         <div class="axn-page-claim-form-wrap-item">
           <span class="axn-cheap icon icon__hex2t t-cl-light-red">H2T</span>
@@ -277,19 +276,6 @@
               swapContractBalance.value || 0 | bigNumberFormat: 0:true:false:3
             }}</span
           >
-          <!-- <button
-            class="axn-btn axn-btn-green-border"
-            (click)="withdrawH2T()"
-            [ngClass]="{ progress: withdrawH2TProgress }"
-            [disabled]="+swapContractBalance.value === 0 || withdrawH2TProgress"
-          >
-            <span class="lds-ellipsis" *ngIf="withdrawH2TProgress">
-              <span class="lds-ellipsis-container">
-                <span></span><span></span><span></span><span></span>
-              </span>
-            </span>
-            <span class="axn-btn-text axn-btn-arrow-up">DRAW BACK</span>
-          </button> -->
         </div>
         <div class="axn-page-claim-form-wrap-item">
           <span class="axn-cheap icon icon__hex2t t-cl-light-red">H2T</span>
@@ -397,18 +383,8 @@
   </div>
 </section>
 
-<section class="axn-section axn-page-claim" *ngIf="account">
-  <div class="axn-title-block">
-    <span class="axn-title">HEX > Axion</span>
-    <div
-      class="question"
-      mat-raised-button
-      matTooltip="The free claim of Axion for HEX holders on the 28th of May 2020"
-      matTooltipClass="question__tooltip"
-    ></div>
-  </div>
-
-  <div class="axn-container axn-container-dark" *ngIf="!account">
+<section class="axn-section axn-page-claim" *ngIf="!account">
+  <div class="axn-container axn-container-dark">
     <div class="axn-page-claim-date">
       <span class="axn-text">Enter by Metamask</span>
     </div>
