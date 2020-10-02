@@ -14,12 +14,9 @@
     cursor: default;
     display: flex;
     align-items: center;
-    background: rgba(0, 0, 0, 0.25);
     border-radius: 12px;
-    padding: 5px 15px;
     font-size: 16px;
     width: max-content;
-    margin: 10px auto;
 
     &:before {
       margin-right: 10px;
@@ -71,10 +68,14 @@ p {
   word-break: break-all;
 }
 
+span {
+  word-break: break-all;
+}
+
 .axn {
   &-section {
     max-width: 1030px;
-    width: 100%;
+    // width: 100%;
     margin: 0 auto;
     background-color: rgba(38, 26, 80, 0.25);
     border-radius: 15px;
@@ -88,6 +89,9 @@ p {
 
     @include b(750) {
       padding: 25px 15px 30px 15px;
+      display: flex;
+      flex-direction: column;
+      grid-gap: 0px;
     }
   }
 
@@ -98,6 +102,10 @@ p {
     flex-direction: column;
     justify-content: center;
     position: relative;
+
+    @include b(750) {
+      margin-top: 25px;
+    }
 
     &-dark {
       background-color: rgba(38, 26, 80, 0.5);
@@ -131,10 +139,23 @@ p {
     align-items: center;
     background: rgba(0, 0, 0, 0.25);
     border-radius: 12px;
-    max-width: 80px;
+    max-width: 100px;
     font-size: 19px;
     line-height: 1;
     padding: 11px 14px;
+
+    &-small {
+      font-size: 16px !important;
+      padding: 8px 12px;
+
+      &:before {
+        margin-right: 5px !important;
+        width: 18px;
+        height: 16px;
+        background-size: contain;
+        background-position: center;
+      }
+    }
 
     &:before {
       margin-right: 10px;
@@ -251,6 +272,24 @@ p {
 
     &-block {
       text-align: center;
+
+      &-button {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+
+        .axn-btn {
+          max-width: 200px;
+          padding: 10px;
+          margin: 0;
+        }
+
+        .axn-btn-reset {
+          max-width: 70px;
+          margin: 0;
+        }
+      }
     }
   }
 
@@ -258,6 +297,12 @@ p {
     display: grid;
     grid-template-columns: 1fr;
     grid-gap: 15px;
+
+    @include b(750) {
+      display: flex;
+      flex-direction: column;
+      grid-gap: 0px;
+    }
 
     &-down {
       display: flex;
@@ -269,6 +314,10 @@ p {
         background-image: url("assets/images/icons/from-down.svg");
         bottom: -28px;
         z-index: 10;
+
+        @include b(750) {
+          bottom: -33px;
+        }
       }
     }
 
@@ -278,6 +327,12 @@ p {
 
       &-one {
         width: 100%;
+
+        @include b(750) {
+          display: flex;
+          flex-direction: column;
+          grid-gap: 20px;
+        }
 
         &-balance {
           width: 100%;
@@ -293,6 +348,134 @@ p {
           display: grid;
           grid-template-columns: 120px 1fr 120px;
           align-items: center;
+
+          @include b(750) {
+            display: flex;
+            flex-direction: column;
+            grid-gap: 15px;
+          }
+        }
+
+        &-item {
+          @include b(750) {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+          }
+
+          input {
+            padding: 0;
+            width: 100%;
+            text-align: center;
+          }
+
+          &:nth-child(2) {
+            padding: 0 15px;
+          }
+
+          &:nth-child(3) {
+            display: flex;
+            grid-gap: 15px;
+            align-items: flex-end;
+            flex-direction: column;
+
+            @include b(750) {
+              align-items: center;
+            }
+          }
+        }
+      }
+
+      &-two {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        grid-gap: 15px;
+
+        &-price {
+          display: flex;
+          grid-gap: 10px;
+          justify-content: center;
+          align-items: center;
+
+          span {
+            font-size: 20px !important;
+          }
+
+          &-uni {
+            display: flex;
+            grid-gap: 10px;
+            justify-content: center;
+            align-items: center;
+
+            span {
+              font-size: 14px !important;
+            }
+          }
+
+          &-wrap {
+            display: flex;
+            flex-direction: column;
+            grid-gap: 10px;
+          }
+        }
+
+        &-value {
+          font-weight: 300 !important;
+          font-size: 25px !important;
+          line-height: 1;
+          text-transform: uppercase;
+        }
+
+        &-balance {
+          width: 100%;
+          display: block;
+          text-align: center;
+          font-size: 14px !important;
+          text-transform: uppercase;
+          line-height: 1;
+          color: #8670fa !important;
+        }
+
+        &-wrap {
+          display: grid;
+          grid-template-columns: 120px 1fr 120px;
+          align-items: center;
+
+          @include b(750) {
+            grid-template-columns: 1fr;
+          }
+        }
+
+        &-columns {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          align-items: center;
+
+          @include b(750) {
+            grid-template-columns: 1fr;
+            grid-gap: 25px;
+          }
+
+          &-item {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            grid-gap: 10px;
+
+            &:nth-child(1) {
+              border-right: 2px solid rgba(255, 255, 255, 0.2);
+
+              @include b(750) {
+                border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+                border-right: none;
+                padding-bottom: 25px;
+              }
+            }
+          }
         }
 
         &-item {
@@ -489,15 +672,42 @@ p {
                 align-items: center;
               }
             }
-
-            // .axn-btn-green,
-            // .axn-btn-green-border {
-            //   margin-top: 30px;
-            // }
           }
         }
       }
     }
+  }
+}
+
+.generated-link {
+  &-user {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &-btn {
+    &-copy {
+      background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2));
+      border-radius: 6px;
+      font-size: 16px;
+      text-align: center;
+      padding: 10px 15px;
+      color: white;
+      cursor: pointer;
+      border: 1px solid #37c8b4;
+    }
+  }
+
+  &-text {
+    color: #ffffff;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2));
+    font-size: 12px;
+    padding: 10px 15px;
+    margin-right: 10px;
+    border-radius: 5px;
+    width: 450px;
+    border: none;
   }
 }
 

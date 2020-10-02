@@ -27,7 +27,7 @@
       <span class="axn-text-highligh t-cl-green"
         >{{
           account.completeClaim.value
-            | bigNumberFormat: tokensDecimals.HEX:true:false:4
+            | bigNumberFormat: tokensDecimals.HEX:true:false:8
         }}
         HEX</span
       >
@@ -36,7 +36,10 @@
 
   <div
     class="axn-container axn-container-dark axn-form-down"
-    *ngIf="!account.snapshot.user_dont_have_hex"
+    *ngIf="
+      !account.snapshot.user_dont_have_hex &&
+      !account.completeClaim.have_forClaim
+    "
   >
     <div class="axn-page-claim-form">
       <div class="axn-page-claim-form-wrap b-a-c">
@@ -45,8 +48,8 @@
         </div>
         <div class="axn-page-claim-form-wrap-item t-a-c">
           <span class="axn-text-input">{{
-            (account ? account?.balances.HEX.wei || 0 : 0)
-              | bigNumberFormat: tokensDecimals.HEX:true:false:4
+            (account ? account.snapshot.show_hex || 0 : 0)
+              | bigNumberFormat: tokensDecimals.HEX:true:false:8
           }}</span>
         </div>
         <div class="axn-page-claim-form-wrap-item">
@@ -60,7 +63,7 @@
     class="axn-container axn-container-dark m-t-m-25"
     *ngIf="
       !account.snapshot.user_dont_have_hex &&
-      account.completeClaim.have_forClaim
+      !account.completeClaim.have_forClaim
     "
   >
     <div class="axn-page-claim-form">
@@ -73,7 +76,7 @@
         <div class="axn-page-claim-form-wrap-item t-a-c">
           <span class="axn-text-input t-cl-green">{{
             (account ? account.claimableInfo.claim || 0 : 0)
-              | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:4
+              | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:8
           }}</span>
         </div>
         <div class="axn-page-claim-form-wrap-item">
@@ -88,7 +91,7 @@
         <div class="axn-page-claim-form-wrap-item t-a-c">
           <span class="axn-text-input t-cl-light-red">{{
             (account ? account.claimableInfo.penalty || 0 : 0)
-              | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:4
+              | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:8
           }}</span>
         </div>
         <div class="axn-page-claim-form-wrap-item">
@@ -196,167 +199,173 @@
 
 <section class="axn-section axn-page-claim axn-page-form" *ngIf="account">
   <div class="axn-title-block">
-    <span class="axn-title">H2T > Axion</span>
+    <span class="axn-title">HEX2T > Axion</span>
   </div>
 
-  <div class="axn-container axn-container-dark axn-form-down">
-    <div class="axn-page-claim-form">
-      <span class="axn-text t-t-u t-cl-gray t-fz-14 t-a-r"
-        >Balance
-        {{
-          (account ? account?.balances.H2T.wei || 0 : 0)
-            | bigNumberFormat: tokensDecimals.H2T:true:false:4
-        }}</span
-      >
-      <div class="axn-page-claim-form-wrap">
-        <div class="axn-page-claim-form-wrap-item">
-          <span class="axn-text t-cl-purple t-t-u">From</span>
+  <div class="axn-form">
+    <div class="axn-container axn-container-dark axn-form-down">
+      <div class="axn-page-claim-form">
+        <span class="axn-text t-t-u t-cl-gray t-fz-14 t-a-r"
+          >Balance
+          {{
+            (account ? account?.balances.H2T.wei || 0 : 0)
+              | bigNumberFormat: tokensDecimals.H2T:true:false:8
+          }}</span
+        >
+        <div class="axn-page-claim-form-wrap">
+          <div class="axn-page-claim-form-wrap-item">
+            <span class="axn-text t-cl-purple t-t-u">From</span>
+          </div>
+          <div class="axn-page-claim-form-wrap-item">
+            <input
+              type="text"
+              *ngIf="account"
+              required="required"
+              class="axn-input"
+              placeholder="0.0"
+              [appBigNumber]="{
+                decimals: tokensDecimals['H2T'],
+                min: 1,
+                max: account?.balances.H2T.wei
+              }"
+              [maxValueChange]="onChangeAccount"
+              (ngModelChange)="onChangeAmount()"
+              [(ngModel)]="formsData.swapAmount"
+              name="swap-amount"
+              autocomplete="off"
+            />
+          </div>
+          <div class="axn-page-claim-form-wrap-item">
+            <span class="axn-cheap icon icon__hex2t t-cl-light-red">HEX2T</span>
+            <span
+              class="axn-btn axn-btn-max"
+              (click)="
+                formsData.swapAmount = account?.balances.H2T.shortBigNumber.toString()
+              "
+              >Send max</span
+            >
+          </div>
         </div>
-        <div class="axn-page-claim-form-wrap-item">
-          <input
-            type="text"
-            *ngIf="account"
-            required="required"
-            class="axn-input"
-            placeholder="0.0"
-            [appBigNumber]="{
-              decimals: tokensDecimals['H2T'],
-              min: 1,
-              max: account?.balances.H2T.wei
-            }"
-            [maxValueChange]="onChangeAccount"
-            (ngModelChange)="onChangeAmount()"
-            [(ngModel)]="formsData.swapAmount"
-            name="swap-amount"
-            autocomplete="off"
-          />
-        </div>
-        <div class="axn-page-claim-form-wrap-item">
-          <span class="axn-cheap icon icon__hex2t t-cl-light-red">H2T</span>
-          <span
-            class="axn-btn axn-btn-max"
-            (click)="
-              formsData.swapAmount = account?.balances.H2T.shortBigNumber.toString()
-            "
-            >Send max</span
-          >
-        </div>
-      </div>
-      <div class="axn-page-claim-form-wrap m-t-m-20">
-        <div class="axn-page-claim-form-wrap-item"></div>
-        <div class="axn-page-claim-form-wrap-item">
-          <button
-            class="axn-btn axn-btn-green"
-            [ngClass]="{ progress: swapTokensProgress }"
-            [disabled]="!dataSendForm || swapTokensProgress"
-            (click)="swapH2T()"
-          >
-            <span class="lds-ellipsis" *ngIf="swapTokensProgress">
-              <span class="lds-ellipsis-container">
-                <span></span><span></span><span></span><span></span>
+        <div class="axn-page-claim-form-wrap m-t-m-20">
+          <div class="axn-page-claim-form-wrap-item"></div>
+          <div class="axn-page-claim-form-wrap-item">
+            <button
+              class="axn-btn axn-btn-green"
+              [ngClass]="{ progress: swapTokensProgress }"
+              [disabled]="!dataSendForm || swapTokensProgress"
+              (click)="swapH2T()"
+            >
+              <span class="lds-ellipsis" *ngIf="swapTokensProgress">
+                <span class="lds-ellipsis-container">
+                  <span></span><span></span><span></span><span></span>
+                </span>
               </span>
-            </span>
-            <span class="axn-btn-text axn-btn-arrow-down">SEND</span>
-          </button>
+              <span class="axn-btn-text axn-btn-arrow-down">SEND</span>
+            </button>
+          </div>
+          <div class="axn-page-claim-form-wrap-item"></div>
         </div>
-        <div class="axn-page-claim-form-wrap-item"></div>
       </div>
     </div>
-  </div>
 
-  <div class="axn-container axn-container-dark axn-form-down">
-    <div class="axn-page-claim-form">
-      <div class="axn-page-claim-form-wrap">
-        <div class="axn-page-claim-form-wrap-item">
-          <span class="axn-text t-cl-purple t-t-u">Swap contract</span>
+    <div class="axn-container axn-container-dark axn-form-down">
+      <div class="axn-page-claim-form">
+        <div class="axn-page-claim-form-wrap">
+          <div class="axn-page-claim-form-wrap-item">
+            <span class="axn-text t-cl-purple t-t-u">Swap contract</span>
+          </div>
+          <div class="axn-page-claim-form-wrap-item t-a-c">
+            <span class="axn-text-input">
+              {{
+                swapContractBalance.value || 0 | bigNumberFormat: 0:true:false:8
+              }}</span
+            >
+          </div>
+          <div class="axn-page-claim-form-wrap-item">
+            <span class="axn-cheap icon icon__hex2t t-cl-light-red">HEX2T</span>
+          </div>
         </div>
-        <div class="axn-page-claim-form-wrap-item t-a-c">
-          <span class="axn-text-input">
-            {{
-              swapContractBalance.value || 0 | bigNumberFormat: 0:true:false:3
-            }}</span
-          >
-        </div>
-        <div class="axn-page-claim-form-wrap-item">
-          <span class="axn-cheap icon icon__hex2t t-cl-light-red">H2T</span>
-        </div>
-      </div>
 
-      <div class="axn-page-claim-form-wrap">
-        <div class="axn-page-claim-form-wrap-item"></div>
-        <div class="axn-page-claim-form-wrap-item t-a-c">
-          <button
-            class="axn-btn axn-btn-green-border"
-            (click)="withdrawH2T()"
-            [ngClass]="{ progress: withdrawH2TProgress }"
-            [disabled]="+swapContractBalance.value === 0 || withdrawH2TProgress"
-          >
-            <span class="lds-ellipsis" *ngIf="withdrawH2TProgress">
-              <span class="lds-ellipsis-container">
-                <span></span><span></span><span></span><span></span>
+        <div class="axn-page-claim-form-wrap">
+          <div class="axn-page-claim-form-wrap-item"></div>
+          <div class="axn-page-claim-form-wrap-item t-a-c">
+            <button
+              class="axn-btn axn-btn-green-border"
+              (click)="withdrawH2T()"
+              [ngClass]="{ progress: withdrawH2TProgress }"
+              [disabled]="
+                +swapContractBalance.value === 0 || withdrawH2TProgress
+              "
+            >
+              <span class="lds-ellipsis" *ngIf="withdrawH2TProgress">
+                <span class="lds-ellipsis-container">
+                  <span></span><span></span><span></span><span></span>
+                </span>
               </span>
-            </span>
-            <span class="axn-btn-text axn-btn-arrow-up">DRAW BACK</span>
-          </button>
+              <span class="axn-btn-text axn-btn-arrow-up">DRAW BACK</span>
+            </button>
+          </div>
+          <div class="axn-page-claim-form-wrap-item"></div>
         </div>
-        <div class="axn-page-claim-form-wrap-item"></div>
       </div>
     </div>
-  </div>
 
-  <div class="axn-container axn-container-dark">
-    <div class="axn-page-claim-form">
-      <div
-        class="axn-page-claim-form-wrap axn-page-claim-form-swap axn-border-dashed"
-      >
-        <div class="axn-page-claim-form-wrap-item">
-          <span class="axn-text t-cl-purple t-t-u">TO</span>
+    <div class="axn-container axn-container-dark">
+      <div class="axn-page-claim-form">
+        <div
+          class="axn-page-claim-form-wrap axn-page-claim-form-swap axn-border-dashed"
+        >
+          <div class="axn-page-claim-form-wrap-item">
+            <span class="axn-text t-cl-purple t-t-u">TO</span>
+          </div>
+          <div class="axn-page-claim-form-wrap-item t-a-c">
+            <span class="axn-text-input t-cl-green">{{
+              toSwap || 0 | bigNumberFormat: tokensDecimals.HEX2X:true:false:8
+            }}</span>
+          </div>
+          <div class="axn-page-claim-form-wrap-item">
+            <span class="axn-cheap icon icon__axion t-cl-light-red">AXN</span>
+          </div>
         </div>
-        <div class="axn-page-claim-form-wrap-item t-a-c">
-          <span class="axn-text-input t-cl-green">{{
-            toSwap || 0 | bigNumberFormat: tokensDecimals.HEX2X:true:false:3
-          }}</span>
-        </div>
-        <div class="axn-page-claim-form-wrap-item">
-          <span class="axn-cheap icon icon__axion t-cl-light-red">AXN</span>
-        </div>
-      </div>
 
-      <div class="axn-page-claim-form-wrap axn-page-claim-form-swap axn-border">
-        <div class="axn-page-claim-form-wrap-item">
-          <span class="axn-text t-cl-purple t-t-u">Penalty</span>
+        <div
+          class="axn-page-claim-form-wrap axn-page-claim-form-swap axn-border"
+        >
+          <div class="axn-page-claim-form-wrap-item">
+            <span class="axn-text t-cl-purple t-t-u">Penalty</span>
+          </div>
+          <div class="axn-page-claim-form-wrap-item t-a-c">
+            <span class="axn-text-input t-cl-light-red">{{
+              clacPenalty || 0
+                | bigNumberFormat: tokensDecimals.HEX2X:true:false:8
+            }}</span>
+          </div>
+          <div class="axn-page-claim-form-wrap-item">
+            <span class="axn-cheap icon icon__axion t-cl-light-red">AXN</span>
+          </div>
         </div>
-        <div class="axn-page-claim-form-wrap-item t-a-c">
-          <span class="axn-text-input t-cl-light-red">{{
-            clacPenalty || 0
-              | bigNumberFormat: tokensDecimals.HEX2X:true:false:3
-          }}</span>
-        </div>
-        <div class="axn-page-claim-form-wrap-item">
-          <span class="axn-cheap icon icon__axion t-cl-light-red">AXN</span>
-        </div>
-      </div>
 
-      <div class="axn-page-claim-form-wrap">
-        <div class="axn-page-claim-form-wrap-item"></div>
-        <div class="axn-page-claim-form-wrap-item">
-          <button
-            class="axn-btn axn-btn-green m-t-15"
-            (click)="burnH2T()"
-            [ngClass]="{ progress: burnTokensProgress }"
-            [disabled]="
-              swapContractBalance.fullValue === 0 || burnTokensProgress
-            "
-          >
-            <span class="lds-ellipsis" *ngIf="burnTokensProgress">
-              <span class="lds-ellipsis-container">
-                <span></span><span></span><span></span><span></span>
+        <div class="axn-page-claim-form-wrap">
+          <div class="axn-page-claim-form-wrap-item"></div>
+          <div class="axn-page-claim-form-wrap-item">
+            <button
+              class="axn-btn axn-btn-green m-t-15"
+              (click)="burnH2T()"
+              [ngClass]="{ progress: burnTokensProgress }"
+              [disabled]="
+                swapContractBalance.fullValue === 0 || burnTokensProgress
+              "
+            >
+              <span class="lds-ellipsis" *ngIf="burnTokensProgress">
+                <span class="lds-ellipsis-container">
+                  <span></span><span></span><span></span><span></span>
+                </span>
               </span>
-            </span>
-            <span class="axn-btn-text">SWAP</span>
-          </button>
+              <span class="axn-btn-text">SWAP</span>
+            </button>
+          </div>
+          <div class="axn-page-claim-form-wrap-item"></div>
         </div>
-        <div class="axn-page-claim-form-wrap-item"></div>
       </div>
     </div>
   </div>
@@ -384,7 +393,7 @@
 </section>
 
 <section class="axn-section axn-page-claim" *ngIf="!account">
-  <div class="axn-container axn-container-dark">
+  <div class="axn-container">
     <div class="axn-page-claim-date">
       <span class="axn-text">Enter by Metamask</span>
     </div>

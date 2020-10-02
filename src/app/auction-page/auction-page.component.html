@@ -1,240 +1,120 @@
 <section class="axn-section axn-page-auction" *ngIf="account">
   <div class="axn-title-block">
     <span class="axn-title">Auction</span>
-    <div
-      class="question"
-      mat-raised-button
-      matTooltip="The free claim of Axion for HEX holders on the 28th of May 2020"
-      matTooltipClass="question__tooltip"
-    ></div>
-  </div>
-
-  <div class="axn-container axn-container-dark axn-form-down">
-    <div class="axn-page-claim-form">
-      <span class="axn-text t-t-u t-cl-gray t-fz-14 t-a-r">Balance 00</span>
-      <div class="axn-page-claim-form-wrap">
-        <div class="axn-page-claim-form-wrap-item">
-          <span class="axn-text t-cl-purple t-t-u">Input</span>
-        </div>
-        <div class="axn-page-claim-form-wrap-item">
-          <input
-            type="text"
-            *ngIf="account"
-            required="required"
-            class="axn-input"
-            placeholder="0.000.000.000.000.000.000.000.000.000.000"
-            autocomplete="off"
-          />
-        </div>
-        <div class="axn-page-claim-form-wrap-item">
-          <span class="axn-cheap icon icon__eth-purple">ETH</span>
-          <span class="axn-btn axn-btn-max">Send max</span>
-        </div>
-      </div>
-      <div class="axn-page-claim-form-wrap m-t-m-20">
-        <div class="axn-page-claim-form-wrap-item"></div>
-        <div class="axn-page-claim-form-wrap-item">
-          <button class="axn-btn axn-btn-green">
-            <span class="lds-ellipsis" *ngIf="false">
-              <span class="lds-ellipsis-container">
-                <span></span><span></span><span></span><span></span>
-              </span>
-            </span>
-            <span class="axn-btn-text axn-btn-arrow-down">SEND</span>
-          </button>
-        </div>
-        <div class="axn-page-claim-form-wrap-item"></div>
-      </div>
-    </div>
   </div>
 
   <div class="axn-form">
     <div class="axn-container axn-container-dark axn-form-block axn-form-down">
       <div class="axn-form-block-one">
-        <span class="axn-text axn-form-block-one-balance">Balance 00</span>
-        <div class="axn-form-block-one-wrap">
-          <div class="axn-page-form-one-item">
-            <span class="axn-text t-cl-purple t-t-u">Input</span>
-          </div>
-          <div class="axn-form-block-one-item">
-            <input
-              type="text"
-              *ngIf="account"
-              required="required"
-              class="axn-input"
-              placeholder="0.000.000.000.000.000.000.000.000.000.000"
-              autocomplete="off"
-            />
-          </div>
-          <div class="axn-form-block-one-item">
-            <span class="axn-cheap icon icon__eth-purple">ETH</span>
-            <span class="axn-btn axn-btn-max">Send max</span>
-          </div>
-        </div>
-        <div class="axn-form-block-one-wrap">
-          <div class="axn-form-block-one-item"></div>
-          <div class="axn-form-block-one-item">
-            <button class="axn-btn axn-btn-green">
-              <span class="lds-ellipsis" *ngIf="false">
-                <span class="lds-ellipsis-container">
-                  <span></span><span></span><span></span><span></span>
-                </span>
-              </span>
-              <span class="axn-btn-text axn-btn-arrow-down">SEND</span>
-            </button>
-          </div>
-          <div class="axn-form-block-one-item"></div>
-        </div>
-      </div>
-    </div>
-    <div class="axn-container axn-container-dark axn-form-block">
-      <div class="axn-form-block-one">
-        <span class="axn-text axn-form-block-one-balance">Balance 00</span>
-        <div class="axn-form-block-one-wrap">
-          <div class="axn-page-form-one-item">
-            <span class="axn-text t-cl-purple t-t-u">Input</span>
-          </div>
-          <div class="axn-form-block-one-item">
-            <input
-              type="text"
-              *ngIf="account"
-              required="required"
-              class="axn-input"
-              placeholder="0.000.000.000.000.000.000.000.000.000.000"
-              autocomplete="off"
-            />
-          </div>
-          <div class="axn-form-block-one-item">
-            <span class="axn-cheap icon icon__eth-purple">ETH</span>
-            <span class="axn-btn axn-btn-max">Send max</span>
-          </div>
-        </div>
-        <div class="axn-form-block-one-wrap">
-          <div class="axn-form-block-one-item"></div>
-          <div class="axn-form-block-one-item">
-            <button class="axn-btn axn-btn-green">
-              <span class="lds-ellipsis" *ngIf="false">
-                <span class="lds-ellipsis-container">
-                  <span></span><span></span><span></span><span></span>
-                </span>
-              </span>
-              <span class="axn-btn-text axn-btn-arrow-down">SEND</span>
-            </button>
-          </div>
-          <div class="axn-form-block-one-item"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="axn-container axn-container-dark">
-    <div class="axn-page-claim-date">
-      <span class="axn-text"
-        >Free claim available only for user who owned or staked HEX</span
-      >
-      <span class="axn-text-highligh t-cl-green">on 28th of May 2020</span>
-    </div>
-  </div>
-
-  <div class="axn-container axn-container-dark">
-    <div class="axn-page-claim-date">
-      <span class="axn-text">You already claimed Axion for </span>
-      <span class="axn-text-highligh t-cl-green">123.456.789 HEX</span>
-    </div>
-  </div>
-
-  <div class="axn-container axn-container-dark axn-form-down">
-    <div class="axn-page-claim-form">
-      <div class="axn-page-claim-form-wrap b-a-c">
-        <div class="axn-page-claim-form-wrap-item">
-          <span class="axn-text t-cl-purple t-t-u">From</span>
-        </div>
-        <div class="axn-page-claim-form-wrap-item t-a-c">
-          <span class="axn-text-input">55</span>
-        </div>
-        <div class="axn-page-claim-form-wrap-item">
-          <span class="axn-cheap icon icon__axion t-cl-light-red">HEX</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="axn-container axn-container-dark m-t-m-25">
-    <div class="axn-page-claim-form">
-      <div
-        class="axn-page-claim-form-wrap axn-page-claim-form-swap axn-border-dashed"
-      >
-        <div class="axn-page-claim-form-wrap-item">
-          <span class="axn-text t-cl-purple t-t-u">TO</span>
-        </div>
-        <div class="axn-page-claim-form-wrap-item t-a-c">
-          <span class="axn-text-input t-cl-green">55</span>
-        </div>
-        <div class="axn-page-claim-form-wrap-item">
-          <span class="axn-cheap icon icon__axion t-cl-light-red">AXN</span>
-        </div>
-      </div>
-
-      <div class="axn-page-claim-form-wrap axn-page-claim-form-swap axn-border">
-        <div class="axn-page-claim-form-wrap-item">
-          <span class="axn-text t-cl-purple t-t-u">Penalty</span>
-        </div>
-        <div class="axn-page-claim-form-wrap-item t-a-c">
-          <span class="axn-text-input t-cl-light-red">33</span>
-        </div>
-        <div class="axn-page-claim-form-wrap-item">
-          <span class="axn-cheap icon icon__axion t-cl-light-red">AXN</span>
-        </div>
-      </div>
-
-      <div class="axn-page-claim-form-wrap">
-        <div class="axn-page-claim-form-wrap-item"></div>
-        <div class="axn-page-claim-form-wrap-item">
-          <button class="axn-btn axn-btn-green m-t-15">
-            <span class="lds-ellipsis" *ngIf="false">
-              <span class="lds-ellipsis-container">
-                <span></span><span></span><span></span><span></span>
-              </span>
-            </span>
-            <span>SWAP</span>
-          </button>
-        </div>
-        <div class="axn-page-claim-form-wrap-item"></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="axn-container axn-container-light">
-    <div class="axn-page-claim-snapshot">
-      <span class="axn-text t-cl-purple t-a-c t-t-u">HEX Snapshot</span>
-      <p class="axn-text t-fz-14">
-        The claim is only available to users who own or stake HEX tokens on May
-        28, 2020. A snapshot with a list of user addresses and the amount of the
-        claim can be checked at
-        <a
-          class="axn-link"
-          href="https://rinkeby.etherscan.io/token/0xa8ebbb3a410070c2736b09c30f338cf99a8594ae"
-          target="_blank"
-          >https://rinkeby.etherscan.io/token/0xa8ebbb3a410070c2736b09c30f338cf99a8594ae</a
+        <span class="axn-text axn-form-block-one-balance"
+          >Balance {{ account?.balances?.ETH.display }}</span
         >
-      </p>
+        <div class="axn-form-block-one-wrap">
+          <div class="axn-form-block-one-item">
+            <span class="axn-text t-cl-purple t-t-u">Input</span>
+          </div>
+          <div class="axn-form-block-one-item">
+            <input
+              type="text"
+              *ngIf="account"
+              required="required"
+              class="axn-input"
+              placeholder="0.0"
+              [appBigNumber]="{
+                decimals: tokensDecimals['ETH'],
+                min: 1,
+                max: account?.balances.ETH.wei
+              }"
+              [maxValueChange]="onChangeAccount"
+              (ngModelChange)="onChangeAmount()"
+              [(ngModel)]="formsData.auctionAmount"
+              autocomplete="off"
+            />
+          </div>
+          <div class="axn-form-block-one-item">
+            <span class="axn-cheap icon icon__eth-purple">ETH</span>
+            <span
+              class="axn-btn axn-btn-max"
+              (click)="
+                formsData.auctionAmount = account?.balances.ETH.shortBigNumber.toString()
+              "
+              >Send max</span
+            >
+          </div>
+        </div>
+        <div class="axn-form-block-one-wrap">
+          <div class="axn-form-block-one-item"></div>
+          <div class="axn-form-block-one-item">
+            <button
+              class="axn-btn axn-btn-green"
+              [ngClass]="{ progress: sendAuctionProgress }"
+              [disabled]="!dataSendForm || sendAuctionProgress"
+              (click)="sendETHToAuction()"
+            >
+              <span class="lds-ellipsis" *ngIf="sendAuctionProgress">
+                <span class="lds-ellipsis-container">
+                  <span></span><span></span><span></span><span></span>
+                </span>
+              </span>
+              <span class="axn-btn-text">SEND</span>
+            </button>
+          </div>
+          <div class="axn-form-block-one-item"></div>
+        </div>
+      </div>
+    </div>
 
-      <div class="axn-page-claim-snapshot-info">
-        <div class="axn-page-claim-snapshot-info-item">
-          <span class="axn-text">Claimed adresses</span>
-          <span class="axn-text t-cl-green">370,121,420,541.683530</span>
+    <div class="axn-container axn-container-dark axn-form-block">
+      <div class="axn-form-block-two">
+        <span class="axn-text axn-form-block-two-balance">Auction pool</span>
+        <div class="axn-form-block-two-columns">
+          <div class="axn-form-block-two-columns-item">
+            <span class="axn-text axn-form-block-two-value">{{
+              poolInfo.axn || 0
+            }}</span>
+            <span
+              class="axn-cheap axn-cheap-small icon icon__axion t-cl-light-red"
+              >AXN</span
+            >
+          </div>
+          <div class="axn-form-block-two-columns-item">
+            <span class="axn-text axn-form-block-two-value">{{
+              poolInfo.eth || 0
+            }}</span>
+            <span class="axn-cheap axn-cheap-small icon icon__eth-purple"
+              >ETH</span
+            >
+          </div>
         </div>
-        <div class="axn-page-claim-snapshot-info-item">
-          <span class="axn-text">Total addresses</span>
-          <span class="axn-text t-cl-green">183,035</span>
-        </div>
-        <div class="axn-page-claim-snapshot-info-item">
-          <span class="axn-text">Claimed HEX</span>
-          <span class="axn-text t-cl-green">370,121,420,541.6835335839</span>
-        </div>
-        <div class="axn-page-claim-snapshot-info-item">
-          <span class="axn-text">Total HEX</span>
-          <span class="axn-text t-cl-green">370,121,420,541.683530</span>
+        <div class="axn-form-block-two-wrap">
+          <div class="axn-form-block-two-item"></div>
+          <div class="axn-form-block-two-item m-t-15">
+            <div class="axn-form-block-two-price-wrap">
+              <span class="axn-text axn-form-block-two-balance"
+                >Auction price</span
+              >
+              <div class="axn-form-block-two-price">
+                <span class="icon icon-flex icon__axion">1 AXN</span>
+                <span class="t-cl-purple">=</span>
+                <span class="icon icon-flex icon__eth-purple t-cl-purple">{{
+                  poolInfo.axnToEth || 0
+                }}</span>
+              </div>
+              <span class="axn-text axn-form-block-two-balance m-t-15"
+                >Uniswap price</span
+              >
+              <div class="axn-form-block-two-price-uni">
+                <span class="icon icon-flex icon__axion-gray t-cl-gray"
+                  >1 AXN</span
+                >
+                <span class="t-cl-gray">=</span>
+                <span class="icon icon-flex icon__eth-gray t-cl-gray">
+                  {{ poolInfo.uniToEth || 0 }}</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="axn-form-block-two-item"></div>
         </div>
       </div>
     </div>
@@ -244,34 +124,17 @@
     class="axn-container axn-container-border"
     container-title="How it works"
   >
-    <div class="axn-page-claim-how">
+    <div class="axn-page-claim-how axn-page-claim-how-line">
       <div class="axn-page-claim-how-item">
         <span class="axn-text">
-          Get Axion for HEX tokens for free at a rate of 1: 1. All free claimed
-          Axion tokens will be automatically staked for 350 days.
-        </span>
-      </div>
-      <div class="axn-page-claim-how-item">
-        <span class="axn-text">
-          The amount of the free claim is limited to 10M Axion, tokens over the
-          limit will be sent to the Weekly Auction.
-        </span>
-      </div>
-      <div class="axn-page-claim-how-item">
-        <span class="axn-text">
-          The exchange will be available for 350 days, however, there is a Late
-          Claim Penalty for late exchange. The amount of the penalty is
-          calculated by the formula:
-          <span class="t-cl-light-red"> Penalty</span> =
-          <span class="t-cl-green">(HEX + Shares amount)</span> * (day since
-          free claim starts / 350)
-        </span>
-      </div>
-      <div class="axn-page-claim-how-item">
-        <span class="axn-text">
-          Tokens from the penalty will be distributed in the following way:
-          349/350 will be sent to the next day auction; 1/350 for distribution
-          at the end of the year at BigPayDay.
+          The auction raffling accumulated Axion tokens between users in
+          proportion to the participants' stakes in Ethereum. Axion's auction
+          price is can't be lower than the Uniswap price minus 10%, unspent
+          Auction Axion transferred to Weekly Auction. <br />
+          When the user places a bet in ETH: 80% of the received ETH at the same
+          time is used to buy back Axion on Uniswap and received Axions are used
+          to replenish the Staking contract; 20% of the received ETH is the
+          company's profit.
         </span>
       </div>
     </div>
@@ -279,128 +142,33 @@
 </section>
 
 <section class="axn-section axn-page-claim axn-page-form" *ngIf="account">
-  <div class="axn-title-block">
-    <span class="axn-title">HEX > Axion</span>
-    <div
-      class="question"
-      mat-raised-button
-      matTooltip="The free claim of Axion for HEX holders on the 28th of May 2020"
-      matTooltipClass="question__tooltip"
-    ></div>
-  </div>
-
-  <div class="axn-container axn-container-dark axn-form-down">
-    <div class="axn-page-claim-form">
-      <span class="axn-text t-t-u t-cl-gray t-fz-14 t-a-r">Balance 00</span>
-      <div class="axn-page-claim-form-wrap">
-        <div class="axn-page-claim-form-wrap-item">
-          <span class="axn-text t-cl-purple t-t-u">From</span>
-        </div>
-        <div class="axn-page-claim-form-wrap-item">
-          <input
-            type="text"
-            *ngIf="account"
-            required="required"
-            class="axn-input"
-            placeholder="0.0"
-            autocomplete="off"
-          />
-        </div>
-        <div class="axn-page-claim-form-wrap-item">
-          <span class="axn-cheap icon icon__hex2t t-cl-light-red">H2T</span>
-          <span class="axn-btn axn-btn-max">Send max</span>
-        </div>
-      </div>
-      <div class="axn-page-claim-form-wrap m-t-m-20">
-        <div class="axn-page-claim-form-wrap-item"></div>
-        <div class="axn-page-claim-form-wrap-item">
-          <button class="axn-btn axn-btn-green">
-            <span class="lds-ellipsis" *ngIf="false">
-              <span class="lds-ellipsis-container">
-                <span></span><span></span><span></span><span></span>
-              </span>
-            </span>
-            <span class="axn-btn-text axn-btn-arrow-down">SEND</span>
-          </button>
-        </div>
-        <div class="axn-page-claim-form-wrap-item"></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="axn-container axn-container-dark axn-form-down">
-    <div class="axn-page-claim-form">
-      <div class="axn-page-claim-form-wrap">
-        <div class="axn-page-claim-form-wrap-item">
-          <span class="axn-text t-cl-purple t-t-u">Swap contract</span>
-        </div>
-        <div class="axn-page-claim-form-wrap-item t-a-c">
-          <span class="axn-text-input"> 423</span>
-        </div>
-        <div class="axn-page-claim-form-wrap-item">
-          <span class="axn-cheap icon icon__hex2t t-cl-light-red">H2T</span>
-        </div>
-      </div>
-
-      <div class="axn-page-claim-form-wrap">
-        <div class="axn-page-claim-form-wrap-item"></div>
-        <div class="axn-page-claim-form-wrap-item t-a-c">
-          <button class="axn-btn axn-btn-green-border">
-            <span class="lds-ellipsis" *ngIf="false">
-              <span class="lds-ellipsis-container">
-                <span></span><span></span><span></span><span></span>
-              </span>
-            </span>
-            <span class="axn-btn-text axn-btn-arrow-up">DRAW BACK</span>
-          </button>
-        </div>
-        <div class="axn-page-claim-form-wrap-item"></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="axn-container axn-container-dark">
-    <div class="axn-page-claim-form">
-      <div
-        class="axn-page-claim-form-wrap axn-page-claim-form-swap axn-border-dashed"
+  <div class="axn-title-block-button">
+    <span class="axn-title">Referral Link</span>
+    <span
+      class="axn-btn axn-btn-green-border"
+      *ngIf="referalLink === ''"
+      (click)="generateRefLink()"
+    >
+      <span class="axn-btn-text t-t-u">Generate referral link</span>
+    </span>
+    <div class="generated-link-user" *ngIf="referalLink != ''">
+      <input
+        class="generated-link-text"
+        (click)="$event.target.select()"
+        readonly
+        [value]="referalLink"
+      />
+      <button
+        class="generated-link-btn-copy"
+        ngxClipboard
+        [cbContent]="referalLink"
+        (cbOnSuccess)="onCopied()"
       >
-        <div class="axn-page-claim-form-wrap-item">
-          <span class="axn-text t-cl-purple t-t-u">TO</span>
-        </div>
-        <div class="axn-page-claim-form-wrap-item t-a-c">
-          <span class="axn-text-input t-cl-green"></span>
-        </div>
-        <div class="axn-page-claim-form-wrap-item">
-          <span class="axn-cheap icon icon__axion t-cl-light-red">AXN</span>
-        </div>
-      </div>
-
-      <div class="axn-page-claim-form-wrap axn-page-claim-form-swap axn-border">
-        <div class="axn-page-claim-form-wrap-item">
-          <span class="axn-text t-cl-purple t-t-u">Penalty</span>
-        </div>
-        <div class="axn-page-claim-form-wrap-item t-a-c">
-          <span class="axn-text-input t-cl-light-red">123</span>
-        </div>
-        <div class="axn-page-claim-form-wrap-item">
-          <span class="axn-cheap icon icon__axion t-cl-light-red">AXN</span>
-        </div>
-      </div>
-
-      <div class="axn-page-claim-form-wrap">
-        <div class="axn-page-claim-form-wrap-item"></div>
-        <div class="axn-page-claim-form-wrap-item">
-          <button class="axn-btn axn-btn-green m-t-15">
-            <span class="lds-ellipsis" *ngIf="false">
-              <span class="lds-ellipsis-container">
-                <span></span><span></span><span></span><span></span>
-              </span>
-            </span>
-            <span class="axn-btn-text">SWAP</span>
-          </button>
-        </div>
-        <div class="axn-page-claim-form-wrap-item"></div>
-      </div>
+        Copy
+      </button>
+      <span style="font-size: 10px; margin-left: 10px" *ngIf="addressCopy">
+        address copied
+      </span>
     </div>
   </div>
 
@@ -411,33 +179,177 @@
     <div class="axn-page-claim-how axn-page-claim-how-line">
       <div class="axn-page-claim-how-item">
         <span class="axn-text">
-          Exchange HEX2X tokens to Axion at a 1:1 rate. To receive Axion tokens,
-          send tokens to the Burn contract and burn them. The exchange will be
-          available for 350 days, however, there is a Late Claim Penalty for
-          late exchange. The amount of the penalty is calculated by the formula:
-          <br />
-          <span class="t-cl-light-red">Penalty</span> =
-          <span class="t-cl-green">HEX2X amount</span> * (day since free claim
-          starts / 350) <br />All penalized tokens will be sent to the next day
-          auction.
+          By submitting a referral link to the auction, both the auction
+          participant and the link provider receive bonus Axion. The participant
+          of the auction (referral) receives an additional 10% to the amount of
+          the credit, the referee (who provided the link) receives an additional
+          20% of the amount of the credit.<br />
+          Any user can participate in the referral program, even those who do
+          not have Axion tokens on their balance.
         </span>
       </div>
     </div>
   </div>
 </section>
 
-<section class="axn-section axn-page-claim" *ngIf="account">
-  <div class="axn-title-block">
-    <span class="axn-title">HEX > Axion</span>
-    <div
-      class="question"
-      mat-raised-button
-      matTooltip="The free claim of Axion for HEX holders on the 28th of May 2020"
-      matTooltipClass="question__tooltip"
-    ></div>
+<section
+  class="axn-section axn-page-claim axn-page-form m-t-15"
+  *ngIf="account && referalAddress"
+>
+  <div class="axn-title-block-button">
+    <span class="axn-text t-t-u"
+      >Referrer address
+      <span class="t-cl-green">{{ referalAddress }}</span></span
+    >
+    <span
+      class="axn-btn axn-btn-reset axn-btn-green-border"
+      (click)="resetRef()"
+    >
+      <span class="axn-btn-text t-t-u">Reset</span>
+    </span>
   </div>
+</section>
 
-  <div class="axn-container axn-container-dark" *ngIf="!account">
+<section class="axn-section axn-page-claim" *ngIf="account">
+  <div class="axn-title-block-button m-t-15">
+    <span class="axn-title">My Bets</span>
+    <span></span>
+  </div>
+  <div class="axn-container">
+    <table
+      class="standard-table text-left"
+      cellpadding="0"
+      cellspacing="0"
+      border="0"
+    >
+      <thead class="text-left">
+        <tr>
+          <th>Date</th>
+          <th>AXN in pool</th>
+          <th>ETH in pool</th>
+          <th>My ETH</th>
+          <th>My AXN</th>
+          <th width="10">&nbsp;</th>
+        </tr>
+      </thead>
+      <tbody class="text-left">
+        <tr *ngFor="let auction of auctionsList">
+          <td>{{ auction.start_date | date: "dd.MM.yyyy" }}</td>
+          <td>
+            {{
+              auction.axn_pool
+                | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
+            }}
+          </td>
+          <td>
+            {{
+              auction.eth_pool
+                | bigNumberFormat: tokensDecimals["ETH"]:true:false:2
+            }}
+          </td>
+          <td>
+            {{
+              auction.eth_bet
+                | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:4
+            }}
+          </td>
+          <td [colSpan]="auction.winnings === 0 ? 2 : 1">
+            {{
+              auction.winnings
+                | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
+            }}
+          </td>
+          <td class="action-button" *ngIf="auction.winnings !== 0">
+            <button
+              class="btn btn__transparent"
+              (click)="auctionWithdraw(auction)"
+              [ngClass]="{ progress: auction.withdrawProgress }"
+              [disabled]="auction.withdrawProgress"
+            >
+              <span class="lds-ellipsis" *ngIf="auction.withdrawProgress">
+                <span class="lds-ellipsis-container">
+                  <span></span><span></span><span></span><span></span>
+                </span>
+              </span>
+              <span>&nbsp;&nbsp;WITHDRAW&nbsp;&nbsp;</span>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="axn-section axn-page-claim" *ngIf="account">
+  <div class="axn-title-block-button m-t-15">
+    <span class="axn-title">Auctions</span>
+    <span></span>
+  </div>
+  <div class="axn-container">
+    <table
+      class="standard-table text-left"
+      cellpadding="0"
+      cellspacing="0"
+      border="0"
+    >
+      <thead class="text-left">
+        <tr>
+          <th>Date</th>
+          <th>AXN in pool</th>
+          <th>ETH in pool</th>
+          <th>Completion</th>
+        </tr>
+      </thead>
+      <tbody class="text-left">
+        <tr *ngFor="let auction of auctionsList">
+          <td>{{ auction.start_date | date: "dd.MM.yyyy" }}</td>
+          <td>
+            {{
+              auction.axn_pool
+                | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
+            }}
+          </td>
+          <td>
+            {{
+              auction.eth_pool
+                | bigNumberFormat: tokensDecimals["ETH"]:true:false:2
+            }}
+          </td>
+          <td>
+            {{
+              auction.eth_bet
+                | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:4
+            }}
+          </td>
+          <td [colSpan]="auction.winnings === 0 ? 2 : 1">
+            {{
+              auction.winnings
+                | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
+            }}
+          </td>
+          <td class="action-button" *ngIf="auction.winnings !== 0">
+            <button
+              class="btn btn__transparent"
+              (click)="auctionWithdraw(auction)"
+              [ngClass]="{ progress: auction.withdrawProgress }"
+              [disabled]="auction.withdrawProgress"
+            >
+              <span class="lds-ellipsis" *ngIf="auction.withdrawProgress">
+                <span class="lds-ellipsis-container">
+                  <span></span><span></span><span></span><span></span>
+                </span>
+              </span>
+              <span>&nbsp;&nbsp;WITHDRAW&nbsp;&nbsp;</span>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="axn-section axn-page-claim" *ngIf="!account">
+  <div class="axn-container">
     <div class="axn-page-claim-date">
       <span class="axn-text">Enter by Metamask</span>
     </div>

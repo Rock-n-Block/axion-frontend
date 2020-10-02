@@ -301,6 +301,7 @@ input:-internal-autofill-selected {
     overflow: hidden;
     display: inline-block;
     vertical-align: middle;
+    word-break: initial;
 
     &-alt {
       font-size: 14px;

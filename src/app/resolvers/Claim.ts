@@ -24,8 +24,6 @@ export class ClaimResolver implements Resolve<any> {
         } else {
           this.router.navigate(["auction"]);
         }
-        // console.log("claim resolver", result);
-
         return false;
       });
     });

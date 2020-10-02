@@ -68,6 +68,7 @@ export class ClaimPageComponent implements OnDestroy {
         }
       });
     this.tokensDecimals = this.contractService.getCoinsDecimals();
+    console.log(this.tokensDecimals);
   }
 
   private readSwapNativeToken() {

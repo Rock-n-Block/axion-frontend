@@ -138,6 +138,7 @@ export class ContractService {
       .getUserClaimableAmountFor(this.account.snapshot.hex_amount)
       .call()
       .then((result) => {
+        console.log(result);
         this.account.claimableInfo = {
           claim: new BigNumber(result[0]),
           penalty: new BigNumber(result[1]),
@@ -987,6 +988,16 @@ export class ContractService {
       });
   }
 
+  public getCurrentAuction() {
+    return this.Auction.methods
+      .currentAuctionId()
+      .call()
+      .then((res) => {
+        // console.log(res);
+        return res;
+      });
+  }
+
   public async sendMaxETHToAuction(amount, ref?) {
     const date = Math.round(
       (new Date().getTime() + 24 * 60 * 60 * 1000) / 1000
@@ -1129,30 +1140,41 @@ export class ContractService {
 
   private getAccountSnapshot() {
     return new Promise((resolve) => {
-      console.log(this.account.address);
-      return this.httpService
-        .get(`/api/v1/addresses/0x2e5aaf9c3ced66db798be4de44ffcc10e3e755ce/`)
-        .toPromise()
-        .then(
-          (result) => {
-            console.log(result);
-            this.account.snapshot = result;
-            this.account.snapshot.user_dont_have_hex = false;
-          },
-          (err) => {
-            console.log("none", err);
-            this.account.snapshot = {
-              user_address: this.account.address,
-              user_dont_have_hex: true,
-              hex_amount: "0",
-              user_hash: "",
-              hash_signature: "",
-            };
-          }
-        )
-        .finally(() => {
-          resolve();
-        });
+      return (
+        this.httpService
+          .get(`/api/v1/addresses/${this.account.address}/`)
+          // .get(`/api/v1/addresses/0x2ec10babc27fd435c62861d95704089eed81e9e6/`)
+          .toPromise()
+          .then(
+            (result) => {
+              console.log(result);
+              this.account.snapshot = result;
+              this.account.snapshot.user_dont_have_hex =
+                this.account.snapshot.hex_amount <= 0;
+              this.account.snapshot.show_hex =
+                Number(this.account.snapshot.hex_amount) > 0
+                  ? new BigNumber(
+                      (this.account.snapshot.hex_amount / 10000000000).toFixed(
+                        0
+                      )
+                    )
+                  : 0;
+            },
+            (err) => {
+              console.log("none", err);
+              this.account.snapshot = {
+                user_address: this.account.address,
+                user_dont_have_hex: true,
+                hex_amount: "0",
+                user_hash: "",
+                hash_signature: "",
+              };
+            }
+          )
+          .finally(() => {
+            resolve();
+          })
+      );
     });
   }
 
