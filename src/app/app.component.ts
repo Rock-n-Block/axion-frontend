@@ -6,6 +6,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { ActivationStart, NavigationStart, Router } from "@angular/router";
 import { CookieService } from "ngx-cookie-service";
 import { chackerDays } from "./params";
+import { MetamaskService } from "./services/web3";
 
 @Component({
   selector: "app-root",
@@ -28,6 +29,7 @@ export class AppComponent implements OnInit {
     private ngZone: NgZone,
     public dialog: MatDialog,
     private cookieService: CookieService,
+    private metamaskService: MetamaskService,
     route: Router
   ) {
     this.accountSubscribe = this.contractService
@@ -83,6 +85,10 @@ export class AppComponent implements OnInit {
         window.scrollTo(0, 0);
       }
     });
+  }
+
+  public addToken() {
+    this.contractService.addToken();
   }
 
   public checkDays() {

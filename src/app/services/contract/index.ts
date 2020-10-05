@@ -6,6 +6,7 @@ import { Injectable } from "@angular/core";
 import BigNumber from "bignumber.js";
 import { HttpClient } from "@angular/common/http";
 import * as moment from "moment";
+import { settingsData } from "../../params";
 
 // const swapDays = 350;
 export const stakingMaxDays = 1820;
@@ -77,13 +78,9 @@ export class ContractService {
   constructor(private httpService: HttpClient) {}
 
   private initAll() {
+    this.settingsApp = settingsData;
+
     const promises = [
-      this.httpService
-        .get(`/assets/js/settings.json`)
-        .toPromise()
-        .then((result) => {
-          this.settingsApp = result as any;
-        }),
       this.httpService
         .get(`/assets/js/constants.json`)
         .toPromise()
@@ -96,11 +93,15 @@ export class ContractService {
             ];
 
           this.CONTRACTS_PARAMS = CONTRACTS_PARAMS;
-          this.web3Service = new MetamaskService(this.settingsApp);
+          this.web3Service = new MetamaskService();
           this.initializeContracts();
         }),
     ];
     return Promise.all(promises);
+  }
+
+  public addToken() {
+    this.web3Service.addToken();
   }
 
   public getSettings() {
@@ -191,7 +192,8 @@ export class ContractService {
         console.log(result);
         this.account.completeClaim = {
           have_forClaim: Number(result) > 0,
-          value: new BigNumber(result),
+          value: new BigNumber(result).toNumber() / 10000000000,
+          valueFull: new BigNumber(result),
         };
         if (callEmitter) {
           this.callAllAccountsSubscribers();
@@ -237,6 +239,62 @@ export class ContractService {
           reject(err);
         }
       );
+    });
+  }
+
+  public getSnapshotInfo() {
+    const promises = [
+      this.ForeignSwapContract.methods
+        .getCurrentClaimedAddresses()
+        .call()
+        .then((claimedAddresses) => {
+          console.log("claimedAddresses", claimedAddresses);
+
+          return {
+            key: "claimedAddresses",
+            value: claimedAddresses,
+          };
+        }),
+      this.ForeignSwapContract.methods
+        .getTotalSnapshotAddresses()
+        .call()
+        .then((totalAddresses) => {
+          console.log("totalAddresses", totalAddresses);
+
+          return {
+            key: "totalAddresses",
+            value: totalAddresses,
+          };
+        }),
+      this.ForeignSwapContract.methods
+        .getCurrentClaimedAmount()
+        .call()
+        .then((claimedAmount) => {
+          console.log("claimedAmount", claimedAmount);
+
+          return {
+            key: "claimedAmount",
+            value: claimedAmount,
+          };
+        }),
+      this.ForeignSwapContract.methods
+        .getTotalSnapshotAmount()
+        .call()
+        .then((totalAmount) => {
+          console.log("totalAmount", totalAmount);
+
+          return {
+            key: "totalAmount",
+            value: totalAmount,
+          };
+        }),
+    ];
+    return Promise.all(promises).then((results) => {
+      const info = {};
+      results.forEach((params) => {
+        info[params.key] = params.value;
+      });
+      return info;
     });
   }
 

@@ -13,6 +13,11 @@
           <a routerLink="staking" routerLinkActive="active-link">Staking</a>
         </li>
         <li class="header-menu_item">
+          <span class="axn-btn axn-btn-purple" (click)="addToken()"
+            >Add to MetaMask</span
+          >
+        </li>
+        <li class="header-menu_item">
           <button
             class="metamask-button"
             (click)="subscribeAccount()"
@@ -70,6 +75,11 @@
         >
       </div>
       <div class="header-navbar-item">
+        <span class="axn-btn axn-btn-purple" (click)="addToken()"
+          >Add to MetaMask</span
+        >
+      </div>
+      <div class="header-navbar-item">
         <button
           class="metamask-button"
           (click)="subscribeAccount()"
@@ -89,17 +99,26 @@
 </header>
 
 <div class="content-container">
-  <div class="left-days-info" #runString *ngIf="leftDaysInfoShow">
+  <div
+    class="left-days-info"
+    [ngClass]="{ visibility: leftDaysInfoShow && account }"
+    #runString
+  >
     <!-- <div
     class="left-days-info"
     #runString
     [ngClass]="{ visibility: leftDaysInfoShow }"
   > -->
-    <span class="repeat-content" *ngFor="let item of runLineCountArray">
-      <b>{{ leftDaysInfo?.dateEnd }}</b
-      >&nbsp;<b>Min</b>
-      left for Claiming AXN
-    </span>
+    <ng-container *ngIf="leftDaysInfoShow && account">
+      <span class="repeat-content" *ngFor="let item of runLineCountArray">
+        <b>{{ leftDaysInfo?.dateEnd }}</b
+        >&nbsp;<b>Min</b>
+        left for Claiming AXN
+      </span>
+    </ng-container>
+    <ng-container *ngIf="!leftDaysInfoShow || !account">
+      <span class="repeat-content"></span>
+    </ng-container>
   </div>
 </div>
 <router-outlet></router-outlet>

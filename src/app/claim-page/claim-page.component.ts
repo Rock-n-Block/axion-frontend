@@ -6,6 +6,7 @@ import {
   OnInit,
   ViewChild,
 } from "@angular/core";
+import { AppComponent } from "../app.component";
 import { ContractService } from "../services/contract";
 
 @Component({
@@ -38,6 +39,12 @@ export class ClaimPageComponent implements OnDestroy {
 
   public clacPenalty = 0;
   public toSwap = 0;
+  public claimDataInfo = {
+    claimedAddresses: 0,
+    totalAddresses: 0,
+    claimedAmount: 0,
+    totalAmount: 0,
+  };
 
   public swapNativeTokenInfo: any;
 
@@ -45,7 +52,8 @@ export class ClaimPageComponent implements OnDestroy {
 
   constructor(
     private contractService: ContractService,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private appComponent: AppComponent
   ) {
     this.accountSubscribe = this.contractService
       .accountSubscribe()
@@ -56,6 +64,7 @@ export class ClaimPageComponent implements OnDestroy {
             window.dispatchEvent(new Event("resize"));
             if (account) {
               console.log(this.account);
+              this.getSnapshotInfo();
               this.onChangeAmount();
               this.onChangeAccount.emit();
               this.updateSwapBalanceProgress = true;
@@ -73,7 +82,13 @@ export class ClaimPageComponent implements OnDestroy {
     this.tokensDecimals = this.contractService.getCoinsDecimals();
     this.AxnTokenAddress = this.contractService.AxnTokenAddress;
     this.tonkenUrl = this.contractService.settingsApp.settings.tonkenUrl;
-    console.log(this.tokensDecimals);
+  }
+
+  private getSnapshotInfo() {
+    this.contractService.getSnapshotInfo().then((res) => {
+      this.claimDataInfo = res as any;
+      console.log("res", res);
+    });
   }
 
   private readSwapNativeToken() {
@@ -201,6 +216,10 @@ export class ClaimPageComponent implements OnDestroy {
       .catch(() => {
         this.claimTokensProgress = false;
       });
+  }
+
+  public subscribeAccount() {
+    this.appComponent.subscribeAccount();
   }
 
   ngOnDestroy() {

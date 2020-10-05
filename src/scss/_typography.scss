@@ -44,6 +44,18 @@
     }
   }
 
+  &__metamask {
+    @include before-img(block, 28px, 24px, r) {
+      background-image: url("assets/images/metamask.svg");
+    }
+  }
+
+  &__hex {
+    @include before-img(block, 28px, 24px, r) {
+      background-image: url("assets/images/icons/hex-icon.svg");
+    }
+  }
+
   &__hex2t {
     @include before-img(block, 28px, 24px, r) {
       background-size: contain;
@@ -65,11 +77,11 @@
 }
 
 p {
-  word-break: break-all;
+  word-break: break-word;
 }
 
 span {
-  word-break: break-all;
+  word-break: break-word;
 }
 
 .axn {
@@ -260,6 +272,15 @@ span {
         }
       }
     }
+
+    &-purple {
+      background: linear-gradient(0deg, #8670fa, #8670fa);
+      border-radius: 4px;
+      font-weight: bold;
+      font-size: 14px;
+      line-height: 16px;
+      color: white;
+    }
   }
 
   &-border {
@@ -419,9 +440,16 @@ span {
 
           &:nth-child(3) {
             display: flex;
-            grid-gap: 15px;
             align-items: flex-end;
             flex-direction: column;
+
+            * {
+              margin-top: 15px;
+
+              &:nth-child(1) {
+                margin-top: 0 !important;
+              }
+            }
 
             @include b(750) {
               align-items: center;
@@ -546,9 +574,20 @@ span {
 
           &:nth-child(3) {
             display: flex;
-            grid-gap: 15px;
             align-items: flex-end;
             flex-direction: column;
+
+            * {
+              margin-top: 15px;
+
+              &:nth-child(1) {
+                margin-top: 0 !important;
+              }
+            }
+
+            // display: grid;
+            // grid-gap: 15px;
+            // grid-template-columns: 1fr;
           }
         }
       }
@@ -635,7 +674,7 @@ span {
 
         &-info {
           display: grid;
-          grid-template-columns: repeat(4, minmax(200px, 255px));
+          grid-template-columns: repeat(4, minmax(180px, 255px));
           grid-gap: 10px;
           margin: 30px -15px 0 -15px;
 
@@ -669,7 +708,7 @@ span {
 
       &-how {
         display: grid;
-        grid-template-columns: repeat(4, minmax(200px, 255px));
+        grid-template-columns: repeat(4, minmax(180px, 255px));
         grid-gap: 10px;
         margin: 0 -15px;
 

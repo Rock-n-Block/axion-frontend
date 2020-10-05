@@ -2,6 +2,8 @@ import { Injectable } from "@angular/core";
 import Web3 from "web3";
 import { Observable } from "rxjs";
 import { WEB3_CONSTANTS } from "./constants";
+import { settingsData } from "../../params";
+
 // const IS_PRODUCTION = location.protocol === "https:";
 
 @Injectable({
@@ -19,8 +21,9 @@ export class MetamaskService {
     testnet: "rinkeby",
   };
 
-  constructor(private settingsApp: any) {
+  constructor() {
     // console.log("web3", settingsApp);
+    const settingsApp = settingsData;
 
     this.IS_PRODUCTION = settingsApp.settings.production;
     this.usedNetworkVersion = settingsApp.settings.production
@@ -71,6 +74,36 @@ export class MetamaskService {
       .then((res) => {
         return res;
       });
+  }
+
+  public async addToken() {
+    const tokenAddress = "0xd00981105e61274c8a5cd5a88fe7e037d935b513";
+    const tokenSymbol = "TUT";
+    const tokenDecimals = 18;
+    const tokenImage = "http://placekitten.com/200/300";
+
+    try {
+      const wasAdded = await this.metaMaskWeb3.request({
+        method: "wallet_watchAsset",
+        params: {
+          type: "ERC20",
+          options: {
+            address: tokenAddress,
+            symbol: tokenSymbol,
+            decimals: tokenDecimals,
+            image: tokenImage,
+          },
+        },
+      });
+
+      if (wasAdded) {
+        console.log("Thanks for your interest!");
+      } else {
+        console.log("Your loss!");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   public getBalance(address) {
