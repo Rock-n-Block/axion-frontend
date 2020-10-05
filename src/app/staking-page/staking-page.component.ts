@@ -203,7 +203,11 @@ export class StakingPageComponent implements OnDestroy {
 
     this.shareRate = parseFloat(rate.toString());
 
-    this.stakeDays = Date.now() + this.formsData.depositDays * 900 * 1000;
+    this.stakeDays =
+      Date.now() +
+      this.formsData.depositDays *
+        this.contractService.settingsApp.settings.time.seconds *
+        1000;
   }
 
   public getProgress(deposit) {
