@@ -89,11 +89,12 @@
 </header>
 
 <div class="content-container">
-  <div
+  <div class="left-days-info" #runString *ngIf="leftDaysInfoShow">
+    <!-- <div
     class="left-days-info"
     #runString
     [ngClass]="{ visibility: leftDaysInfoShow }"
-  >
+  > -->
     <span class="repeat-content" *ngFor="let item of runLineCountArray">
       <b>{{ leftDaysInfo?.dateEnd }}</b
       >&nbsp;<b>Min</b>
