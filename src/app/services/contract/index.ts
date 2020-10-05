@@ -9,7 +9,7 @@ import * as moment from "moment";
 
 // const swapDays = 350;
 export const stakingMaxDays = 1820;
-const oneDaySeconds = 86400;
+// const oneDaySeconds = 86400;
 
 interface DepositInterface {
   start: Date;
@@ -47,30 +47,61 @@ export class ContractService {
   public account;
   private allAccountSubscribers = [];
   private allTransactionSubscribers = [];
+  public settingsApp = {
+    settings: {
+      production: false,
+      network: "rinkeby",
+      net: 4,
+      time: {
+        seconds: 900,
+        display: "minutes",
+      },
+    },
+    minutes: {
+      name: "Minutes",
+      shortName: "Min",
+      lowerName: "minutes",
+    },
+    days: {
+      name: "Days",
+      shortName: "Days",
+      lowerName: "days",
+    },
+  };
 
   private CONTRACTS_PARAMS: any;
 
   constructor(private httpService: HttpClient) {}
 
   private initAll() {
-    return new Promise((resolve, reject) => {
+    const promises = [
+      this.httpService
+        .get(`/assets/js/settings.json`)
+        .toPromise()
+        .then((result) => {
+          this.settingsApp = result as any;
+        }),
       this.httpService
         .get(`/assets/js/constants.json`)
         .toPromise()
         .then((result) => {
           // const IS_PRODUCTION = location.protocol === "https:";
-          const IS_PRODUCTION = false;
+          const IS_PRODUCTION = this.settingsApp.settings.production;
           const CONTRACTS_PARAMS =
-            result[IS_PRODUCTION ? "mainnet" : "rinkeby"];
+            result[
+              IS_PRODUCTION ? "mainnet" : this.settingsApp.settings.network
+            ];
 
           this.CONTRACTS_PARAMS = CONTRACTS_PARAMS;
-          this.web3Service = new MetamaskService();
+          this.web3Service = new MetamaskService(this.settingsApp);
           this.initializeContracts();
+        }),
+    ];
+    return Promise.all(promises);
+  }
 
-          resolve(true);
-        })
-        .catch(() => reject());
-    });
+  public getSettings() {
+    return this.settingsApp;
   }
 
   private getTokensInfo(noEnable?) {
@@ -608,10 +639,16 @@ export class ContractService {
                 const a = moment(new Date(endDateTime));
                 const b = moment(new Date());
 
-                // const leftDays = a.diff(b, "days");
-                const leftDays = a.diff(b, "seconds");
-                // const dateEnd = a.diff(b, "days");
-                const dateEnd = a.diff(b, "minutes");
+                const leftDays = a.diff(
+                  b,
+                  this.settingsApp[this.settingsApp.settings.time.display]
+                    .lowerName
+                );
+                const dateEnd = a.diff(
+                  b,
+                  this.settingsApp[this.settingsApp.settings.time.display]
+                    .lowerName
+                );
 
                 return {
                   startDate: fullStartDate,
@@ -825,8 +862,10 @@ export class ContractService {
         const a = moment(new Date(data.dateEnd));
         const b = moment(new Date());
 
-        // data.daysLeft = a.diff(b, "days");
-        data.daysLeft = a.diff(b, "minutes");
+        data.daysLeft = a.diff(
+          b,
+          this.settingsApp[this.settingsApp.settings.time.display].lowerName
+        );
         data.seconds = a.diff(b, "seconds");
 
         data.show = a.diff(b, "seconds") < 0 ? false : true;
@@ -1085,7 +1124,10 @@ export class ContractService {
 
                   const auctionInfo = {
                     auctionId: id,
-                    start_date: new Date((+start + oneDaySeconds * id) * 1000),
+                    start_date: new Date(
+                      (+start + this.settingsApp.settings.time.seconds * id) *
+                        1000
+                    ),
                     axn_pool: parseFloat(
                       new BigNumber(auctionData.token).toString()
                     ),

@@ -3,15 +3,6 @@ import Web3 from "web3";
 import { Observable } from "rxjs";
 import { WEB3_CONSTANTS } from "./constants";
 // const IS_PRODUCTION = location.protocol === "https:";
-const IS_PRODUCTION = false;
-
-const networks = {
-  production: "mainnet",
-  testnet: "rinkeby",
-};
-
-const usedNetworkVersion = IS_PRODUCTION ? 1 : 4;
-const net = usedNetworkVersion === 1 ? "mainnet" : "rinkeby";
 
 @Injectable({
   providedIn: "root",
@@ -19,12 +10,30 @@ const net = usedNetworkVersion === 1 ? "mainnet" : "rinkeby";
 export class MetamaskService {
   private metaMaskWeb3: any;
 
-  constructor() {
+  private usedNetworkVersion: number;
+  private net: string;
+  private IS_PRODUCTION: boolean;
+
+  private networks = {
+    production: "mainnet",
+    testnet: "rinkeby",
+  };
+
+  constructor(private settingsApp: any) {
+    // console.log("web3", settingsApp);
+
+    this.IS_PRODUCTION = settingsApp.settings.production;
+    this.usedNetworkVersion = settingsApp.settings.production
+      ? 1
+      : settingsApp.settings.net;
+    this.net =
+      this.usedNetworkVersion === 1 ? "mainnet" : settingsApp.settings.network;
+
     this.providers = {};
     this.providers.metamask = Web3.givenProvider;
     this.providers.infura = new Web3.providers.HttpProvider(
       WEB3_CONSTANTS[
-        networks[IS_PRODUCTION ? "mainnet" : "testnet"]
+        this.networks[this.IS_PRODUCTION ? "mainnet" : "testnet"]
       ].WEB3_PROVIDER
     );
 
@@ -77,7 +86,7 @@ export class MetamaskService {
       this.Web3.setProvider(this.providers.metamask);
       observer.next({
         address,
-        network: net,
+        network: this.net,
       });
       if (noEnable) {
         observer.complete();
@@ -99,7 +108,7 @@ export class MetamaskService {
             method: "net_version",
           })
           .then((result) => {
-            if (usedNetworkVersion !== Number(result)) {
+            if (this.usedNetworkVersion !== Number(result)) {
               if (chain) {
                 onError(observer, {
                   code: 3,
@@ -109,7 +118,7 @@ export class MetamaskService {
 
               observer.error({
                 code: 2,
-                msg: "Please choose " + net + " network in Metamask.",
+                msg: "Please choose " + this.net + " network in Metamask.",
               });
               reject();
             }

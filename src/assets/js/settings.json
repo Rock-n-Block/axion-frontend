@@ -1,0 +1,21 @@
+{
+  "settings": {
+    "production": false,
+    "network": "rinkeby",
+    "net": 4,
+    "time": {
+      "seconds": 900,
+      "display": "minutes"
+    }
+  },
+  "minutes": {
+    "name": "Minutes",
+    "shortName": "Min",
+    "lowerName": "minutes"
+  },
+  "days": {
+    "name": "Days",
+    "shortName": "Days",
+    "lowerName": "days"
+  }
+}
