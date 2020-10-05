@@ -51,6 +51,7 @@ export class ContractService {
     settings: {
       production: false,
       network: "rinkeby",
+      tonkenUrl: "https://rinkeby.etherscan.io/token/",
       net: 4,
       time: {
         seconds: 900,
@@ -70,6 +71,8 @@ export class ContractService {
   };
 
   private CONTRACTS_PARAMS: any;
+
+  public AxnTokenAddress = "none";
 
   constructor(private httpService: HttpClient) {}
 
@@ -1180,6 +1183,38 @@ export class ContractService {
       });
   }
 
+  public updateUserSnapshot() {
+    this.httpService
+      .get(`/api/v1/addresses/${this.account.address}/`)
+      // .get(`/api/v1/addresses/0x2ec10babc27fd435c62861d95704089eed81e9e6/`)
+      .toPromise()
+      .then(
+        (result) => {
+          console.log(result);
+          this.account.snapshot = result;
+          this.account.snapshot.user_dont_have_hex =
+            this.account.snapshot.hex_amount <= 0;
+          this.account.snapshot.show_hex =
+            Number(this.account.snapshot.hex_amount) > 0
+              ? new BigNumber(
+                  (this.account.snapshot.hex_amount / 10000000000).toFixed(0)
+                )
+              : 0;
+        },
+        (err) => {
+          console.log("none", err);
+          this.account.snapshot = {
+            user_address: this.account.address,
+            user_dont_have_hex: true,
+            hex_amount: "0",
+            user_hash: "",
+            hash_signature: "",
+          };
+        }
+      );
+    this.updateClaimableInformationHex();
+  }
+
   private getAccountSnapshot() {
     return new Promise((resolve) => {
       return (
@@ -1284,5 +1319,7 @@ export class ContractService {
       this.CONTRACTS_PARAMS.UniswapV2Router02.ABI,
       this.CONTRACTS_PARAMS.UniswapV2Router02.ADDRESS
     );
+
+    this.AxnTokenAddress = this.CONTRACTS_PARAMS.HEX.ADDRESS;
   }
 }

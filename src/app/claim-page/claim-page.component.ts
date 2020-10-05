@@ -31,6 +31,9 @@ export class ClaimPageComponent implements OnDestroy {
   public burnTokensProgress: boolean;
   public claimTokensProgress: boolean;
 
+  public AxnTokenAddress = "none";
+  public tonkenUrl = "none";
+
   public dataSendForm = false;
 
   public clacPenalty = 0;
@@ -68,6 +71,8 @@ export class ClaimPageComponent implements OnDestroy {
         }
       });
     this.tokensDecimals = this.contractService.getCoinsDecimals();
+    this.AxnTokenAddress = this.contractService.AxnTokenAddress;
+    this.tonkenUrl = this.contractService.settingsApp.settings.tonkenUrl;
     console.log(this.tokensDecimals);
   }
 
@@ -170,6 +175,18 @@ export class ClaimPageComponent implements OnDestroy {
       });
   }
 
+  public updateUserSnapshot() {
+    if (
+      !this.account.snapshot.user_dont_have_hex &&
+      !this.account.completeClaim.have_forClaim
+    ) {
+      setTimeout(() => {
+        this.contractService.updateUserSnapshot();
+        console.log("upd snaphot after claim", this.account);
+      }, 5000);
+    }
+  }
+
   public claim() {
     this.claimTokensProgress = true;
     this.contractService
@@ -178,6 +195,7 @@ export class ClaimPageComponent implements OnDestroy {
         this.claimTokensProgress = false;
         this.contractService.updateH2TBalance(true).then(() => {
           this.claimTokensProgress = false;
+          this.updateUserSnapshot();
         });
       })
       .catch(() => {

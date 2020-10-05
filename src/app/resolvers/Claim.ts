@@ -19,6 +19,7 @@ export class ClaimResolver implements Resolve<any> {
     return new Observable((observer) => {
       this.contractService.getEndDateTime().then((result) => {
         const leftDaysInfoShow = result.leftDays > 0;
+        // const leftDaysInfoShow = true;
         if (leftDaysInfoShow) {
           this.continue(observer);
         } else {

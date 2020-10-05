@@ -2,6 +2,7 @@
   "settings": {
     "production": false,
     "network": "rinkeby",
+    "tonkenUrl": "https://rinkeby.etherscan.io/token/",
     "net": 4,
     "time": {
       "seconds": 900,
