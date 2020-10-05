@@ -6,6 +6,7 @@ import {
   OnInit,
   ViewChild,
 } from "@angular/core";
+import BigNumber from "bignumber.js";
 import { AppComponent } from "../app.component";
 import { ContractService } from "../services/contract";
 
@@ -38,7 +39,7 @@ export class ClaimPageComponent implements OnDestroy {
   public dataSendForm = false;
 
   public clacPenalty = 0;
-  public toSwap = 0;
+  public toSwap = new BigNumber(0);
   public claimDataInfo = {
     claimedAddresses: 0,
     totalAddresses: 0,
@@ -87,29 +88,22 @@ export class ClaimPageComponent implements OnDestroy {
   private getSnapshotInfo() {
     this.contractService.getSnapshotInfo().then((res) => {
       this.claimDataInfo = res as any;
-      console.log("res", res);
     });
   }
 
   private readSwapNativeToken() {
     this.contractService.readSwapNativeToken().then((result) => {
       this.swapNativeTokenInfo = result;
-      // console.log("swap native token info", this.swapNativeTokenInfo);
       window.dispatchEvent(new Event("resize"));
     });
   }
 
   public onChangeAmount() {
-    // console.log(this.formsData.swapAmount);
-    // console.log(this.account.balances.H2T.wei);
-    // console.log(this.account.balances.H2T.shortBigNumber.toString());
-
     if (
       this.formsData.swapAmount >
       this.account.balances.H2T.shortBigNumber.toString()
     ) {
       this.formsData.swapAmount = this.account.balances.H2T.shortBigNumber.toString();
-      // console.log("HIGH!!!!");
     }
 
     this.dataSendForm =
@@ -120,23 +114,14 @@ export class ClaimPageComponent implements OnDestroy {
   }
 
   private readPenalty() {
-    // console.log(this.swapContractBalance);
-
     this.contractService
       .calculatePenalty(this.swapContractBalance.fullValue)
       .then((res) => {
         this.clacPenalty = res;
 
-        // this.clacPenalty = new BigNumber(this.clacPenalty)
-        //   .div(Math.pow(10, this.tokensDecimals.HEX2X))
-        //   .toNumber()
-        //   .toFixed(3) as any;
-
-        this.toSwap = this.swapContractBalance.fullValue - this.clacPenalty;
-
-        // console.log("claculate penalty", this.clacPenalty);
-        // console.log("toSwap", this.toSwap);
-        // console.log("account?.balances.H2T", this.account.balances.H2T);
+        this.toSwap = new BigNumber(this.swapContractBalance.fullValue).minus(
+          this.clacPenalty
+        );
       });
   }
 
@@ -182,8 +167,6 @@ export class ClaimPageComponent implements OnDestroy {
         this.contractService.updateH2TBalance(true).then(() => {
           this.burnTokensProgress = false;
         });
-
-        console.log("swap contract balance", this.swapContractBalance);
       })
       .catch(() => {
         this.burnTokensProgress = false;

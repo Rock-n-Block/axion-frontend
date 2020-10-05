@@ -102,7 +102,6 @@ export class AppComponent implements OnInit {
           } else {
             this.checkDays();
           }
-          // console.log("days left info", result);
         });
       }, chackerDays);
     }

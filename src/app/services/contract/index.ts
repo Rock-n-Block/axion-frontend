@@ -189,10 +189,9 @@ export class ContractService {
       .claimedBalanceOf(this.account.snapshot.user_address)
       .call()
       .then((result) => {
-        console.log(result);
         this.account.completeClaim = {
-          have_forClaim: Number(result) > 0,
-          value: new BigNumber(result).toNumber() / 10000000000,
+          have_forClaim: new BigNumber(result).toNumber() > 0,
+          value: new BigNumber(result).div(10000000000).toNumber(),
           valueFull: new BigNumber(result),
         };
         if (callEmitter) {
@@ -248,8 +247,6 @@ export class ContractService {
         .getCurrentClaimedAddresses()
         .call()
         .then((claimedAddresses) => {
-          console.log("claimedAddresses", claimedAddresses);
-
           return {
             key: "claimedAddresses",
             value: claimedAddresses,
@@ -259,8 +256,6 @@ export class ContractService {
         .getTotalSnapshotAddresses()
         .call()
         .then((totalAddresses) => {
-          console.log("totalAddresses", totalAddresses);
-
           return {
             key: "totalAddresses",
             value: totalAddresses,
@@ -270,22 +265,18 @@ export class ContractService {
         .getCurrentClaimedAmount()
         .call()
         .then((claimedAmount) => {
-          console.log("claimedAmount", claimedAmount);
-
           return {
             key: "claimedAmount",
-            value: claimedAmount,
+            value: new BigNumber(claimedAmount).div(10000000000),
           };
         }),
       this.ForeignSwapContract.methods
         .getTotalSnapshotAmount()
         .call()
         .then((totalAmount) => {
-          console.log("totalAmount", totalAmount);
-
           return {
             key: "totalAmount",
-            value: totalAmount,
+            value: new BigNumber(totalAmount).div(10000000000),
           };
         }),
     ];
@@ -355,6 +346,7 @@ export class ContractService {
         });
     });
   }
+
   public updateHEXBalance(callEmitter?) {
     return new Promise((resolve, reject) => {
       if (!(this.account && this.account.address)) {
@@ -521,7 +513,7 @@ export class ContractService {
           value: new BigNumber(balance).div(
             new BigNumber(10).pow(this.tokensDecimals.H2T)
           ),
-          fullValue: Number(balance),
+          fullValue: new BigNumber(balance).toNumber(),
         };
       });
   }
@@ -635,8 +627,15 @@ export class ContractService {
                 .toFixed(8)
                 .toString();
 
+              // data.axnToEth = parseFloat(
+              //   (Number(data.eth) / Number(data.axn)).toFixed(8).toString()
+              // );
+
               data.axnToEth = parseFloat(
-                (Number(data.eth) / Number(data.axn)).toFixed(8).toString()
+                new BigNumber(data.eth)
+                  .div(new BigNumber(data.axn).toNumber())
+                  .toFixed(8)
+                  .toString()
               );
 
               data.eth = parseFloat(data.eth);
@@ -657,13 +656,18 @@ export class ContractService {
                     .div(Math.pow(10, this.tokensDecimals.HEX2X))
                     .toString();
 
-                  data.uniToEth = parseFloat(Number(axn).toFixed(8).toString());
+                  data.uniToEth = parseFloat(
+                    new BigNumber(axn).toNumber().toFixed(8).toString()
+                  );
 
                   this.Auction.methods
                     .uniswapPercent()
                     .call()
                     .then((res) => {
-                      const v = Number(data.uniToEth) * (1 - res / 100);
+                      // const v = Number(data.uniToEth) * (1 - res / 100);
+                      const v =
+                        new BigNumber(data.uniToEth).toNumber() *
+                        (1 - res / 100);
 
                       if ((data.axnToEth || 0) < v) {
                         data.axnToEth = parseFloat(v.toFixed(8).toString());
@@ -1016,10 +1020,10 @@ export class ContractService {
           (allDeposits: DepositInterface[]) => {
             return {
               closed: allDeposits.filter((deposit: DepositInterface) => {
-                return Number(deposit.shares) <= 0;
+                return new BigNumber(deposit.shares).toNumber() <= 0;
               }),
               opened: allDeposits.filter((deposit: DepositInterface) => {
-                return Number(deposit.shares) > 0;
+                return new BigNumber(deposit.shares).toNumber() > 0;
               }),
             };
           }
@@ -1181,8 +1185,6 @@ export class ContractService {
                 .reservesOf(id)
                 .call()
                 .then((auctionData) => {
-                  // console.log("auctionData", auctionData);
-
                   const auctionInfo = {
                     auctionId: id,
                     start_date: new Date(
@@ -1203,22 +1205,27 @@ export class ContractService {
                     .call()
                     .then((accountBalance) => {
                       auctionInfo.eth_bet = new BigNumber(accountBalance.eth);
-                      // auctionInfo.winnings = new BigNumber(accountBalance.eth)
-                      //   .multipliedBy(auctionData.token)
-                      //   .div(auctionData.token);
+                      // auctionInfo.winnings = ((Number(
+                      //   auctionInfo.eth_bet.toString()
+                      // ) /
+                      //   Number(auctionInfo.eth_pool)) *
+                      //   Number(auctionInfo.axn_pool)) as any;
 
-                      auctionInfo.winnings = ((Number(
-                        auctionInfo.eth_bet.toString()
-                      ) /
-                        Number(auctionInfo.eth_pool)) *
-                        Number(auctionInfo.axn_pool)) as any;
+                      auctionInfo.winnings = new BigNumber(
+                        auctionInfo.eth_bet
+                      ).div(
+                        new BigNumber(auctionInfo.eth_pool).multipliedBy(
+                          new BigNumber(auctionInfo.axn_pool).toNumber()
+                        )
+                      );
 
                       if (
                         accountBalance.ref !==
                         "0x0000000000000000000000000000000000000000"
                       ) {
-                        auctionInfo.winnings = (Number(auctionInfo.winnings) *
-                          1.1) as any;
+                        auctionInfo.winnings = new BigNumber(
+                          auctionInfo.winnings
+                        ).multipliedBy(1.1);
                       }
 
                       return auctionInfo;
@@ -1253,11 +1260,17 @@ export class ContractService {
           this.account.snapshot.user_dont_have_hex =
             this.account.snapshot.hex_amount <= 0;
           this.account.snapshot.show_hex =
-            Number(this.account.snapshot.hex_amount) > 0
+            new BigNumber(this.account.snapshot.hex_amount).toNumber() > 0
               ? new BigNumber(
-                  (this.account.snapshot.hex_amount / 10000000000).toFixed(0)
+                  this.account.snapshot.hex_amount.div(10000000000).toFixed(0)
                 )
               : 0;
+          // this.account.snapshot.show_hex =
+          //   Number(this.account.snapshot.hex_amount) > 0
+          //     ? new BigNumber(
+          //         (this.account.snapshot.hex_amount / 10000000000).toFixed(0)
+          //       )
+          //     : 0;
         },
         (err) => {
           console.log("none", err);
@@ -1286,14 +1299,11 @@ export class ContractService {
               this.account.snapshot = result;
               this.account.snapshot.user_dont_have_hex =
                 this.account.snapshot.hex_amount <= 0;
-              this.account.snapshot.show_hex =
-                Number(this.account.snapshot.hex_amount) > 0
-                  ? new BigNumber(
-                      (this.account.snapshot.hex_amount / 10000000000).toFixed(
-                        0
-                      )
-                    )
-                  : 0;
+              this.account.snapshot.show_hex = new BigNumber(
+                this.account.snapshot.hex_amount
+              )
+                .div(10000000000)
+                .toNumber();
             },
             (err) => {
               console.log("none", err);
