@@ -7,7 +7,7 @@
     align-items: center;
     background-repeat: no-repeat;
     background-position: center;
-    background-size: initial;
+    background-size: contain;
   }
 
   &-flex {
@@ -104,7 +104,8 @@ span {
     position: relative;
 
     @include b(750) {
-      margin-top: 25px;
+      margin-top: 15px;
+      margin-bottom: 15px;
     }
 
     &-dark {
@@ -142,7 +143,13 @@ span {
     max-width: 100px;
     font-size: 19px;
     line-height: 1;
-    padding: 11px 14px;
+    padding: 11px 10px;
+
+    @include b(500) {
+      font-size: 14px;
+      line-height: 1;
+      padding: 7px 10px;
+    }
 
     &-small {
       font-size: 16px !important;
@@ -162,7 +169,12 @@ span {
     }
 
     &:before {
-      margin-right: 10px;
+      margin-right: 5px;
+
+      @include b(500) {
+        width: 20px;
+        height: 18px;
+      }
     }
   }
 
@@ -252,9 +264,19 @@ span {
 
   &-border {
     border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    padding: 10px 0;
+
+    @include b(750) {
+      padding: 20px 0;
+    }
 
     &-dashed {
       border-bottom: 1px dashed rgba(255, 255, 255, 0.5);
+      padding: 10px 0;
+
+      @include b(750) {
+        padding: 20px 0;
+      }
     }
   }
 
@@ -309,9 +331,13 @@ span {
     grid-gap: 15px;
 
     @include b(750) {
-      display: flex;
-      flex-direction: column;
-      grid-gap: 0px;
+      margin-top: 15px;
+      margin-bottom: 15px;
+    }
+
+    .axn-container {
+      margin-top: 0 !important;
+      margin-bottom: 0 !important;
     }
 
     &-down {
@@ -324,10 +350,6 @@ span {
         background-image: url("assets/images/icons/from-down.svg");
         bottom: -28px;
         z-index: 10;
-
-        @include b(750) {
-          bottom: -33px;
-        }
       }
     }
 
@@ -356,7 +378,7 @@ span {
 
         &-wrap {
           display: grid;
-          grid-template-columns: 120px 1fr 120px;
+          grid-template-columns: 130px 1fr 130px;
           align-items: center;
 
           @include b(750) {
@@ -367,6 +389,12 @@ span {
         }
 
         &-item {
+          .m-t-15 {
+            @include b(750) {
+              margin-top: 0 !important;
+            }
+          }
+
           @include b(750) {
             width: 100%;
             display: flex;
@@ -532,9 +560,17 @@ span {
     font-size: 16px;
     font-weight: normal;
 
+    @include b(550) {
+      font-size: 13px;
+    }
+
     &-highligh {
       font-weight: 300;
       font-size: 30px;
+
+      @include b(550) {
+        font-size: 20px;
+      }
     }
 
     &-input {
@@ -542,6 +578,15 @@ span {
       text-align: center;
       color: white;
       font-weight: 300;
+      line-height: 2.5;
+
+      @include b(750) {
+        line-height: 1.3;
+      }
+
+      @include b(550) {
+        font-size: 20px;
+      }
     }
   }
 
@@ -577,6 +622,11 @@ span {
         text-align: center;
         text-transform: uppercase;
         padding-top: 15px;
+
+        @include b(550) {
+          padding-top: 0px;
+          grid-gap: 15px;
+        }
       }
 
       &-snapshot {
@@ -643,6 +693,10 @@ span {
           .axn-text {
             font-size: 14px;
             font-weight: 400;
+
+            @include b(550) {
+              font-size: 12px;
+            }
           }
 
           @include b(850) {
@@ -654,51 +708,6 @@ span {
           &:nth-last-child(1) {
             border-right: none;
             border-bottom: none;
-          }
-        }
-      }
-
-      &-form {
-        display: flex;
-        flex-direction: column;
-        padding: 5px 0 15px 0;
-        width: 100%;
-
-        @include b(750) {
-          grid-gap: 20px;
-        }
-
-        &-swap {
-          align-items: center;
-          padding: 5px 0 20px 0;
-        }
-
-        &-wrap {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          margin-top: 15px;
-
-          @include b(750) {
-            grid-template-columns: 1fr;
-            grid-gap: 20px;
-            justify-content: center;
-          }
-
-          &-item {
-            @include b(750) {
-              text-align: center;
-            }
-
-            &:nth-last-child(1) {
-              display: flex;
-              flex-direction: column;
-              align-items: flex-end;
-              grid-gap: 15px;
-
-              @include b(750) {
-                align-items: center;
-              }
-            }
           }
         }
       }
@@ -803,6 +812,10 @@ span {
   &-fz {
     &-14 {
       font-size: 14px;
+
+      @include b(550) {
+        font-size: 12px;
+      }
     }
   }
 
