@@ -73,25 +73,6 @@ export class MetamaskService {
   }
 
   public getAccounts(noEnable?) {
-    const isValidMetaMaskNetwork = (observer) => {
-      return new Promise((resolve, reject) => {
-        this.metaMaskWeb3
-          .request({
-            method: "net_version",
-          })
-          .then((result) => {
-            if (usedNetworkVersion !== Number(result)) {
-              observer.error({
-                code: 2,
-                msg: "Please choose " + net + " network in Metamask.",
-              });
-              reject();
-            }
-            resolve();
-          });
-      });
-    };
-
     const onAuth = (observer, address) => {
       this.Web3.setProvider(this.providers.metamask);
       observer.next({
@@ -111,9 +92,53 @@ export class MetamaskService {
       }
     };
 
+    const isValidMetaMaskNetwork = (observer, chain?) => {
+      return new Promise((resolve, reject) => {
+        this.metaMaskWeb3
+          .request({
+            method: "net_version",
+          })
+          .then((result) => {
+            if (usedNetworkVersion !== Number(result)) {
+              if (chain) {
+                onError(observer, {
+                  code: 3,
+                  msg: "Not authorized",
+                });
+              }
+
+              observer.error({
+                code: 2,
+                msg: "Please choose " + net + " network in Metamask.",
+              });
+              reject();
+            }
+            resolve();
+          });
+      });
+    };
+
     return new Observable((observer) => {
       if (this.metaMaskWeb3 && this.metaMaskWeb3.isMetaMask) {
-        isValidMetaMaskNetwork(observer).then((res) => {
+        this.metaMaskWeb3.on("chainChanged", (chainId) => {
+          console.log(chainId);
+
+          isValidMetaMaskNetwork(observer)
+            .then(() => {
+              // onAuth(observer, this.metaMaskWeb3.selectedAddress);
+              console.log("this.metaMaskWeb3.selectedAddress");
+              window.location.reload();
+            })
+            .catch((err) => {
+              console.log(err);
+              onError(observer, {
+                code: 3,
+                msg: "Not authorized",
+              });
+            });
+        });
+
+        isValidMetaMaskNetwork(observer).then(() => {
           this.metaMaskWeb3.on("accountsChanged", (accounts) => {
             if (accounts.length) {
               onAuth(observer, accounts[0]);

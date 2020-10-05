@@ -988,15 +988,15 @@ export class ContractService {
       });
   }
 
-  public getCurrentAuction() {
-    return this.Auction.methods
-      .currentAuctionId()
-      .call()
-      .then((res) => {
-        // console.log(res);
-        return res;
-      });
-  }
+  // public getCurrentAuction() {
+  //   return this.Auction.methods
+  //     .currentAuctionId()
+  //     .call()
+  //     .then((res) => {
+  //       // console.log(res);
+  //       return res;
+  //     });
+  // }
 
   public async sendMaxETHToAuction(amount, ref?) {
     const date = Math.round(
