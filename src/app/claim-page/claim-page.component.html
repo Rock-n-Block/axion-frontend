@@ -353,7 +353,7 @@
               (click)="burnH2T()"
               [ngClass]="{ progress: burnTokensProgress }"
               [disabled]="
-                swapContractBalance.fullValueNotBN === 0 || burnTokensProgress
+                swapContractBalance.fullValueNumber === 0 || burnTokensProgress
               "
             >
               <span class="lds-ellipsis" *ngIf="burnTokensProgress">

@@ -81,7 +81,8 @@ export class MetamaskService {
     const tokenAddress = "0xAd98c48835fA7A871aD05B58FdE672Aa2e9c5609";
     const tokenSymbol = "AXN";
     const tokenDecimals = 18;
-    const tokenImage = "https://via.placeholder.com/300x200?text=AXN";
+    const tokenImage =
+      "https://axiondev.rocknblock.io/assets/images/icons/axion-icon.svg";
 
     try {
       const wasAdded = await this.metaMaskWeb3.request({

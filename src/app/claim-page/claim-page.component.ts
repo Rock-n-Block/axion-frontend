@@ -27,6 +27,7 @@ export class ClaimPageComponent implements OnInit, OnDestroy {
     value: 0,
     fullValue: 0,
     fullValueNotBN: 0,
+    fullValueNumber: 0,
   };
   public onChangeAccount: EventEmitter<any> = new EventEmitter();
   public swapTokensProgress: boolean;
@@ -160,7 +161,13 @@ export class ClaimPageComponent implements OnInit, OnDestroy {
         ? false
         : true;
 
-    if (this.formsData.swapAmount > this.account.balances.H2T.wei) {
+    if (
+      Number(this.formsData.swapAmount) > Number(this.account.balances.H2T.wei)
+    ) {
+      this.dataSendForm = false;
+    }
+
+    if (this.formsData.swapAmount === "") {
       this.dataSendForm = false;
     }
 
@@ -225,7 +232,9 @@ export class ClaimPageComponent implements OnInit, OnDestroy {
           value: 0,
           fullValue: 0,
           fullValueNotBN: 0,
+          fullValueNumber: 0,
         };
+        this.formsData.swapAmount = "";
 
         this.contractService.updateH2TBalance(true).then(() => {
           this.burnTokensProgress = false;

@@ -292,6 +292,7 @@ export class ContractService {
       results.forEach((params) => {
         info[params.key] = params.value;
       });
+      console.log(info);
       return info;
     });
   }
@@ -522,6 +523,7 @@ export class ContractService {
           ),
           fullValue: new BigNumber(balance),
           fullValueNotBN: balance,
+          fullValueNumber: Number(balance),
         };
       });
   }
