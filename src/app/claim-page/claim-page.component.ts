@@ -9,13 +9,14 @@ import {
 import BigNumber from "bignumber.js";
 import { AppComponent } from "../app.component";
 import { ContractService } from "../services/contract";
+import { Resolve, Router } from "@angular/router";
 
 @Component({
   selector: "app-claim-page",
   templateUrl: "./claim-page.component.html",
   styleUrls: ["./claim-page.component.scss"],
 })
-export class ClaimPageComponent implements OnDestroy {
+export class ClaimPageComponent implements OnInit, OnDestroy {
   public account;
   public tokensDecimals;
   private accountSubscribe;
@@ -25,6 +26,7 @@ export class ClaimPageComponent implements OnDestroy {
   public swapContractBalance = {
     value: 0,
     fullValue: 0,
+    fullValueNotBN: 0,
   };
   public onChangeAccount: EventEmitter<any> = new EventEmitter();
   public swapTokensProgress: boolean;
@@ -37,6 +39,7 @@ export class ClaimPageComponent implements OnDestroy {
   public tonkenUrl = "none";
 
   public dataSendForm = false;
+  public leftDaysInfoChecker = true;
 
   public clacPenalty = 0;
   public toSwap = new BigNumber(0);
@@ -54,35 +57,78 @@ export class ClaimPageComponent implements OnDestroy {
   constructor(
     private contractService: ContractService,
     private ngZone: NgZone,
-    private appComponent: AppComponent
+    private appComponent: AppComponent,
+    private router: Router
   ) {
+    this.contractService
+      .getEndDateTimeCurrent()
+      .then((result: { leftDaysInfo: number }) => {
+        if (result.leftDaysInfo < 0) {
+          this.leftDaysInfoChecker = false;
+          this.router.navigate(["auction"]);
+        } else {
+          this.leftDaysInfoChecker = true;
+          this.checkDays();
+        }
+      });
+
+    this.initPage();
+
+    this.tokensDecimals = this.contractService.getCoinsDecimals();
+    this.AxnTokenAddress = this.contractService.AxnTokenAddress;
+    this.tonkenUrl = this.contractService.settingsApp.settings.tonkenUrl;
+  }
+
+  public checkDays() {
+    if (this.leftDaysInfoChecker) {
+      setTimeout(() => {
+        this.contractService
+          .getEndDateTimeCurrent()
+          .then((result: { leftDaysInfo: number }) => {
+            // console.log("claim days checker", result);
+            if (result.leftDaysInfo < 0) {
+              this.leftDaysInfoChecker = false;
+              this.router.navigate(["auction"]);
+            } else {
+              this.checkDays();
+            }
+          });
+      }, 1000);
+    }
+  }
+
+  public initPage() {
     this.accountSubscribe = this.contractService
       .accountSubscribe()
       .subscribe((account: any) => {
         if (!account || account.balances) {
           this.ngZone.run(() => {
             this.account = account;
-            window.dispatchEvent(new Event("resize"));
             if (account) {
-              console.log(this.account);
-              this.getSnapshotInfo();
+              this.updateSwapBalanceProgress = true;
               this.onChangeAmount();
               this.onChangeAccount.emit();
-              this.updateSwapBalanceProgress = true;
+              this.getSnapshotInfo();
               this.readSwapNativeToken();
               this.contractService.swapTokenBalanceOf().then((balance) => {
                 this.swapContractBalance = balance;
                 this.readPenalty();
                 this.updateSwapBalanceProgress = false;
-                window.dispatchEvent(new Event("resize"));
               });
             }
+            window.dispatchEvent(new Event("resize"));
           });
         }
       });
-    this.tokensDecimals = this.contractService.getCoinsDecimals();
-    this.AxnTokenAddress = this.contractService.AxnTokenAddress;
-    this.tonkenUrl = this.contractService.settingsApp.settings.tonkenUrl;
+  }
+
+  ngOnInit() {
+    this.initPage();
+  }
+
+  ngOnDestroy() {
+    this.leftDaysInfoChecker = false;
+    this.accountSubscribe.unsubscribe();
   }
 
   private getSnapshotInfo() {
@@ -99,6 +145,8 @@ export class ClaimPageComponent implements OnDestroy {
   }
 
   public onChangeAmount() {
+    console.log(this.formsData.swapAmount);
+
     if (
       this.formsData.swapAmount >
       this.account.balances.H2T.shortBigNumber.toString()
@@ -107,21 +155,32 @@ export class ClaimPageComponent implements OnDestroy {
     }
 
     this.dataSendForm =
-      Number(this.formsData.swapAmount) <= 0 ||
+      new BigNumber(this.formsData.swapAmount).toNumber() <= 0 ||
       this.formsData.swapAmount === undefined
         ? false
         : true;
+
+    if (this.formsData.swapAmount > this.account.balances.H2T.wei) {
+      this.dataSendForm = false;
+    }
+
+    if (this.formsData.swapAmount) {
+      if (this.formsData.swapAmount.indexOf("+") !== -1) {
+        this.dataSendForm = false;
+      }
+    }
+
+    console.log(this.dataSendForm);
   }
 
   private readPenalty() {
     this.contractService
-      .calculatePenalty(this.swapContractBalance.fullValue)
+      .calculatePenalty(this.swapContractBalance.fullValueNotBN)
       .then((res) => {
         this.clacPenalty = res;
-
-        this.toSwap = new BigNumber(this.swapContractBalance.fullValue).minus(
-          this.clacPenalty
-        );
+        this.toSwap = new BigNumber(
+          this.swapContractBalance.fullValueNotBN
+        ).minus(this.clacPenalty);
       });
   }
 
@@ -162,7 +221,11 @@ export class ClaimPageComponent implements OnDestroy {
         this.burnTokensProgress = false;
 
         this.readPenalty();
-        this.swapContractBalance = { value: 0, fullValue: 0 };
+        this.swapContractBalance = {
+          value: 0,
+          fullValue: 0,
+          fullValueNotBN: 0,
+        };
 
         this.contractService.updateH2TBalance(true).then(() => {
           this.burnTokensProgress = false;
@@ -203,9 +266,5 @@ export class ClaimPageComponent implements OnDestroy {
 
   public subscribeAccount() {
     this.appComponent.subscribeAccount();
-  }
-
-  ngOnDestroy() {
-    this.accountSubscribe.unsubscribe();
   }
 }

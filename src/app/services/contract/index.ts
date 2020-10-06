@@ -1,3 +1,4 @@
+import { resolve } from "url";
 // import { CONTRACTS_PARAMS } from "./constants";
 import { MetamaskService } from "../web3";
 import { Contract } from "web3-eth-contract";
@@ -6,6 +7,8 @@ import { Injectable } from "@angular/core";
 import BigNumber from "bignumber.js";
 import { HttpClient } from "@angular/common/http";
 import * as moment from "moment";
+// import "moment-duration-format";
+// var momentDurationFormatSetup = require("moment-duration-format");
 import { settingsData } from "../../params";
 
 // const swapDays = 350;
@@ -70,6 +73,11 @@ export class ContractService {
       lowerName: "days",
     },
   };
+
+  private dateToEnd: any;
+  private swapDaysPeriod: any;
+  private secondsInDay: any;
+  private startDate: any;
 
   private CONTRACTS_PARAMS: any;
 
@@ -173,7 +181,6 @@ export class ContractService {
       .getUserClaimableAmountFor(this.account.snapshot.hex_amount)
       .call()
       .then((result) => {
-        console.log(result);
         this.account.claimableInfo = {
           claim: new BigNumber(result[0]),
           penalty: new BigNumber(result[1]),
@@ -513,7 +520,8 @@ export class ContractService {
           value: new BigNumber(balance).div(
             new BigNumber(10).pow(this.tokensDecimals.H2T)
           ),
-          fullValue: new BigNumber(balance).toNumber(),
+          fullValue: new BigNumber(balance),
+          fullValueNotBN: balance,
         };
       });
   }
@@ -701,6 +709,10 @@ export class ContractService {
                 //   (endDateTime - new Date().getTime()) / allDaysSeconds
                 // );
 
+                this.swapDaysPeriod = swapDaysPeriod;
+                this.secondsInDay = secondsInDay;
+                this.startDate = startDate;
+
                 const a = moment(new Date(endDateTime));
                 const b = moment(new Date());
 
@@ -715,16 +727,86 @@ export class ContractService {
                     .lowerName
                 );
 
+                const leftDays2 = a.diff(b);
+
+                this.dateToEnd = leftDays2;
+
+                // let duration = moment.duration(decimalHours, "hours");
+                // let options: moment.DurationFormatSettings = {
+                //   forceLength: false,
+                //   precision: 0,
+                //   template: formatString,
+                //   trim: false,
+                // };
+                // let result = duration.format(formatString, 0, options);
+
+                // let dd = moment.duration(400.99, 'hours');
+
+                // const showTime = moment.utc(leftDays2).format("dd HH mm ss");
+                const showTime = {
+                  h: moment.utc(leftDays2).hours(),
+                  m: moment.utc(leftDays2).minutes(),
+                  s: moment.utc(leftDays2).seconds(),
+                };
+
+                // const showTime = moment
+                //   .duration(67, "minutes")
+                //   .humanize(false, { h: 24, m: 60, s: 60 });
+
+                // const showTime = momentDurationFormatSetup
+                //   .duration(leftDays, "minutes")
+                //   .format();
+
                 return {
                   startDate: fullStartDate,
                   endDate: endDateTime,
                   dateEnd,
                   leftDays,
+                  showTime,
                 };
               });
           });
       });
   }
+
+  public getEndDateTimeCurrent() {
+    return new Promise((resolve) => {
+      const allDaysSeconds = this.swapDaysPeriod * this.secondsInDay * 1000;
+      const fullStartDate = this.startDate * 1000;
+      const endDateTime = fullStartDate + allDaysSeconds;
+      const a = moment(new Date(endDateTime));
+      const b = moment(new Date());
+
+      const leftDays = a.diff(
+        b,
+        this.settingsApp[this.settingsApp.settings.time.display].lowerName
+      );
+
+      const dateEnd = a.diff(
+        b,
+        this.settingsApp[this.settingsApp.settings.time.display].lowerName
+      );
+
+      const leftDaysToShow = a.diff(b);
+
+      const showTime = {
+        h: moment.utc(leftDaysToShow).hours(),
+        m: moment.utc(leftDaysToShow).minutes(),
+        s: moment.utc(leftDaysToShow).seconds(),
+      };
+
+      // console.log("showTime", showTime);
+
+      resolve({
+        startDate: fullStartDate,
+        endDate: endDateTime,
+        dateEnd,
+        leftDays,
+        showTime,
+      });
+    });
+  }
+
   public readSwapNativeToken() {
     return this.swapTokenBalanceOf(true).then((value) => {
       return this.NativeSwapContract.methods
@@ -737,13 +819,10 @@ export class ContractService {
   }
 
   public calculatePenalty(amount) {
-    // console.log("send panalty amount", amount);
-
     return this.NativeSwapContract.methods
       .calculateDeltaPenalty(amount.toString())
       .call()
       .then((res) => {
-        // console.log("penalty value from request", res);
         return res;
       });
   }
@@ -1272,8 +1351,8 @@ export class ContractService {
           //       )
           //     : 0;
         },
-        (err) => {
-          console.log("none", err);
+        () => {
+          // console.log("none", err);
           this.account.snapshot = {
             user_address: this.account.address,
             user_dont_have_hex: true,
@@ -1305,8 +1384,8 @@ export class ContractService {
                 .div(10000000000)
                 .toNumber();
             },
-            (err) => {
-              console.log("none", err);
+            () => {
+              // console.log("none", err);
               this.account.snapshot = {
                 user_address: this.account.address,
                 user_dont_have_hex: true,
@@ -1389,5 +1468,7 @@ export class ContractService {
     );
 
     this.AxnTokenAddress = this.CONTRACTS_PARAMS.HEX.ADDRESS;
+
+    this.getEndDateTime();
   }
 }

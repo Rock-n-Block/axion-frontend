@@ -10,7 +10,7 @@ import { AuctionPageComponent } from "./auction-page/auction-page.component";
 import { TransactionSuccessModalComponent } from "./components/transactionSuccessModal/transaction-success-modal.component";
 import { MetamaskErrorComponent } from "./components/metamaskError/metamask-error.component";
 import { ContractService } from "./services/contract";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import {
   BigNumberDirective,
   BigNumberFormat,
@@ -58,6 +58,7 @@ export function initializeApp(injector: Injector) {
     MatDialogModule,
     MatTooltipModule,
     FormsModule,
+    ReactiveFormsModule,
     AngularFittextModule,
     HttpClientModule,
     BrowserAnimationsModule,

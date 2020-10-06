@@ -50,7 +50,7 @@
           <div class="axn-page-form-block-one-item t-a-c">
             <span class="axn-text-input">{{
               (account ? account.snapshot.show_hex || 0 : 0)
-                | bigNumberFormat: tokensDecimals.HEX:true:false:8
+                | bigNumberFormat: tokensDecimals.HEX:true:false:18
             }}</span>
           </div>
           <div class="axn-form-block-one-item">
@@ -69,7 +69,7 @@
           <div class="axn-form-block-one-item t-a-c">
             <span class="axn-text-input t-cl-green">{{
               (account ? account.claimableInfo.claim || 0 : 0)
-                | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:8
+                | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:18
             }}</span>
           </div>
           <div class="axn-form-block-one-item">
@@ -84,7 +84,7 @@
           <div class="axn-axn-form-block-one-item t-a-c">
             <span class="axn-text-input t-cl-light-red">{{
               (account ? account.claimableInfo.penalty || 0 : 0)
-                | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:8
+                | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:18
             }}</span>
           </div>
           <div class="axn-form-block-one-item">
@@ -122,8 +122,8 @@
       <span class="axn-text t-cl-purple t-a-c t-t-u">HEX Snapshot</span>
       <p class="axn-text t-fz-14">
         The claim is only available to users who own or stake HEX tokens on May
-        28, 2020. A snapshot with a list of user addresses and the amount of the
-        claim can be checked at
+        28, 2020. A snapshot with a list of users addresses and the amount of
+        the claim can be checked at
         <a
           class="axn-link"
           href="https://ropsten.etherscan.io/token/0xA8ebBB3A410070c2736b09C30F338cf99A8594ae"
@@ -184,7 +184,7 @@
         <span class="axn-text">
           The exchange will be available for 350 days, however, there is a Late
           Claim Penalty for late exchange. The amount of the penalty is
-          calculated by the formula:
+          calculated by the formula: <br />
           <span class="t-cl-light-red"> Penalty</span> =
           <span class="t-cl-green">(HEX + Shares amount)</span> * (day since
           free claim starts / 350)
@@ -213,7 +213,7 @@
           >Balance
           {{
             (account ? account?.balances.H2T.wei || 0 : 0)
-              | bigNumberFormat: tokensDecimals.H2T:true:false:8
+              | bigNumberFormat: tokensDecimals.H2T:true:false:18
           }}</span
         >
         <div class="axn-form-block-one-wrap">
@@ -281,7 +281,8 @@
           <div class="axn-form-block-one-item t-a-c">
             <span class="axn-text-input">
               {{
-                swapContractBalance.value || 0 | bigNumberFormat: 0:true:false:8
+                swapContractBalance.fullValue || 0
+                  | bigNumberFormat: tokensDecimals.HEX2X:true:false:18
               }}</span
             >
           </div>
@@ -321,7 +322,7 @@
           </div>
           <div class="axn-form-block-one-item t-a-c">
             <span class="axn-text-input t-cl-green">{{
-              toSwap || 0 | bigNumberFormat: tokensDecimals.HEX2X:true:false:8
+              toSwap || 0 | bigNumberFormat: tokensDecimals.HEX2X:true:false:18
             }}</span>
           </div>
           <div class="axn-form-block-one-item">
@@ -336,7 +337,7 @@
           <div class="axn-axn-form-block-one-item t-a-c">
             <span class="axn-text-input t-cl-light-red">{{
               clacPenalty || 0
-                | bigNumberFormat: tokensDecimals.HEX2X:true:false:8
+                | bigNumberFormat: tokensDecimals.HEX2X:true:false:18
             }}</span>
           </div>
           <div class="axn-form-block-one-item">
@@ -352,7 +353,7 @@
               (click)="burnH2T()"
               [ngClass]="{ progress: burnTokensProgress }"
               [disabled]="
-                swapContractBalance.fullValue === 0 || burnTokensProgress
+                swapContractBalance.fullValueNotBN === 0 || burnTokensProgress
               "
             >
               <span class="lds-ellipsis" *ngIf="burnTokensProgress">

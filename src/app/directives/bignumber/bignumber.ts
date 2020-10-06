@@ -8,6 +8,7 @@ import {
 } from "@angular/core";
 import { NgControl } from "@angular/forms";
 import BigNumber from "bignumber.js";
+import { Console } from "console";
 
 @Directive({
   selector: "[appBigNumber]",
@@ -131,15 +132,27 @@ export class BigNumberDirective implements OnInit {
       modelValue = modelValue.toString(10);
       if (JSON.stringify(errors) === "{}") {
         this.latestValue = originalValue;
+
         this.control.control.setValue(modelValue, {
           emitEvent: false,
         });
         this.control.control.setErrors(null);
       } else {
         if (this.latestValue) {
+          console.log("modelValue", modelValue);
+
           modelValue = new BigNumber(this.latestValue)
             .times(Math.pow(10, this.currentDecimals))
             .toString();
+
+          console.log("modelValue indexOf(+)", modelValue.indexOf("+"));
+
+          if (modelValue.indexOf("+") !== -1) {
+            const start = result.substr(result.indexOf(".") + 1);
+            const end = result.substr(result.indexOf(".") + 1);
+
+            console.log(start, end);
+          }
         }
         if (modelValue) {
           this.control.control.markAsTouched();
@@ -160,14 +173,27 @@ export class BigNumberDirective implements OnInit {
       : "";
 
     return visibleValue
-      ? visibleValue.toFormat(
-          Math.min(
-            this.decimalPart ? this.decimalPart.length : 0,
-            this.currentDecimals || 0
-          ),
-          { groupSeparator: ",", groupSize: 3, decimalSeparator: "." }
-        ) + (this.withEndPoint ? "." : "")
+      ? visibleValue
+          .toFormat(
+            Math.min(
+              this.decimalPart ? this.decimalPart.length : 0,
+              this.currentDecimals || 0
+            ),
+            1,
+            { groupSeparator: ",", groupSize: 3, decimalSeparator: "." }
+          )
+          .toString() + (this.withEndPoint ? "." : "")
       : "";
+
+    // return visibleValue
+    //   ? visibleValue.toFormat(
+    //       Math.min(
+    //         this.decimalPart ? this.decimalPart.length : 0,
+    //         this.currentDecimals || 0
+    //       ),
+    //       { groupSeparator: ",", groupSize: 3, decimalSeparator: "." }
+    //     ) + (this.withEndPoint ? "." : "")
+    //   : "";
   }
 }
 

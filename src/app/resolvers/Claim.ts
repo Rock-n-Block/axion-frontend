@@ -17,16 +17,18 @@ export class ClaimResolver implements Resolve<any> {
 
   resolve() {
     return new Observable((observer) => {
-      this.contractService.getEndDateTime().then((result) => {
-        const leftDaysInfoShow = result.leftDays > 0;
-        // const leftDaysInfoShow = true;
-        if (leftDaysInfoShow) {
-          this.continue(observer);
-        } else {
-          this.router.navigate(["auction"]);
-        }
-        return false;
-      });
+      this.contractService
+        .getEndDateTime()
+        .then((result: { leftDays: number }) => {
+          const leftDaysInfoShow = result.leftDays > 0;
+          // const leftDaysInfoShow = true;
+          if (leftDaysInfoShow) {
+            this.continue(observer);
+          } else {
+            this.router.navigate(["auction"]);
+          }
+          return false;
+        });
     });
   }
 }

@@ -12,8 +12,16 @@
         <li class="header-menu_item">
           <a routerLink="staking" routerLinkActive="active-link">Staking</a>
         </li>
-        <li class="header-menu_item">
-          <span class="axn-btn axn-btn-purple" (click)="addToken()"
+        <li class="header-menu_item" *ngIf="addToRopsten">
+          <!-- <span class="axn-btn axn-btn-purple" (click)="addToken()"
+            >ADD
+            <i class="icon icon-flex icon__axion" style="margin-left: 10px"></i>
+            to MetaMask</span
+          > -->
+          <span
+            class="icon icon-flex icon__axion axn-btn axn-btn-purple"
+            (click)="addToken()"
+            style="margin-left: 15px"
             >Add to MetaMask</span
           >
         </li>
@@ -74,8 +82,10 @@
           >Staking</a
         >
       </div>
-      <div class="header-navbar-item">
-        <span class="axn-btn axn-btn-purple" (click)="addToken()"
+      <div class="header-navbar-item" *ngIf="addToRopsten">
+        <span
+          class="icon icon-flex icon__axion axn-btn axn-btn-purple"
+          (click)="addToken()"
           >Add to MetaMask</span
         >
       </div>
@@ -111,10 +121,17 @@
   > -->
     <ng-container *ngIf="leftDaysInfoShow && account">
       <span class="repeat-content" *ngFor="let item of runLineCountArray">
+        <b
+          >{{ leftDaysInfo.showTime.h }}h {{ leftDaysInfo.showTime.m }}m
+          {{ leftDaysInfo.showTime.s }}s</b
+        >
+        left for Claiming AXN
+      </span>
+      <!-- <span class="repeat-content" *ngFor="let item of runLineCountArray">
         <b>{{ leftDaysInfo?.dateEnd }}</b
         >&nbsp;<b>Min</b>
         left for Claiming AXN
-      </span>
+      </span> -->
     </ng-container>
     <ng-container *ngIf="!leftDaysInfoShow || !account">
       <span class="repeat-content"></span>

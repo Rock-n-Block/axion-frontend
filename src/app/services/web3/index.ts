@@ -97,9 +97,7 @@ export class MetamaskService {
       });
 
       if (wasAdded) {
-        console.log("Thanks for your interest!");
-      } else {
-        console.log("Your loss!");
+        console.log("Complete");
       }
     } catch (error) {
       console.log(error);
@@ -163,12 +161,9 @@ export class MetamaskService {
     return new Observable((observer) => {
       if (this.metaMaskWeb3 && this.metaMaskWeb3.isMetaMask) {
         this.metaMaskWeb3.on("chainChanged", (chainId) => {
-          console.log(chainId);
-
           isValidMetaMaskNetwork(observer)
             .then(() => {
               // onAuth(observer, this.metaMaskWeb3.selectedAddress);
-              console.log("this.metaMaskWeb3.selectedAddress");
               window.location.reload();
             })
             .catch((err) => {

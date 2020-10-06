@@ -5,8 +5,8 @@ import { ContractService } from "./services/contract";
 import { MatDialog } from "@angular/material/dialog";
 import { ActivationStart, NavigationStart, Router } from "@angular/router";
 import { CookieService } from "ngx-cookie-service";
-import { chackerDays } from "./params";
-import { MetamaskService } from "./services/web3";
+import { settingsData } from "./params";
+// import { chackerDays } from "./params";
 
 @Component({
   selector: "app-root",
@@ -21,6 +21,7 @@ export class AppComponent implements OnInit {
   public leftDaysInfo;
   public leftDaysInfoShow = false;
   public leftDaysInfoChecker = false;
+  public addToRopsten = false;
   public tableInfo;
   public runLineCountArray = new Array(1);
   @ViewChild("runString", { static: false }) runString;
@@ -29,15 +30,38 @@ export class AppComponent implements OnInit {
     private ngZone: NgZone,
     public dialog: MatDialog,
     private cookieService: CookieService,
-    private metamaskService: MetamaskService,
     route: Router
   ) {
+    window["ethereum"].on("chainChanged", () => {
+      window["ethereum"]
+        .request({
+          method: "net_version",
+        })
+        .then((result) => {
+          this.addToRopsten = Number(result) === 3;
+
+          console.log("ropsten", this.addToRopsten);
+        });
+    });
+
     this.accountSubscribe = this.contractService
       .accountSubscribe()
       .subscribe((account) => {
         if (account) {
           this.accountSubscribe.unsubscribe();
           this.subscribeAccount();
+
+          this.contractService.getEndDateTime().then((result) => {
+            this.leftDaysInfo = result;
+            this.leftDaysInfoShow = this.leftDaysInfo.leftDays > 0;
+
+            if (this.leftDaysInfoShow) {
+              this.leftDaysInfoChecker = true;
+              // if (this.account) {
+              this.checkDays();
+              // }
+            }
+          });
         }
       });
 
@@ -52,18 +76,6 @@ export class AppComponent implements OnInit {
         }
       });
     this.contractService.getAccount(true);
-
-    this.contractService.getEndDateTime().then((result) => {
-      this.leftDaysInfo = result;
-      this.leftDaysInfoShow = this.leftDaysInfo.leftDays > 0;
-      if (this.leftDaysInfoShow) {
-        this.leftDaysInfoChecker = true;
-        if (this.account) {
-          this.checkDays();
-        }
-      }
-      // console.log("days left info", result);
-    });
 
     this.isNavbarOpen = false;
 
@@ -94,16 +106,17 @@ export class AppComponent implements OnInit {
   public checkDays() {
     if (this.leftDaysInfoChecker) {
       setTimeout(() => {
-        this.contractService.getEndDateTime().then((result) => {
+        this.contractService.getEndDateTimeCurrent().then((result) => {
           this.leftDaysInfo = result;
           this.leftDaysInfoShow = this.leftDaysInfo.leftDays > 0;
           if (!this.leftDaysInfoShow) {
             this.leftDaysInfoChecker = false;
           } else {
             this.checkDays();
+            // console.log("app days checker", result);
           }
         });
-      }, chackerDays);
+      }, 1000);
     }
   }
 
