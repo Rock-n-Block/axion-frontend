@@ -120,18 +120,18 @@
     [ngClass]="{ visibility: leftDaysInfoShow }"
   > -->
     <ng-container *ngIf="leftDaysInfoShow && account">
-      <span class="repeat-content" *ngFor="let item of runLineCountArray">
+      <!-- <span class="repeat-content" *ngFor="let item of runLineCountArray">
         <b
           >{{ leftDaysInfo.showTime.h }}h {{ leftDaysInfo.showTime.m }}m
           {{ leftDaysInfo.showTime.s }}s</b
         >
         left for Claiming AXN
-      </span>
-      <!-- <span class="repeat-content" *ngFor="let item of runLineCountArray">
-        <b>{{ leftDaysInfo?.dateEnd }}</b
-        >&nbsp;<b>Min</b>
-        left for Claiming AXN
       </span> -->
+      <span class="repeat-content" *ngFor="let item of runLineCountArray">
+        <b>{{ leftDaysInfo?.dateEnd }}</b
+        >&nbsp;<b>Days</b>
+        left for Claiming AXN
+      </span>
     </ng-container>
     <ng-container *ngIf="!leftDaysInfoShow || !account">
       <span class="repeat-content"></span>

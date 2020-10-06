@@ -39,10 +39,16 @@ export class AppComponent implements OnInit {
         })
         .then((result) => {
           this.addToRopsten = Number(result) === 3;
-
-          console.log("ropsten", this.addToRopsten);
         });
     });
+
+    window["ethereum"]
+      .request({
+        method: "net_version",
+      })
+      .then((result) => {
+        this.addToRopsten = Number(result) === 3;
+      });
 
     this.accountSubscribe = this.contractService
       .accountSubscribe()

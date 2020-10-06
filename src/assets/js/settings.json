@@ -1,12 +1,12 @@
 {
   "settings": {
     "production": false,
-    "network": "rinkeby",
+    "network": "ropsten",
     "tonkenUrl": "https://rinkeby.etherscan.io/token/",
-    "net": 4,
+    "net": 3,
     "time": {
-      "seconds": 900,
-      "display": "minutes"
+      "seconds": 86400,
+      "display": "days"
     }
   },
   "minutes": {

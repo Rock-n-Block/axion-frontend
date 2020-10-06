@@ -742,12 +742,14 @@ export class ContractService {
 
                 // let dd = moment.duration(400.99, 'hours');
 
+                const showTime = leftDays;
+
                 // const showTime = moment.utc(leftDays2).format("dd HH mm ss");
-                const showTime = {
-                  h: moment.utc(leftDays2).hours(),
-                  m: moment.utc(leftDays2).minutes(),
-                  s: moment.utc(leftDays2).seconds(),
-                };
+                // const showTime = {
+                //   h: moment.utc(leftDays2).hours(),
+                //   m: moment.utc(leftDays2).minutes(),
+                //   s: moment.utc(leftDays2).seconds(),
+                // };
 
                 // const showTime = moment
                 //   .duration(67, "minutes")
@@ -1374,7 +1376,7 @@ export class ContractService {
           .toPromise()
           .then(
             (result) => {
-              console.log(result);
+              // console.log(result);
               this.account.snapshot = result;
               this.account.snapshot.user_dont_have_hex =
                 this.account.snapshot.hex_amount <= 0;

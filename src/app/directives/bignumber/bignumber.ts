@@ -139,19 +139,20 @@ export class BigNumberDirective implements OnInit {
         this.control.control.setErrors(null);
       } else {
         if (this.latestValue) {
-          console.log("modelValue", modelValue);
+          // console.log("modelValue", modelValue);
 
           modelValue = new BigNumber(this.latestValue)
             .times(Math.pow(10, this.currentDecimals))
             .toString();
 
-          console.log("modelValue indexOf(+)", modelValue.indexOf("+"));
+          // console.log("modelValue indexOf(+)", modelValue.indexOf("+"));
 
           if (modelValue.indexOf("+") !== -1) {
             const start = result.substr(result.indexOf(".") + 1);
             const end = result.substr(result.indexOf(".") + 1);
 
-            console.log(start, end);
+            // console.log(originalValue);
+            // console.log(start, end);
           }
         }
         if (modelValue) {

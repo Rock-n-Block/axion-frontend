@@ -145,7 +145,7 @@ export class ClaimPageComponent implements OnInit, OnDestroy {
   }
 
   public onChangeAmount() {
-    console.log(this.formsData.swapAmount);
+    // console.log(this.formsData.swapAmount);
 
     if (
       this.formsData.swapAmount >
@@ -170,7 +170,7 @@ export class ClaimPageComponent implements OnInit, OnDestroy {
       }
     }
 
-    console.log(this.dataSendForm);
+    // console.log(this.dataSendForm);
   }
 
   private readPenalty() {
@@ -243,7 +243,7 @@ export class ClaimPageComponent implements OnInit, OnDestroy {
     ) {
       setTimeout(() => {
         this.contractService.updateUserSnapshot();
-        console.log("upd snaphot after claim", this.account);
+        // console.log("upd snaphot after claim", this.account);
       }, 5000);
     }
   }

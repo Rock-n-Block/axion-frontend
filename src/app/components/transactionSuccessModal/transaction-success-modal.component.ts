@@ -1,5 +1,6 @@
 import { Component, Inject } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { settingsData } from "src/app/params";
 
 @Component({
   selector: "app-transaction-success-modal",
@@ -11,7 +12,7 @@ export class TransactionSuccessModalComponent {
     public dialogRef: MatDialogRef<TransactionSuccessModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.ethLink = `https://rinkeby.etherscan.io/tx/${data}`;
+    this.ethLink = `https://${settingsData.settings.network}.etherscan.io/tx/${data}`;
   }
   public closeModal() {
     this.dialogRef.close();

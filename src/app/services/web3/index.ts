@@ -18,12 +18,13 @@ export class MetamaskService {
 
   private networks = {
     production: "mainnet",
-    testnet: "rinkeby",
+    testnet: "ropsten",
   };
 
   constructor() {
     // console.log("web3", settingsApp);
     const settingsApp = settingsData;
+    this.networks.testnet = settingsApp.settings.network;
 
     this.IS_PRODUCTION = settingsApp.settings.production;
     this.usedNetworkVersion = settingsApp.settings.production
