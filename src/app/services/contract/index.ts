@@ -90,7 +90,7 @@ export class ContractService {
 
     const promises = [
       this.httpService
-        .get(`/assets/js/constants.json`)
+        .get(`/assets/js/constants.json?v=${new Date().getTime()}`)
         .toPromise()
         .then((result) => {
           // const IS_PRODUCTION = location.protocol === "https:";
