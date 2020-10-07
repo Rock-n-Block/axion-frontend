@@ -22,6 +22,7 @@ export class AppComponent implements OnInit {
   public leftDaysInfoShow = false;
   public leftDaysInfoChecker = false;
   public addToRopsten = false;
+  public chainNetwork = "rinkeby";
   public tableInfo;
   public runLineCountArray = new Array(1);
   @ViewChild("runString", { static: false }) runString;
@@ -49,6 +50,8 @@ export class AppComponent implements OnInit {
       .then((result) => {
         this.addToRopsten = Number(result) === 3;
       });
+
+    this.chainNetwork = settingsData.settings.network;
 
     this.accountSubscribe = this.contractService
       .accountSubscribe()
