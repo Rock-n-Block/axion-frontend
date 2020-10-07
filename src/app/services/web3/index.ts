@@ -78,7 +78,7 @@ export class MetamaskService {
   }
 
   public async addToken() {
-    const tokenAddress = "0xAd98c48835fA7A871aD05B58FdE672Aa2e9c5609";
+    const tokenAddress = "0x23c685094c439a0796a79d721ae37836567ab6ca";
     const tokenSymbol = "AXN";
     const tokenDecimals = 18;
     const tokenImage =
