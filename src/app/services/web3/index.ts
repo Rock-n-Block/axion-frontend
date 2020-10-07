@@ -18,7 +18,7 @@ export class MetamaskService {
 
   private networks = {
     production: "mainnet",
-    testnet: "ropsten",
+    testnet: "rinkeby",
   };
 
   constructor() {
