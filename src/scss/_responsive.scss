@@ -9,25 +9,26 @@
   .form-group_input input {
     min-width: unset;
   }
-  .standard-table {
-    overflow: scroll;
-    width: 100vw;
-    display: block;
-  }
-  .standard-table thead th.as-sort {
-    text-align: center;
-  }
-  .standard-table tbody td {
-    min-width: 100px;
-    text-align: center;
-  }
+  // .standard-table {
+  //   overflow: scroll;
+  //   // width: 100vw;
+  //   display: block;
+  //   padding-bottom: 10px;
+  // }
+  // .standard-table thead th.as-sort {
+  //   text-align: center;
+  // }
+  // .standard-table tbody td {
+  //   min-width: 100px;
+  //   text-align: center;
+  // }
   .content-block_title.text-left {
     text-align: center !important;
   }
-  .standard-table tbody td:first-child,
-  .standard-table tbody td:last-child {
-    border-radius: 0;
-  }
+  // .standard-table tbody td:first-child,
+  // .standard-table tbody td:last-child {
+  //   border-radius: 0;
+  // }
   .form-group_input-btn-normal {
     width: 30%;
   }

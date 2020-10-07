@@ -1302,6 +1302,17 @@ export class ContractService {
                         )
                       );
 
+                      auctionInfo.winnings = isFinite(
+                        auctionInfo.winnings.toNumber()
+                      )
+                        ? auctionInfo.winnings
+                        : new BigNumber(0);
+
+                      console.log(
+                        auctionInfo.winnings.toNumber(),
+                        isFinite(auctionInfo.winnings.toNumber())
+                      );
+
                       if (
                         accountBalance.ref !==
                         "0x0000000000000000000000000000000000000000"

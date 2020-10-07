@@ -129,8 +129,9 @@
         <span class="axn-text">
           The auction raffling accumulated Axion tokens between users in
           proportion to the participants' stakes in Ethereum. Axion's auction
-          price is can't be lower than the Uniswap price minus 10%, unspent
-          Auction Axion transferred to Weekly Auction. <br />
+          price can't be lower than the Uniswap price minus 10%, unspent
+          Auction's Axion transferred to Weekly Auction.
+          <br />
           When the user places a bet in ETH: 80% of the received ETH at the same
           time is used to buy back Axion on Uniswap and received Axions are used
           to replenish the Staking contract; 20% of the received ETH is the
@@ -210,19 +211,14 @@
   </div>
 </section>
 
-<section class="axn-section axn-page-claim" *ngIf="account">
+<section class="axn-section" *ngIf="account">
   <div class="axn-title-block-button m-t-15">
     <span class="axn-title">My Bets</span>
     <span></span>
   </div>
-  <div class="axn-container">
-    <table
-      class="standard-table text-left"
-      cellpadding="0"
-      cellspacing="0"
-      border="0"
-    >
-      <thead class="text-left">
+  <div class="axn-table">
+    <table class="standard-table" cellpadding="0" cellspacing="0" border="0">
+      <thead>
         <tr>
           <th>Date</th>
           <th>AXN in pool</th>
@@ -232,7 +228,7 @@
           <th width="10">&nbsp;</th>
         </tr>
       </thead>
-      <tbody class="text-left">
+      <tbody>
         <tr *ngFor="let auction of auctionsList">
           <td>{{ auction.start_date | date: "dd.MM.yyyy" }}</td>
           <td>
@@ -253,7 +249,7 @@
                 | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:4
             }}
           </td>
-          <td [colSpan]="auction.winnings === 0 ? 2 : 1">
+          <td [colSpan]="1">
             {{
               auction.winnings
                 | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
@@ -280,19 +276,14 @@
   </div>
 </section>
 
-<section class="axn-section axn-page-claim" *ngIf="account">
+<section class="axn-section" *ngIf="account">
   <div class="axn-title-block-button m-t-15">
     <span class="axn-title">Auctions</span>
     <span></span>
   </div>
-  <div class="axn-container">
-    <table
-      class="standard-table text-left"
-      cellpadding="0"
-      cellspacing="0"
-      border="0"
-    >
-      <thead class="text-left">
+  <div class="axn-table">
+    <table class="standard-table" cellpadding="0" cellspacing="0" border="0">
+      <thead>
         <tr>
           <th>Date</th>
           <th>AXN in pool</th>
@@ -300,7 +291,7 @@
           <th>Completion</th>
         </tr>
       </thead>
-      <tbody class="text-left">
+      <tbody>
         <tr *ngFor="let auction of auctionsList">
           <td>{{ auction.start_date | date: "dd.MM.yyyy" }}</td>
           <td>
@@ -352,6 +343,17 @@
   <div class="axn-container">
     <div class="axn-page-claim-date">
       <span class="axn-text">Enter by Metamask</span>
+
+      <button
+        class="axn-btn axn-btn-green m-t-15"
+        (click)="subscribeAccount()"
+        [ngClass]="{ 'no-clickable': !!account }"
+        [disabled]="!!account"
+      >
+        <span class="axn-text icon-flex icon icon__metamask t-t-u">{{
+          account ? account.address : "MetaMask"
+        }}</span>
+      </button>
     </div>
   </div>
 </section>

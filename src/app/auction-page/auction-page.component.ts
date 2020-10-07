@@ -7,6 +7,7 @@ import {
   TemplateRef,
 } from "@angular/core";
 import { CookieService } from "ngx-cookie-service";
+import { AppComponent } from "../app.component";
 import { chackerAuctionPool } from "../params";
 import { ContractService } from "../services/contract";
 
@@ -62,7 +63,8 @@ export class AuctionPageComponent implements OnDestroy {
   constructor(
     private contractService: ContractService,
     private cookieService: CookieService,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private appComponent: AppComponent
   ) {
     this.referalAddress = this.cookieService.get("ref");
     this.onChangeAmount();
@@ -274,5 +276,9 @@ export class AuctionPageComponent implements OnDestroy {
   ngOnDestroy() {
     this.auctionPoolChecker = false;
     this.accountSubscribe.unsubscribe();
+  }
+
+  public subscribeAccount() {
+    this.appComponent.subscribeAccount();
   }
 }
