@@ -104,6 +104,7 @@ span {
       display: flex;
       flex-direction: column;
       grid-gap: 0px;
+      border-radius: 0;
     }
   }
 
@@ -346,6 +347,12 @@ span {
     }
   }
 
+  &-how-it-works {
+    @include b(750) {
+      margin-top: 35px;
+    }
+  }
+
   &-form {
     display: grid;
     grid-template-columns: 1fr;
@@ -472,12 +479,15 @@ span {
 
         &-price {
           display: flex;
-          grid-gap: 10px;
           justify-content: center;
           align-items: center;
 
           span {
             font-size: 20px !important;
+
+            &:nth-child(2) {
+              margin: 0 10px;
+            }
           }
 
           &-uni {
@@ -796,7 +806,18 @@ span {
 
     @include b(750) {
       width: 90%;
+      text-align: center;
       margin: 0;
+    }
+  }
+
+  &-copied {
+    font-size: 10px;
+    margin-left: 10px;
+
+    @include b(750) {
+      margin-left: 0;
+      margin-top: 10px;
     }
   }
 }
@@ -810,6 +831,10 @@ span {
     &-m {
       &-20 {
         margin-top: -20px;
+      }
+
+      &-35 {
+        margin-top: -35px;
       }
 
       &-25 {

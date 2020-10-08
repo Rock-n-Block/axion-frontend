@@ -6,6 +6,7 @@ import {
   ViewChild,
   TemplateRef,
 } from "@angular/core";
+import * as moment from "moment";
 import { CookieService } from "ngx-cookie-service";
 import { AppComponent } from "../app.component";
 import { chackerAuctionPool } from "../params";
@@ -25,12 +26,7 @@ export class AuctionPageComponent implements OnDestroy {
   public changeSort = true;
 
   public sortData = {
-    auctionId: true,
-    axn_pool: false,
-    eth_bet: false,
-    eth_pool: false,
-    start_date: false,
-    winnings: false,
+    id: true,
   } as any;
 
   public account;
@@ -48,6 +44,8 @@ export class AuctionPageComponent implements OnDestroy {
   public auctionPoolChecker = false;
 
   public dataSendForm = false;
+  public showAuctions = false;
+  public hasAuctionList = false;
 
   public sendAuctionProgress: boolean;
   public auctionInfo: any;
@@ -57,6 +55,9 @@ export class AuctionPageComponent implements OnDestroy {
     axn: 0,
     eth: 0,
   };
+
+  public auctions: any;
+  public auctionsIntervals: [];
 
   public currentSort: any = {};
 
@@ -68,6 +69,7 @@ export class AuctionPageComponent implements OnDestroy {
   ) {
     this.referalAddress = this.cookieService.get("ref");
     this.onChangeAmount();
+    this.getAuctions();
 
     this.accountSubscribe = this.contractService
       .accountSubscribe()
@@ -86,7 +88,19 @@ export class AuctionPageComponent implements OnDestroy {
               //   console.log("auctions", auctions);
               // });
               this.contractService.getUserAuctions().then((auctions) => {
-                this.auctionsList = auctions;
+                const auctions1 = auctions;
+
+                auctions1.sort((a, b) =>
+                  new Date(a.start_date).getDate() <
+                  new Date(b.start_date).getDate()
+                    ? 1
+                    : -1
+                );
+                // auctions1.sort()
+
+                this.hasAuctionList = auctions1.length !== 0;
+                this.auctionsList = auctions1;
+
                 this.referalLink = "";
                 // console.log("user auction list", this.auctionsList);
                 window.dispatchEvent(new Event("resize"));
@@ -102,6 +116,61 @@ export class AuctionPageComponent implements OnDestroy {
         }
       });
     this.tokensDecimals = this.contractService.getCoinsDecimals();
+  }
+
+  public scanDate(date) {
+    const now = new Date();
+    // const utc = new Date(now.getTime() + now.getTimezoneOffset() * 60000);
+
+    const a = moment(date);
+    const b = moment(now);
+
+    const leftDays = a.diff(b);
+
+    const showTime = {
+      d: moment.utc(leftDays).days(),
+      h: moment.utc(leftDays).hours(),
+      m: moment.utc(leftDays).minutes(),
+      s: moment.utc(leftDays).seconds(),
+    };
+
+    return showTime;
+  }
+
+  public setAuctionsIntervals(date) {
+    const now = new Date();
+    // const utc = new Date(now.getTime() + now.getTimezoneOffset() * 60000);
+
+    const a = moment(date);
+    const b = moment(now);
+
+    const leftDays = a.diff(b);
+
+    const showTime = {
+      d: moment.utc(leftDays).days(),
+      h: moment.utc(leftDays).hours(),
+      m: moment.utc(leftDays).minutes(),
+      s: moment.utc(leftDays).seconds(),
+    };
+
+    return showTime;
+  }
+
+  public getAuctions() {
+    this.contractService.getAuctions().then((res) => {
+      this.auctions = res;
+
+      this.auctions.map((auction) => {
+        if (auction.time.state === "feature") {
+          setInterval(() => {
+            auction.time.timer = this.scanDate(auction.time.date);
+          }, 1000);
+          return auction;
+        }
+      });
+
+      this.showAuctions = true;
+    });
   }
 
   public resetRef() {
@@ -225,15 +294,19 @@ export class AuctionPageComponent implements OnDestroy {
     }
   }
 
-  public sortAuctions(type: string, tdate?: string) {
+  public async sortAuctions(type: string, tdate?: string) {
     this.sortData[type] && this.changeSort
       ? (this.changeSort = false)
       : (this.changeSort = true);
     Object.keys(this.sortData).forEach((v) => (this.sortData[v] = v === type));
 
-    this.auctionsList.sort((auctionsList1, auctionsList2) => {
+    console.log(this.auctions);
+
+    this.auctions.sort((auctionsList1, auctionsList2) => {
       let sortauctionsList1: any;
       let sortauctionsList2: any;
+
+      console.log(auctionsList1, auctionsList2);
 
       if (tdate) {
         sortauctionsList1 =

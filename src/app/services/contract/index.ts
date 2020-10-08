@@ -10,6 +10,7 @@ import * as moment from "moment";
 // import "moment-duration-format";
 // var momentDurationFormatSetup = require("moment-duration-format");
 import { settingsData } from "../../params";
+import { truncate } from "fs";
 
 // const swapDays = 350;
 export const stakingMaxDays = 1820;
@@ -641,12 +642,11 @@ export class ContractService {
               //   (Number(data.eth) / Number(data.axn)).toFixed(8).toString()
               // );
 
-              data.axnToEth = parseFloat(
-                new BigNumber(data.eth)
-                  .div(new BigNumber(data.axn).toNumber())
-                  .toFixed(8)
-                  .toString()
+              data.axnToEth = new BigNumber(data.eth).div(
+                new BigNumber(data.axn).toNumber()
               );
+
+              data.axnToEth = !isFinite(data.axnToEth) ? 0 : data.axnToEth;
 
               data.eth = parseFloat(data.eth);
               data.axn = parseFloat(data.axn);
@@ -674,7 +674,6 @@ export class ContractService {
                     .uniswapPercent()
                     .call()
                     .then((res) => {
-                      // const v = Number(data.uniToEth) * (1 - res / 100);
                       const v =
                         new BigNumber(data.uniToEth).toNumber() *
                         (1 - res / 100);
@@ -1254,6 +1253,119 @@ export class ContractService {
       });
   }
 
+  public getAuctionsData(auctionId) {
+    const setDate = (auctionData, isRemove?) => {
+      if (isRemove) {
+        return moment(
+          moment(new Date(), "DD-MM-YYYY").subtract(
+            auctionId - (auctionData - 1),
+            "days"
+          )
+        ).format("YYYY/MM/DD");
+      } else {
+        return moment(new Date(), "DD-MM-YYYY").add(
+          auctionData + 1 - auctionId,
+          "days"
+        );
+      }
+    };
+
+    return new Promise((resolve) => {
+      const auctions = [
+        {
+          id: auctionId - 1,
+          data: {},
+          time: {
+            state: "finished",
+            date: setDate(auctionId, true),
+          },
+        },
+        {
+          id: auctionId,
+          data: {},
+          time: {
+            state: "progress",
+            date: moment(new Date(), "DD-MM-YYYY"),
+          },
+        },
+      ];
+
+      let featureId = auctionId;
+      let nowId = auctionId;
+
+      do {
+        nowId = nowId + 1;
+        featureId = nowId / 7;
+      } while (featureId % 1 !== 0);
+
+      if (nowId === auctionId + 1) {
+        auctions.push({
+          id: auctionId + 1,
+          data: {},
+          time: {
+            state: "feature",
+            date: setDate(auctionId),
+          },
+        });
+      } else {
+        auctions.push(
+          {
+            id: auctionId + 1,
+            data: {},
+            time: {
+              state: "feature",
+              date: setDate(auctionId),
+            },
+          },
+          {
+            id: nowId,
+            data: {},
+            time: {
+              state: "feature",
+              date: setDate(nowId - 1),
+            },
+          }
+        );
+      }
+
+      auctions.map((t) => {
+        return this.Auction.methods
+          .reservesOf(t.id)
+          .call()
+          .then((auctionData) => {
+            const data = {
+              axn_pool: new BigNumber(auctionData.token),
+              eth_pool: new BigNumber(auctionData.eth),
+            };
+            t.data = data;
+
+            return t;
+          });
+      });
+
+      auctions.sort((a, b) => (a.id < b.id ? 1 : -1));
+
+      console.log(auctions);
+
+      resolve(auctions);
+    });
+  }
+
+  public getAuctions() {
+    return new Promise((resolve) => {
+      return this.Auction.methods
+        .calculateStepsFromStart()
+        .call()
+        .then((auctionId) => {
+          console.log(Number(auctionId));
+
+          this.getAuctionsData(Number(auctionId)).then((res) => {
+            resolve(res);
+          });
+        });
+    });
+  }
+
   public getUserAuctions() {
     return this.Auction.methods
       .start()
@@ -1282,17 +1394,13 @@ export class ContractService {
                     ),
                     eth_bet: new BigNumber(0),
                     winnings: new BigNumber(0),
+                    hasWinnings: false,
                   };
                   return this.Auction.methods
                     .auctionBetOf(id, this.account.address)
                     .call()
                     .then((accountBalance) => {
                       auctionInfo.eth_bet = new BigNumber(accountBalance.eth);
-                      // auctionInfo.winnings = ((Number(
-                      //   auctionInfo.eth_bet.toString()
-                      // ) /
-                      //   Number(auctionInfo.eth_pool)) *
-                      //   Number(auctionInfo.axn_pool)) as any;
 
                       auctionInfo.winnings = new BigNumber(
                         auctionInfo.eth_bet
@@ -1308,9 +1416,8 @@ export class ContractService {
                         ? auctionInfo.winnings
                         : new BigNumber(0);
 
-                      console.log(
-                        auctionInfo.winnings.toNumber(),
-                        isFinite(auctionInfo.winnings.toNumber())
+                      auctionInfo.hasWinnings = !isFinite(
+                        auctionInfo.winnings.toNumber()
                       );
 
                       if (
@@ -1322,10 +1429,15 @@ export class ContractService {
                         ).multipliedBy(1.1);
                       }
 
+                      console.log(auctionInfo);
+
                       return auctionInfo;
                     });
                 });
             });
+
+            console.log(auctionsPromises);
+
             return Promise.all(auctionsPromises);
           });
       });

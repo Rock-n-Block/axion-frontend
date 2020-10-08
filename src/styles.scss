@@ -192,7 +192,7 @@ input:-internal-autofill-selected {
   z-index: 100;
   &.active {
     padding: 3px 0;
-    background-color: rgb(91 42 176 / 78%);
+    background-color: rgb(91 42 176 / 100%);
     box-shadow: 0 3px 7px rgba(0, 0, 0, 0.2);
     .header-logo {
       width: 140px;
