@@ -1381,25 +1381,34 @@ export class ContractService {
                     .auctionBetOf(id, this.account.address)
                     .call()
                     .then((accountBalance) => {
-                      const dayNow = moment();
+                      // const dayNow = moment();
 
                       // console.log("dayNow", dayNow.format("D"), id);
 
-                      if (Number(dayNow.format("D")) > Number(id)) {
-                        auctionInfo.start_date = new Date(
-                          (+start +
-                            this.settingsApp.settings.time.seconds *
-                              (Number(id) + 1)) *
-                            1000
-                        );
-                      } else {
-                        auctionInfo.start_date = new Date(
-                          (+start +
-                            this.settingsApp.settings.time.seconds *
-                              Number(id)) *
-                            1000
-                        );
-                      }
+                      // if (Number(dayNow.format("D")) >= Number(id)) {
+                      //   auctionInfo.start_date = new Date(
+                      //     (+start +
+                      //       this.settingsApp.settings.time.seconds *
+                      //         (Number(id) + 1)) *
+                      //       1000
+                      //   );
+                      // } else {
+                      //   auctionInfo.start_date = new Date(
+                      //     (+start +
+                      //       this.settingsApp.settings.time.seconds *
+                      //         Number(id)) *
+                      //       1000
+                      //   );
+                      // }
+
+                      auctionInfo.start_date = new Date(
+                        (+start +
+                          this.settingsApp.settings.time.seconds *
+                            Number(id)) *
+                          1000
+                      );
+
+                      // console.log(auctionInfo.start_date);
 
                       auctionInfo.eth_bet = new BigNumber(accountBalance.eth);
 
@@ -1461,18 +1470,23 @@ export class ContractService {
                       //   auctionInfo.status = "complete";
                       // }
 
+                      // console.log(moment(start*1000).format("DD MM YYYY HH:mm:ss"))
+
                       if (!isFinite(winnings) || winnings !== 0) {
                         const a = moment(new Date(auctionInfo.start_date))
                           .add(1, "days")
                           .set({
-                            hour: new Date(start * 1000).getHours(),
-                            minute: new Date(start * 1000).getMinutes(),
-                            second: new Date(start * 1000).getSeconds(),
+                            hour: Number(moment(start * 1000).format("H")),
+                            minute: Number(moment(start * 1000).format("M")),
+                            second: Number(moment(start * 1000).format("S")),
                           });
+
                         const b = moment(new Date());
 
                         const check = a.diff(b);
 
+                        // console.log(new Date(auctionInfo.start_date));
+                        // console.log(a.format("DD MM YYYY HH:mm:ss"));
                         // console.log(check);
                         // console.log(
                         //   moment
