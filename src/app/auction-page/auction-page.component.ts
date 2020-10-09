@@ -121,6 +121,11 @@ export class AuctionPageComponent implements OnDestroy {
       .format("HH:mm:ss");
   }
 
+  public userAuctionClick(auction, value) {
+    console.log("you clicked region number " + auction, value);
+    auction.show[value] = !auction.show[value];
+  }
+
   public getAuctions() {
     this.contractService.getAuctions().then((res) => {
       this.auctions = res;
@@ -149,6 +154,39 @@ export class AuctionPageComponent implements OnDestroy {
       );
 
       this.hasAuctionList = auctions1.length !== 0;
+
+      // if (this.hasAuctionList) {
+      //   auctions1.forEach.call(function (auction) {
+      //     auction.axn_pool.addEventListener("click", function () {
+      //       console.log("you clicked region number " + auction);
+      //     });
+
+      //     auction.eth_pool.addEventListener("click", function () {
+      //       console.log("you clicked region number " + auction);
+      //     });
+
+      //     auction.show["eth"] = false;
+      //     auction.show["axn"] = false;
+      //   });
+      // }
+
+      // auctions1.map((auction) => {
+      //   auction.axn_pool.addEventListener(
+      //     "click",
+      //     this.userAuctionClick(auction, "axn")
+      //   );
+
+      //   auction.eth_pool.addEventListener(
+      //     "click",
+      //     this.userAuctionClick(auction, "eth")
+      //   );
+
+      //   auction.show["eth"] = false;
+      //   auction.show["axn"] = false;
+
+      //   return auction;
+      // });
+
       this.auctionsList = auctions1;
 
       this.referalLink = "";
