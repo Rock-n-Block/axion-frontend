@@ -293,7 +293,6 @@ export class ContractService {
       results.forEach((params) => {
         info[params.key] = params.value;
       });
-      console.log(info);
       return info;
     });
   }
@@ -638,10 +637,6 @@ export class ContractService {
                 .toFixed(8)
                 .toString();
 
-              // data.axnToEth = parseFloat(
-              //   (Number(data.eth) / Number(data.axn)).toFixed(8).toString()
-              // );
-
               data.axnToEth = new BigNumber(data.eth).div(
                 new BigNumber(data.axn).toNumber()
               );
@@ -660,8 +655,6 @@ export class ContractService {
                 ])
                 .call()
                 .then((value) => {
-                  // console.log("uniswap value request", value);
-
                   const axn = new BigNumber(value[1])
                     .div(Math.pow(10, this.tokensDecimals.HEX2X))
                     .toString();
@@ -797,8 +790,6 @@ export class ContractService {
         m: moment.utc(leftDaysToShow).minutes(),
         s: moment.utc(leftDaysToShow).seconds(),
       };
-
-      // console.log("showTime", showTime);
 
       resolve({
         startDate: fullStartDate,
@@ -1058,25 +1049,6 @@ export class ContractService {
                           .getAmountOutAndPenalty(sessionId, res)
                           .call()
                           .then((resultInterest) => {
-                            // console.log(
-                            //   "interest from request",
-                            //   resultInterest
-                            // );
-                            // console.log(
-                            //   "interest[0] with bignumber",
-                            //   new BigNumber(resultInterest[0])
-                            //     .div(Math.pow(10, this.tokensDecimals.HEX2X))
-                            //     .toString()
-                            // );
-                            // console.log(
-                            //   "interest[1] with bignumber",
-                            //   new BigNumber(resultInterest[1])
-                            //     .div(Math.pow(10, this.tokensDecimals.HEX2X))
-                            //     .toString()
-                            // );
-
-                            // console.log(resultInterest[1].length);
-
                             interest =
                               resultInterest[1].length < 40
                                 ? resultInterest[1]
@@ -1173,16 +1145,6 @@ export class ContractService {
         });
       });
   }
-
-  // public getCurrentAuction() {
-  //   return this.Auction.methods
-  //     .currentAuctionId()
-  //     .call()
-  //     .then((res) => {
-  //       // console.log(res);
-  //       return res;
-  //     });
-  // }
 
   public async sendMaxETHToAuction(amount, ref?) {
     const date = Math.round(
@@ -1345,8 +1307,6 @@ export class ContractService {
 
       auctions.sort((a, b) => (a.id < b.id ? 1 : -1));
 
-      console.log(auctions);
-
       resolve(auctions);
     });
   }
@@ -1357,8 +1317,6 @@ export class ContractService {
         .calculateStepsFromStart()
         .call()
         .then((auctionId) => {
-          console.log(Number(auctionId));
-
           this.getAuctionsData(Number(auctionId)).then((res) => {
             resolve(res);
           });
@@ -1395,6 +1353,7 @@ export class ContractService {
                     eth_bet: new BigNumber(0),
                     winnings: new BigNumber(0),
                     hasWinnings: false,
+                    status: "complete",
                   };
                   return this.Auction.methods
                     .auctionBetOf(id, this.account.address)
@@ -1402,18 +1361,14 @@ export class ContractService {
                     .then((accountBalance) => {
                       auctionInfo.eth_bet = new BigNumber(accountBalance.eth);
 
-                      auctionInfo.winnings = new BigNumber(
-                        auctionInfo.eth_bet
-                      ).div(
-                        new BigNumber(auctionInfo.eth_pool).multipliedBy(
-                          new BigNumber(auctionInfo.axn_pool).toNumber()
-                        )
-                      );
+                      const winnings = ((Number(
+                        auctionInfo.eth_bet.toString()
+                      ) /
+                        Number(auctionInfo.eth_pool)) *
+                        Number(auctionInfo.axn_pool)) as any;
 
-                      auctionInfo.winnings = isFinite(
-                        auctionInfo.winnings.toNumber()
-                      )
-                        ? auctionInfo.winnings
+                      auctionInfo.winnings = isFinite(winnings)
+                        ? new BigNumber(winnings)
                         : new BigNumber(0);
 
                       auctionInfo.hasWinnings = !isFinite(
@@ -1425,18 +1380,38 @@ export class ContractService {
                         "0x0000000000000000000000000000000000000000"
                       ) {
                         auctionInfo.winnings = new BigNumber(
-                          auctionInfo.winnings
+                          winnings
                         ).multipliedBy(1.1);
                       }
 
-                      console.log(auctionInfo);
+                      if (!isFinite(winnings) || winnings !== 0) {
+                        const a = moment(new Date(auctionInfo.start_date))
+                          .add(1, "days")
+                          .set({
+                            hour: 0,
+                            minute: 0,
+                            second: 0,
+                          });
+                        const b = moment(new Date()).set({
+                          hour: 0,
+                          minute: 0,
+                          second: 0,
+                        });
 
+                        const check = a.diff(b);
+
+                        if (check < 0) {
+                          auctionInfo.status = "withdraw";
+                        } else {
+                          auctionInfo.status = "progress";
+                        }
+                      } else {
+                        auctionInfo.status = "complete";
+                      }
                       return auctionInfo;
                     });
                 });
             });
-
-            console.log(auctionsPromises);
 
             return Promise.all(auctionsPromises);
           });
@@ -1461,7 +1436,6 @@ export class ContractService {
       .toPromise()
       .then(
         (result) => {
-          console.log(result);
           this.account.snapshot = result;
           this.account.snapshot.user_dont_have_hex =
             this.account.snapshot.hex_amount <= 0;
@@ -1471,15 +1445,8 @@ export class ContractService {
                   this.account.snapshot.hex_amount.div(10000000000).toFixed(0)
                 )
               : 0;
-          // this.account.snapshot.show_hex =
-          //   Number(this.account.snapshot.hex_amount) > 0
-          //     ? new BigNumber(
-          //         (this.account.snapshot.hex_amount / 10000000000).toFixed(0)
-          //       )
-          //     : 0;
         },
         () => {
-          // console.log("none", err);
           this.account.snapshot = {
             user_address: this.account.address,
             user_dont_have_hex: true,
@@ -1501,7 +1468,6 @@ export class ContractService {
           .toPromise()
           .then(
             (result) => {
-              // console.log(result);
               this.account.snapshot = result;
               this.account.snapshot.user_dont_have_hex =
                 this.account.snapshot.hex_amount <= 0;
@@ -1512,7 +1478,6 @@ export class ContractService {
                 .toNumber();
             },
             () => {
-              // console.log("none", err);
               this.account.snapshot = {
                 user_address: this.account.address,
                 user_dont_have_hex: true,

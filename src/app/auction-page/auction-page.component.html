@@ -97,7 +97,7 @@
                 <span class="icon icon-flex icon__axion">1 AXN</span>
                 <span class="t-cl-purple">=</span>
                 <span class="icon icon-flex icon__eth-purple t-cl-purple">{{
-                  poolInfo.axnToEth || 0
+                  poolInfo.axnToEth
                 }}</span>
               </div>
               <span class="axn-text axn-form-block-two-balance m-t-15"
@@ -237,7 +237,6 @@
           <th>ETH in pool</th>
           <th>My ETH</th>
           <th>My AXN</th>
-          <th width="10">&nbsp;</th>
         </tr>
       </thead>
       <tbody>
@@ -261,14 +260,15 @@
                 | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:4
             }}
           </td>
-          <td [colSpan]="auction.hasWinnings ? 1 : 2">
+          <td>
             {{
               auction.winnings
                 | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
             }}
           </td>
-          <td class="action-button" *ngIf="auction.hasWinnings">
+          <td class="action-button">
             <button
+              *ngIf="auction.status === 'withdraw'"
               class="btn btn__transparent"
               (click)="auctionWithdraw(auction)"
               [ngClass]="{ progress: auction.withdrawProgress }"
@@ -279,8 +279,18 @@
                   <span></span><span></span><span></span><span></span>
                 </span>
               </span>
-              <span>&nbsp;&nbsp;WITHDRAW&nbsp;&nbsp;</span>
+              <span class="t-fz-14">&nbsp;&nbsp;WITHDRAW&nbsp;&nbsp;</span>
             </button>
+            <span
+              class="icon icon-flex icon__ok t-cl-green t-t-u t-fz-14 m-a"
+              *ngIf="auction.status === 'complete'"
+              >withdraw</span
+            >
+            <span
+              class="axn-text t-cl-purple t-t-u t-fz-14"
+              *ngIf="auction.status === 'progress'"
+              >in progress</span
+            >
           </td>
         </tr>
       </tbody>
@@ -305,7 +315,6 @@
       </thead>
       <tbody>
         <tr *ngFor="let auction of auctions">
-          <!-- <td>{{ auction.id | date: "dd.MM.yyyy" }}</td> -->
           <td>{{ auction.time.date | date: "dd.MM.yyyy" }}</td>
           <td>
             {{
@@ -320,28 +329,17 @@
             }}
           </td>
           <td>
-            <span *ngIf="auction.time.state === 'progress'">in progress</span>
-            <span *ngIf="auction.time.state === 'finished'">finished</span>
-            <span *ngIf="auction.time.state === 'feature'">
+            <span class="t-cl-purple" *ngIf="auction.time.state === 'feature'"
+              >Not started</span
+            >
+            <span class="t-cl-green" *ngIf="auction.time.state === 'progress'">
               <ng-container *ngIf="auction.time.timer">
-                <span
-                  *ngIf="
-                    auction.time.timer.d ||
-                    (auction.time.timer.d !== 0 && auction.time.timer.d > 0)
-                  "
-                  >{{ auction.time.timer.d }}d
-                </span>
-                <span
-                  *ngIf="auction.time.timer.h !== 0 && auction.time.timer.h > 0"
-                  >{{ auction.time.timer.h }}:</span
-                >
-                <span>{{ auction.time.timer.m }}:</span>
-                <span>
-                  <span *ngIf="auction.time.timer.s < 10">0</span
-                  >{{ auction.time.timer.s }}</span
-                >
-              </ng-container>
-            </span>
+                <span>{{ auction.time.timer }}</span>
+              </ng-container></span
+            >
+            <span class="t-cl-gray" *ngIf="auction.time.state === 'finished'"
+              >Closed</span
+            >
           </td>
         </tr>
       </tbody>

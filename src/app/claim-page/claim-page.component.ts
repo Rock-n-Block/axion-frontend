@@ -86,7 +86,6 @@ export class ClaimPageComponent implements OnInit, OnDestroy {
         this.contractService
           .getEndDateTimeCurrent()
           .then((result: { leftDaysInfo: number }) => {
-            // console.log("claim days checker", result);
             if (result.leftDaysInfo < 0) {
               this.leftDaysInfoChecker = false;
               this.router.navigate(["auction"]);
@@ -146,8 +145,6 @@ export class ClaimPageComponent implements OnInit, OnDestroy {
   }
 
   public onChangeAmount() {
-    // console.log(this.formsData.swapAmount);
-
     if (
       this.formsData.swapAmount >
       this.account.balances.H2T.shortBigNumber.toString()
@@ -176,8 +173,6 @@ export class ClaimPageComponent implements OnInit, OnDestroy {
         this.dataSendForm = false;
       }
     }
-
-    // console.log(this.dataSendForm);
   }
 
   private readPenalty() {
@@ -252,7 +247,6 @@ export class ClaimPageComponent implements OnInit, OnDestroy {
     ) {
       setTimeout(() => {
         this.contractService.updateUserSnapshot();
-        // console.log("upd snaphot after claim", this.account);
       }, 5000);
     }
   }

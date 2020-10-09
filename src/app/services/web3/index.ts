@@ -22,7 +22,6 @@ export class MetamaskService {
   };
 
   constructor() {
-    // console.log("web3", settingsApp);
     const settingsApp = settingsData;
     this.networks.testnet = settingsApp.settings.network;
 

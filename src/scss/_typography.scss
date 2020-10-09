@@ -38,6 +38,13 @@
     }
   }
 
+  &__ok {
+    @include before-img(block, 14px, 12px, r) {
+      background-image: url("assets/images/icons/ok-icon.svg");
+      margin-right: 5px !important;
+    }
+  }
+
   &__axion {
     @include before-img(block, 28px, 24px, r) {
       background-image: url("assets/images/icons/axion-icon.svg");
@@ -349,7 +356,7 @@ span {
 
   &-how-it-works {
     @include b(750) {
-      margin-top: 35px;
+      margin-top: 35px !important;
     }
   }
 
@@ -492,12 +499,15 @@ span {
 
           &-uni {
             display: flex;
-            grid-gap: 10px;
             justify-content: center;
             align-items: center;
 
             span {
               font-size: 14px !important;
+
+              &:nth-child(2) {
+                margin: 0 10px;
+              }
             }
           }
 
@@ -841,6 +851,10 @@ span {
         margin-top: -25px;
       }
     }
+  }
+
+  &-a {
+    margin: 0 auto;
   }
 }
 
