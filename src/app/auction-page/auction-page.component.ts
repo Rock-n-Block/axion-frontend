@@ -200,8 +200,13 @@ export class AuctionPageComponent implements OnDestroy {
 
   private getAuctionPool() {
     setTimeout(() => {
-      this.contractService.getAuctionPool().then((info) => {
+      this.contractService.getAuctionPool().then((info: any) => {
+        if (info.axnToEth === 0) {
+          info.axnToEth = this.poolInfo.axnToEth;
+        }
+
         this.poolInfo = info;
+
         if (this.auctionPoolChecker) {
           this.getAuctionPool();
         }
