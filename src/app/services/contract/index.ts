@@ -1384,6 +1384,41 @@ export class ContractService {
                         ).multipliedBy(1.1);
                       }
 
+                      // fix
+                      // if (!isFinite(winnings) || winnings !== 0) {
+                      //   const a = moment(new Date(auctionInfo.start_date)).add(
+                      //     1,
+                      //     "days"
+                      //   );
+                      //   // .set({
+                      //   //   hour: 0,
+                      //   //   minute: 0,
+                      //   //   second: 0,
+                      //   // });
+                      //   const b = moment(new Date());
+                      //   // .set({
+                      //   //   hour: new Date(auctionInfo.start_date).getHours(),
+                      //   //   minute: new Date(auctionInfo.start_date).getMinutes(),
+                      //   //   second: new Date(auctionInfo.start_date).getSeconds(),
+                      //   // });
+
+                      //   console.log(a.format("DD MM YYYY HH:mm:ss"));
+                      //   console.log(b.format("DD MM YYYY HH:mm:ss"));
+
+                      //   const check = a.diff(b);
+                      //   const check1 = b.diff(a);
+
+                      //   console.log(check, check1);
+
+                      //   if (check < 0) {
+                      //     auctionInfo.status = "withdraw";
+                      //   } else {
+                      //     auctionInfo.status = "progress";
+                      //   }
+                      // } else {
+                      //   auctionInfo.status = "complete";
+                      // }
+
                       if (!isFinite(winnings) || winnings !== 0) {
                         const a = moment(new Date(auctionInfo.start_date))
                           .add(1, "days")

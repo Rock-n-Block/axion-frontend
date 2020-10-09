@@ -47,6 +47,7 @@ export class AuctionPageComponent implements OnDestroy {
   public dataSendForm = false;
   public showAuctions = false;
   public hasAuctionList = false;
+  public newAuctionDay = false;
 
   public sendAuctionProgress: boolean;
   public auctionInfo: any;
@@ -112,6 +113,13 @@ export class AuctionPageComponent implements OnDestroy {
     const b1 = moment().add(1, "days");
     b1.set({ hour: 0, minute: 0, second: 0, millisecond: 0 });
 
+    const check = a1.diff(b1);
+
+    if (check > 0) {
+      console.log(check);
+      this.newAuctionDay = true;
+    }
+
     return moment
       .utc(
         moment(b1, "DD/MM/YYYY HH:mm:ss").diff(
@@ -133,6 +141,12 @@ export class AuctionPageComponent implements OnDestroy {
       this.auctions.map((auction) => {
         if (auction.time.state === "progress") {
           setInterval(() => {
+            if (this.newAuctionDay) {
+              this.newAuctionDay = false;
+              console.log("interval cleared");
+              clearInterval();
+              this.getAuctions();
+            }
             auction.time.timer = this.scanDate();
           }, 1000);
           return auction;
@@ -154,39 +168,6 @@ export class AuctionPageComponent implements OnDestroy {
       );
 
       this.hasAuctionList = auctions1.length !== 0;
-
-      // if (this.hasAuctionList) {
-      //   auctions1.forEach.call(function (auction) {
-      //     auction.axn_pool.addEventListener("click", function () {
-      //       console.log("you clicked region number " + auction);
-      //     });
-
-      //     auction.eth_pool.addEventListener("click", function () {
-      //       console.log("you clicked region number " + auction);
-      //     });
-
-      //     auction.show["eth"] = false;
-      //     auction.show["axn"] = false;
-      //   });
-      // }
-
-      // auctions1.map((auction) => {
-      //   auction.axn_pool.addEventListener(
-      //     "click",
-      //     this.userAuctionClick(auction, "axn")
-      //   );
-
-      //   auction.eth_pool.addEventListener(
-      //     "click",
-      //     this.userAuctionClick(auction, "eth")
-      //   );
-
-      //   auction.show["eth"] = false;
-      //   auction.show["axn"] = false;
-
-      //   return auction;
-      // });
-
       this.auctionsList = auctions1;
 
       this.referalLink = "";
