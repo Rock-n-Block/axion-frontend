@@ -353,16 +353,34 @@
         <tr *ngFor="let auction of auctions">
           <td>{{ auction.time.date | date: "dd.MM.yyyy" }}</td>
           <td>
-            {{
-              auction.data.axn_pool
-                | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:4
-            }}
+            <span
+              matTooltipClass="table__tooltip"
+              mat-raised-button
+              matTooltip="{{
+                auction.data.axn_pool
+                  | bigNumberFormat: tokensDecimals['HEX2X']:true:false:18
+              }}"
+            >
+              {{
+                auction.data.axn_pool
+                  | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:4
+              }}
+            </span>
           </td>
           <td>
-            {{
-              auction.data.eth_pool
-                | bigNumberFormat: tokensDecimals["ETH"]:true:false:4
-            }}
+            <span
+              matTooltipClass="table__tooltip"
+              mat-raised-button
+              matTooltip="{{
+                auction.data.eth_pool
+                  | bigNumberFormat: tokensDecimals['ETH']:true:false:18
+              }}"
+            >
+              {{
+                auction.data.eth_pool
+                  | bigNumberFormat: tokensDecimals["ETH"]:true:false:4
+              }}
+            </span>
           </td>
           <td>
             <span class="t-cl-purple" *ngIf="auction.time.state === 'feature'"

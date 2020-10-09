@@ -108,10 +108,11 @@ export class AuctionPageComponent implements OnDestroy {
     this.accountSubscribe.unsubscribe();
   }
 
-  public scanDate() {
+  public scanDate(date) {
     const a1 = moment(new Date());
-    const b1 = moment().add(1, "days");
-    b1.set({ hour: 0, minute: 0, second: 0, millisecond: 0 });
+    const b1 = moment(date);
+    // const b1 = moment().add(1, "days");
+    // b1.set({ hour: 0, minute: 0, second: 0, millisecond: 0 });
 
     const check = a1.diff(b1);
 
@@ -129,11 +130,6 @@ export class AuctionPageComponent implements OnDestroy {
       .format("HH:mm:ss");
   }
 
-  public userAuctionClick(auction, value) {
-    console.log("you clicked region number " + auction, value);
-    auction.show[value] = !auction.show[value];
-  }
-
   public getAuctions() {
     this.contractService.getAuctions().then((res) => {
       this.auctions = res;
@@ -147,7 +143,7 @@ export class AuctionPageComponent implements OnDestroy {
               clearInterval();
               this.getAuctions();
             }
-            auction.time.timer = this.scanDate();
+            auction.time.timer = this.scanDate(auction.time.date);
           }, 1000);
           return auction;
         }

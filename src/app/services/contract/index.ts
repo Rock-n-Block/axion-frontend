@@ -1215,20 +1215,32 @@ export class ContractService {
       });
   }
 
-  public getAuctionsData(auctionId) {
+  public getAuctionsData(auctionId, start) {
     const setDate = (auctionData, isRemove?) => {
+      // console.log(
+      //   new Date(start).getHours(),
+      //   new Date(start).getMinutes(),
+      //   new Date(start).getSeconds()
+      // );
+
       if (isRemove) {
         return moment(
-          moment(new Date(), "DD-MM-YYYY").subtract(
-            auctionId - (auctionData - 1),
-            "days"
-          )
-        ).format("YYYY/MM/DD");
-      } else {
-        return moment(new Date(), "DD-MM-YYYY").add(
-          auctionData + 1 - auctionId,
-          "days"
+          moment(new Date())
+            .set({
+              h: new Date(start).getHours(),
+              m: new Date(start).getMinutes(),
+              s: new Date(start).getSeconds(),
+            })
+            .subtract(auctionId - (auctionData - 1), "days")
         );
+      } else {
+        return moment(new Date())
+          .set({
+            h: new Date(start).getHours(),
+            m: new Date(start).getMinutes(),
+            s: new Date(start).getSeconds(),
+          })
+          .add(auctionData + 1 - auctionId, "days");
       }
     };
 
@@ -1247,7 +1259,11 @@ export class ContractService {
           data: {},
           time: {
             state: "progress",
-            date: moment(new Date(), "DD-MM-YYYY"),
+            date: moment(new Date()).set({
+              h: new Date(start).getHours(),
+              m: new Date(start).getMinutes(),
+              s: new Date(start).getSeconds(),
+            }),
           },
         },
       ];
@@ -1295,6 +1311,8 @@ export class ContractService {
           .reservesOf(t.id)
           .call()
           .then((auctionData) => {
+            // console.log(t.time.date.format("DD MM YYYY HH:mm:ss"));
+
             const data = {
               axn_pool: new BigNumber(auctionData.token),
               eth_pool: new BigNumber(auctionData.eth),
@@ -1314,12 +1332,19 @@ export class ContractService {
   public getAuctions() {
     return new Promise((resolve) => {
       return this.Auction.methods
-        .calculateStepsFromStart()
+        .start()
         .call()
-        .then((auctionId) => {
-          this.getAuctionsData(Number(auctionId)).then((res) => {
-            resolve(res);
-          });
+        .then((start) => {
+          return this.Auction.methods
+            .calculateStepsFromStart()
+            .call()
+            .then((auctionId) => {
+              this.getAuctionsData(Number(auctionId), start * 1000).then(
+                (res) => {
+                  resolve(res);
+                }
+              );
+            });
         });
     });
   }
@@ -1340,10 +1365,7 @@ export class ContractService {
                 .then((auctionData) => {
                   const auctionInfo = {
                     auctionId: id,
-                    start_date: new Date(
-                      (+start + this.settingsApp.settings.time.seconds * id) *
-                        1000
-                    ),
+                    start_date: new Date(),
                     axn_pool: parseFloat(
                       new BigNumber(auctionData.token).toString()
                     ),
@@ -1359,6 +1381,26 @@ export class ContractService {
                     .auctionBetOf(id, this.account.address)
                     .call()
                     .then((accountBalance) => {
+                      const dayNow = moment();
+
+                      // console.log("dayNow", dayNow.format("D"), id);
+
+                      if (Number(dayNow.format("D")) > Number(id)) {
+                        auctionInfo.start_date = new Date(
+                          (+start +
+                            this.settingsApp.settings.time.seconds *
+                              (Number(id) + 1)) *
+                            1000
+                        );
+                      } else {
+                        auctionInfo.start_date = new Date(
+                          (+start +
+                            this.settingsApp.settings.time.seconds *
+                              Number(id)) *
+                            1000
+                        );
+                      }
+
                       auctionInfo.eth_bet = new BigNumber(accountBalance.eth);
 
                       const winnings = ((Number(
@@ -1423,17 +1465,24 @@ export class ContractService {
                         const a = moment(new Date(auctionInfo.start_date))
                           .add(1, "days")
                           .set({
-                            hour: 0,
-                            minute: 0,
-                            second: 0,
+                            hour: new Date(start * 1000).getHours(),
+                            minute: new Date(start * 1000).getMinutes(),
+                            second: new Date(start * 1000).getSeconds(),
                           });
-                        const b = moment(new Date()).set({
-                          hour: 0,
-                          minute: 0,
-                          second: 0,
-                        });
+                        const b = moment(new Date());
 
                         const check = a.diff(b);
+
+                        // console.log(check);
+                        // console.log(
+                        //   moment
+                        //     .utc(
+                        //       moment(a, "DD/MM/YYYY HH:mm:ss").diff(
+                        //         moment(b, "DD/MM/YYYY HH:mm:ss")
+                        //       )
+                        //     )
+                        //     .format("HH:mm:ss")
+                        // );
 
                         if (check < 0) {
                           auctionInfo.status = "withdraw";
