@@ -43,11 +43,14 @@ export class AuctionPageComponent implements OnDestroy {
   public referalAddress = "";
   public addressCopy = false;
   public auctionPoolChecker = false;
+  public currentAuctionDate = new Date();
 
   public dataSendForm = false;
   public showAuctions = false;
   public hasAuctionList = false;
   public newAuctionDay = false;
+  public auctionTimer = "";
+  public checker = undefined;
 
   public sendAuctionProgress: boolean;
   public auctionInfo: any;
@@ -116,12 +119,14 @@ export class AuctionPageComponent implements OnDestroy {
 
     const check = a1.diff(b1);
 
-    if (check > 0) {
+    if (check < 0) {
       console.log(check);
       this.newAuctionDay = true;
+    } else {
+      this.setNewDayTimer();
     }
 
-    return moment
+    this.auctionTimer = moment
       .utc(
         moment(b1, "DD/MM/YYYY HH:mm:ss").diff(
           moment(a1, "DD/MM/YYYY HH:mm:ss")
@@ -130,22 +135,31 @@ export class AuctionPageComponent implements OnDestroy {
       .format("HH:mm:ss");
   }
 
+  public setNewDayTimer(date?) {
+    if (date) {
+      this.currentAuctionDate = date;
+    }
+
+    if (!this.newAuctionDay) {
+      this.checker = setTimeout(() => {
+        if (this.checker) {
+          this.scanDate(this.currentAuctionDate);
+        }
+      }, 1000);
+    } else {
+      this.checker = undefined;
+      this.getAuctions();
+    }
+  }
+
   public getAuctions() {
     this.contractService.getAuctions().then((res) => {
       this.auctions = res;
 
       this.auctions.map((auction) => {
         if (auction.time.state === "progress") {
-          setInterval(() => {
-            if (this.newAuctionDay) {
-              this.newAuctionDay = false;
-              console.log("interval cleared");
-              clearInterval();
-              this.getAuctions();
-            }
-            auction.time.timer = this.scanDate(auction.time.date);
-          }, 1000);
-          return auction;
+          this.setNewDayTimer(auction.time.date);
+          this.newAuctionDay = false;
         }
       });
 

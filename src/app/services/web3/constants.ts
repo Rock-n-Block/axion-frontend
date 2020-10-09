@@ -5,6 +5,6 @@ export const WEB3_CONSTANTS = {
   },
   ropsten: {
     WEB3_PROVIDER:
-      "https://ropsten.infura.io/v3/ada9a064fd3b4031b53ef14bf50ae718",
+      "https://ropsten.infura.io/v3/39a8bb976a944c20b52b620a091d810d",
   },
 };

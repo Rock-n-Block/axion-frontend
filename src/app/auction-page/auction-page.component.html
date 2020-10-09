@@ -387,8 +387,8 @@
               >Not started</span
             >
             <span class="t-cl-green" *ngIf="auction.time.state === 'progress'">
-              <ng-container *ngIf="auction.time.timer">
-                <span>{{ auction.time.timer }}</span>
+              <ng-container *ngIf="auctionTimer">
+                <span>{{ auctionTimer }}</span>
               </ng-container></span
             >
             <span class="t-cl-gray" *ngIf="auction.time.state === 'finished'"
