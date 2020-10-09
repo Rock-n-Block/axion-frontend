@@ -114,6 +114,12 @@ export class AuctionPageComponent implements OnDestroy {
   public scanDate(date) {
     const a1 = moment(new Date());
     const b1 = moment(date);
+    
+
+    if (Number(a1.format("D")) === Number(b1.format("D"))) {
+      a1.add(1, "day");
+    }
+
     // const b1 = moment().add(1, "days");
     // b1.set({ hour: 0, minute: 0, second: 0, millisecond: 0 });
 
@@ -121,10 +127,14 @@ export class AuctionPageComponent implements OnDestroy {
 
     if (check < 0) {
       console.log(check);
+
+      // console.log(a1.format("DD MM YYYY HH:mm:ss"))
+      // console.log(b1.format("DD MM YYYY HH:mm:ss"))
       this.newAuctionDay = true;
-    } else {
-      this.setNewDayTimer();
     }
+
+    this.setNewDayTimer();
+
 
     this.auctionTimer = moment
       .utc(
