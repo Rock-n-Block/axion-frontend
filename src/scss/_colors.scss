@@ -1,0 +1,57 @@
+.cl {
+  &-aqua {
+    color: #37c8b4 !important;
+
+    &-bg {
+      background-color: #37c8b4 !important;
+    }
+  }
+
+  &-white {
+    color: white !important;
+
+    &-bg {
+      background-color: white !important;
+    }
+  }
+
+  &-purple {
+    color: #8670fa !important;
+
+    &-bg {
+      background-color: #8670fa !important;
+    }
+  }
+
+  &-red {
+    &-light {
+      color: #cf7575 !important;
+
+      &-bg {
+        background-color: #cf7575 !important;
+      }
+    }
+  }
+
+  &-gray {
+    color: #ffffffa6 !important;
+
+    &-bg {
+      background-color: #ffffffa6 !important;
+    }
+  }
+
+  &-blue {
+    color: #4d588e !important;
+
+    &-bg {
+      background-color: #4d588e !important;
+    }
+  }
+
+  &-gradient {
+    &-bg {
+      background: linear-gradient(90deg, #efb321 0%, #ed18cc 100%);
+    }
+  }
+}

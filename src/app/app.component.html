@@ -1,7 +1,7 @@
 <header class="header" [ngClass]="{ active: isHeaderActive }">
-  <div class="content-container">
+  <div class="axn">
     <div class="header-content">
-      <img class="header-logo" src="./assets/images/logo.svg" />
+      <img class="header-logo" src="./assets/images/base/axion-logo-full.svg" alt="axion logo" />
       <ul class="header-menu">
         <li *ngIf="leftDaysInfoShow" class="header-menu_item">
           <a routerLink="claim" routerLinkActive="active-link">Claim</a>
@@ -13,33 +13,24 @@
           <a routerLink="staking" routerLinkActive="active-link">Staking</a>
         </li>
         <li class="header-menu_item" *ngIf="addToRopsten">
-          <!-- <span class="axn-btn axn-btn-purple" (click)="addToken()"
-            >ADD
-            <i class="icon icon-flex icon__axion" style="margin-left: 10px"></i>
-            to MetaMask</span
-          > -->
           <span
-            class="icon icon-flex icon__axion axn-btn axn-btn-purple"
+            class="axn-btn axn-btn-gray"
             (click)="addToken()"
-            style="margin-left: 15px"
+            style="margin-left: 25px"
             >Add to MetaMask</span
           >
         </li>
         <li class="header-menu_item">
           <button
-            class="metamask-button"
+            class="icon icon-flex icon_metamask axn-btn-metamask"
             (click)="subscribeAccount()"
+            style="margin-left: 25px"
             [ngClass]="{ 'no-clickable': !!account }"
           >
-            <img
-              class="metamask-button_icon"
-              src="./assets/images/metamask.svg"
-            />
-            <div class="metamask-button-block">
-              <span class="metamask-button_text">{{
+            <div class="axn-btn-metamask-block">
+              <span class="axn-btn-metamask-text">{{
                 account ? account.address : "MetaMask"
               }}</span>
-              <!-- <span *ngIf="account" class="metamask-button_text-alt">Quit</span> -->
             </div>
           </button>
         </li>
@@ -108,17 +99,12 @@
   </div>
 </header>
 
-<div class="content-container">
+<div class="axn">
   <div
     class="left-days-info"
     [ngClass]="{ visibility: leftDaysInfoShow && account }"
     #runString
   >
-    <!-- <div
-    class="left-days-info"
-    #runString
-    [ngClass]="{ visibility: leftDaysInfoShow }"
-  > -->
     <ng-container *ngIf="leftDaysInfoShow && account">
       <span class="repeat-content" *ngFor="let item of runLineCountArray">
         <ng-container *ngIf="chainNetwork === 'rinkeby'">
@@ -126,13 +112,13 @@
             >{{ leftDaysInfo.showTime.h }}h {{ leftDaysInfo.showTime.m }}m
             {{ leftDaysInfo.showTime.s }}s</b
           >
-          left for Claiming AXN
         </ng-container>
         <ng-container *ngIf="chainNetwork === 'ropsten'">
           <b>{{ leftDaysInfo?.dateEnd }}</b
           >&nbsp;<b>Days</b>
-          left for Claiming AXN
         </ng-container>
+
+        <span>left for Claiming AXN</span>
       </span>
     </ng-container>
     <ng-container *ngIf="!leftDaysInfoShow || !account">
@@ -140,81 +126,7 @@
     </ng-container>
   </div>
 </div>
-<router-outlet></router-outlet>
-<!-- <div class="content-container" *ngIf="tableInfo">
-  <div class="results-table">
-    <div class="results-table_row">
-      <div class="results-table_cells-group">
-        <div class="results-table_cell results-table_cell__label">
-          Daily Auction
-        </div>
-        <div class="results-table_cell results-table_cell__value">
-          {{ tableInfo.DailyAuction | number }}
-        </div>
-      </div>
-      <div class="results-table_cells-group">
-        <div class="results-table_cell results-table_cell__label">
-          BigPayDay 1
-        </div>
-        <div class="results-table_cell results-table_cell__value">
-          {{ tableInfo.BPDInfo[0] | number }}
-        </div>
-      </div>
-    </div>
 
-    <div class="results-table_row">
-      <div class="results-table_cells-group">
-        <div class="results-table_cell results-table_cell__label">
-          Weekly Auction
-        </div>
-        <div class="results-table_cell results-table_cell__value">
-          {{ tableInfo.WeeklyAuction | number }}
-        </div>
-      </div>
-      <div class="results-table_cells-group">
-        <div class="results-table_cell results-table_cell__label">
-          BigPayDay 2
-        </div>
-        <div class="results-table_cell results-table_cell__value">
-          {{ tableInfo.BPDInfo[1] | number }}
-        </div>
-      </div>
-    </div>
-
-    <div class="results-table_row">
-      <div class="results-table_cells-group">
-        <div class="results-table_cell results-table_cell__label">
-          Total Supply
-        </div>
-        <div class="results-table_cell results-table_cell__value">
-          {{ tableInfo.totalSupply | number }}
-        </div>
-      </div>
-      <div class="results-table_cells-group">
-        <div class="results-table_cell results-table_cell__label">
-          BigPayDay 3
-        </div>
-        <div class="results-table_cell results-table_cell__value">
-          {{ tableInfo.BPDInfo[2] | number }}
-        </div>
-      </div>
-    </div>
-
-    <div class="results-table_row">
-      <div class="results-table_cells-group">
-        <div class="results-table_cell results-table_cell__label">Staking</div>
-        <div class="results-table_cell results-table_cell__value">
-          {{ tableInfo.staking | number }}
-        </div>
-      </div>
-      <div class="results-table_cells-group">
-        <div class="results-table_cell results-table_cell__label">
-          BigPayDay 4
-        </div>
-        <div class="results-table_cell results-table_cell__value">
-          {{ tableInfo.BPDInfo[3] | number }}
-        </div>
-      </div>
-    </div>
-  </div>
-</div> -->
+<div class="axn">
+  <router-outlet></router-outlet>
+</div>

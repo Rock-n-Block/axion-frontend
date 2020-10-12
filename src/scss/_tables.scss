@@ -1,0 +1,126 @@
+.standard-table {
+  text-align: center;
+  width: 100%;
+  border-spacing: 0 5px;
+
+  @include b(900) {
+    overflow: scroll;
+    display: block;
+    padding-bottom: 10px;
+  }
+
+  thead {
+    color: #8670fa;
+    font-size: 16px;
+    line-height: 100%;
+    th {
+      padding: 10px 24px;
+      &.as-sort {
+        cursor: pointer;
+        user-select: none;
+
+        @include b(900) {
+          text-align: center;
+        }
+      }
+      &.active {
+        color: #37c8b4;
+        .sort-indicator {
+          visibility: visible;
+        }
+      }
+      &.ask {
+        .sort-indicator {
+          &:before {
+            transform: rotate(225deg);
+            top: 0;
+          }
+        }
+      }
+      .sort-indicator {
+        visibility: hidden;
+        display: inline-block;
+        vertical-align: bottom;
+        width: 16px;
+        height: 16px;
+        border-radius: 4px;
+        background-color: #37c8b4;
+        margin-left: 6px;
+        text-align: center;
+        line-height: 16px;
+        margin-right: -22px;
+        &:before {
+          content: "";
+          display: inline-block;
+          width: 4px;
+          height: 4px;
+          border-width: 0 2px 2px 0;
+          border-style: solid;
+          border-color: #fff;
+          transform: rotate(45deg);
+          vertical-align: middle;
+          position: relative;
+          top: -2px;
+        }
+      }
+    }
+  }
+  tbody {
+    td {
+      padding: 24px 10px;
+      font-size: 18px;
+      line-height: 21px;
+      color: #ffffff;
+      white-space: nowrap;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.2);
+
+      @include b(900) {
+        min-width: 120px;
+        text-align: center;
+      }
+
+      &:first-child {
+        border-bottom-left-radius: 12px;
+        border-top-left-radius: 12px;
+      }
+      &:last-child {
+        border-bottom-right-radius: 12px;
+        border-top-right-radius: 12px;
+      }
+      &.action-button {
+        padding: 15px;
+        button {
+          padding-top: 10px;
+          padding-bottom: 10px;
+        }
+      }
+      + td {
+        position: relative;
+        &:before {
+          content: "";
+          position: absolute;
+          left: 0;
+          top: 50%;
+          margin-top: -11px;
+          height: 22px;
+          width: 1px;
+          background-color: rgba(255, 255, 255, 0.1);
+        }
+      }
+    }
+  }
+}
+
+.table {
+  &__tooltip {
+    color: #fff !important;
+    font-size: 16px !important;
+    background: black !important;
+    padding: 7px 15px !important;
+    border-radius: 10px !important;
+    font-style: normal !important;
+    font-weight: normal !important;
+    max-width: max-content !important;
+  }
+}
