@@ -45,11 +45,19 @@
 }
 .mat-dialog-container {
   padding: 0 !important;
-  box-shadow: 0 1em 5em rgba(0, 0, 0, 0.6);
   overflow: hidden !important;
-  background-color: #4B29A1;
+  color: #717274;
+  background-color: #eaeff6;
+  // box-shadow: -5px -5px 10px #ffffff, 8px 8px 15px rgba(10, 17, 45, 0.1);
   border-radius: 8px;
 }
+// .mat-dialog-container {
+//   padding: 0 !important;
+//   box-shadow: 0 1em 5em rgba(0, 0, 0, 0.6);
+//   overflow: hidden !important;
+//   background-color: #4B29A1;
+//   border-radius: 8px;
+// }
 
 .alert-window-title {
   font-size: 22px;
@@ -65,8 +73,9 @@
 }
 
 .dialog-block {
+  cursor: default;
   //background-color: #4B29A1;
-  color: white;
+  color: #717274;
   &__content {
     padding: 20px;
   }

@@ -2,12 +2,14 @@
   <div class="dialog-block__content">
     <div class="dialog-description" [innerHTML]="err"></div>
 
-    <button
-      class="btn btn__normal dialog-block__btn"
-      (click)="closeModal()"
-      type="button"
-    >
-      <span>&nbsp;&nbsp;&nbsp;Close&nbsp;&nbsp;&nbsp;</span>
-    </button>
+    <div class="axn-container-center m-t-15">
+      <button
+      class="axn-btn axn-btn-gray"
+        (click)="closeModal()"
+        type="button"
+      >
+        <span>&nbsp;&nbsp;&nbsp;Close&nbsp;&nbsp;&nbsp;</span>
+      </button>
+    </div>
   </div>
 </div>

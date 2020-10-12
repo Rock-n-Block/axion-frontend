@@ -187,27 +187,3 @@
       </div>
     </div>
   </div>
-
-<section class="axn-section" *ngIf="!account">
-  <div class="axn-container">
-    <div class="axn-page-claim-date">
-      <span class="axn-text">Enter by Metamask</span>
-
-      <button
-        class="axn-btn axn-btn-green m-t-15"
-        (click)="subscribeAccount()"
-        [ngClass]="{ 'no-clickable': !!account }"
-        [disabled]="!!account"
-      >
-        <span class="lds-ellipsis" *ngIf="burnTokensProgress">
-          <span class="lds-ellipsis-container">
-            <span></span><span></span><span></span><span></span>
-          </span>
-        </span>
-        <span class="axn-text icon-flex icon icon__metamask t-t-u">{{
-          account ? account.address : "MetaMask"
-        }}</span>
-      </button>
-    </div>
-  </div>
-</section>

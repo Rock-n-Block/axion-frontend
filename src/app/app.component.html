@@ -129,4 +129,26 @@
 
 <div class="axn">
   <router-outlet></router-outlet>
+
+  <section class="axn-section" *ngIf="!account">
+    <div class="axn-container t-a-c">
+        <span class="axn-text">Enter by Metamask</span>
+          <div class="axn-form-block axn-form-transparent">
+            <div class="axn-form-block-button">
+          <button
+          class="axn-btn axn-btn-gray axn-btn-form"
+            (click)="subscribeAccount()"
+            [ngClass]="{ 'no-clickable': !!account }"
+            [disabled]="!!account"
+          >
+            <span class="axn-text icon-flex icon icon__metamask t-t-u">{{
+              account ? account.address : "MetaMask"
+            }}</span>
+          </button>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  
 </div>
