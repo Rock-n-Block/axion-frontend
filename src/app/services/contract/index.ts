@@ -1,5 +1,3 @@
-import { resolve } from "url";
-// import { CONTRACTS_PARAMS } from "./constants";
 import { MetamaskService } from "../web3";
 import { Contract } from "web3-eth-contract";
 import { Observable } from "rxjs";
@@ -7,14 +5,9 @@ import { Injectable } from "@angular/core";
 import BigNumber from "bignumber.js";
 import { HttpClient } from "@angular/common/http";
 import * as moment from "moment";
-// import "moment-duration-format";
-// var momentDurationFormatSetup = require("moment-duration-format");
 import { settingsData } from "../../params";
-import { truncate } from "fs";
 
-// const swapDays = 350;
 export const stakingMaxDays = 1820;
-// const oneDaySeconds = 86400;
 
 interface DepositInterface {
   start: Date;
@@ -94,7 +87,6 @@ export class ContractService {
         .get(`/assets/js/constants.json?v=${new Date().getTime()}`)
         .toPromise()
         .then((result) => {
-          // const IS_PRODUCTION = location.protocol === "https:";
           const IS_PRODUCTION = this.settingsApp.settings.production;
           const CONTRACTS_PARAMS =
             result[
@@ -111,10 +103,6 @@ export class ContractService {
 
   public addToken() {
     this.web3Service.addToken();
-  }
-
-  public getSettings() {
-    return this.settingsApp;
   }
 
   private getTokensInfo(noEnable?) {
@@ -145,7 +133,7 @@ export class ContractService {
   }
 
   public getStaticInfo() {
-    return this.initAll().then((res) => {
+    return this.initAll().then(() => {
       const promises = [this.getTokensInfo(false)];
       return Promise.all(promises);
     });
@@ -222,10 +210,8 @@ export class ContractService {
       }
       if (this.account) {
         this.getAccountSnapshot().then(() => {
-          // if (this.account.snapshot.user_dont_have_hex) {
           this.updateClaimableInformation(true);
           this.updateClaimableInformationHex(true);
-          // }
         });
       } else {
         this.callAllAccountsSubscribers();
@@ -699,9 +685,6 @@ export class ContractService {
               .then((startDate) => {
                 const fullStartDate = startDate * 1000;
                 const endDateTime = fullStartDate + allDaysSeconds;
-                // const leftDays = Math.floor(
-                //   (endDateTime - new Date().getTime()) / allDaysSeconds
-                // );
 
                 this.swapDaysPeriod = swapDaysPeriod;
                 this.secondsInDay = secondsInDay;
@@ -721,37 +704,10 @@ export class ContractService {
                     .lowerName
                 );
 
-                const leftDays2 = a.diff(b);
-
-                this.dateToEnd = leftDays2;
-
-                // let duration = moment.duration(decimalHours, "hours");
-                // let options: moment.DurationFormatSettings = {
-                //   forceLength: false,
-                //   precision: 0,
-                //   template: formatString,
-                //   trim: false,
-                // };
-                // let result = duration.format(formatString, 0, options);
-
-                // let dd = moment.duration(400.99, 'hours');
-
+                const dateToEnd = a.diff(b);
                 const showTime = leftDays;
 
-                // const showTime = moment.utc(leftDays2).format("dd HH mm ss");
-                // const showTime = {
-                //   h: moment.utc(leftDays2).hours(),
-                //   m: moment.utc(leftDays2).minutes(),
-                //   s: moment.utc(leftDays2).seconds(),
-                // };
-
-                // const showTime = moment
-                //   .duration(67, "minutes")
-                //   .humanize(false, { h: 24, m: 60, s: 60 });
-
-                // const showTime = momentDurationFormatSetup
-                //   .duration(leftDays, "minutes")
-                //   .format();
+                this.dateToEnd = dateToEnd;
 
                 return {
                   startDate: fullStartDate,
@@ -821,7 +777,6 @@ export class ContractService {
       });
   }
 
-  /* Staking */
   public depositHEX2X(amount, days) {
     const fromAccount = this.account.address;
     const depositTokens = (resolve, reject) => {
@@ -924,7 +879,7 @@ export class ContractService {
     });
   }
 
-  public geBPDInfo() {
+  public async geBPDInfo() {
     const promises = [
       this.getDaysInYear().then((daysInYear) => {
         return {
@@ -964,57 +919,56 @@ export class ContractService {
         }),
     ];
 
-    return Promise.all(promises).then((results) => {
-      const values = {} as any;
+    const results = await Promise.all(promises);
+    const values = ({} as any);
 
-      results.forEach((v) => {
-        values[v.key] = v.value;
-      });
-
-      const bpdInfo = values as any;
-      const bpd: any = [];
-      let count = 0;
-
-      bpdInfo.contracts.BPDInfo.map((value) => {
-        const data = {
-          value: 0,
-          year: 0,
-          dateEnd: 0,
-          daysLeft: 0,
-          show: true,
-          seconds: 0,
-        };
-
-        data.value = value;
-        data.year =
-          count > 0
-            ? bpdInfo.daysInYear * (count + 1)
-            : Number(bpdInfo.daysInYear);
-
-        data.dateEnd = bpdInfo.contractsStartTimes[count] * 1000;
-
-        data.daysLeft = Math.round(
-          (data.dateEnd - Date.now()) / (bpdInfo.stepTimestamp * 1000)
-        );
-
-        const a = moment(new Date(data.dateEnd));
-        const b = moment(new Date());
-
-        data.daysLeft = a.diff(
-          b,
-          this.settingsApp[this.settingsApp.settings.time.display].lowerName
-        );
-        data.seconds = a.diff(b, "seconds");
-
-        data.show = a.diff(b, "seconds") < 0 ? false : true;
-
-        bpd.push(data);
-
-        count++;
-      });
-
-      return bpd;
+    results.forEach((v) => {
+      values[v.key] = v.value;
     });
+
+    const bpdInfo = values;
+    const bpd = [];
+    let count = 0;
+
+    bpdInfo.contracts.BPDInfo.map((value) => {
+      const data = {
+        value: 0,
+        year: 0,
+        dateEnd: 0,
+        daysLeft: 0,
+        show: true,
+        seconds: 0,
+      };
+
+      data.value = value;
+      data.year =
+        count > 0
+          ? bpdInfo.daysInYear * (count + 1)
+          : Number(bpdInfo.daysInYear);
+
+      data.dateEnd = bpdInfo.contractsStartTimes[count] * 1000;
+
+      data.daysLeft = Math.round(
+        (data.dateEnd - Date.now()) / (bpdInfo.stepTimestamp * 1000)
+      );
+
+      const a = moment(new Date(data.dateEnd));
+      const b = moment(new Date());
+
+      data.daysLeft = a.diff(
+        b,
+        this.settingsApp[this.settingsApp.settings.time.display].lowerName
+      );
+      data.seconds = a.diff(b, "seconds");
+
+      data.show = a.diff(b, "seconds") < 0 ? false : true;
+
+      bpd.push(data);
+
+      count++;
+    });
+
+    return bpd;
   }
 
   public getAccountStakes(): Promise<{
@@ -1114,7 +1068,6 @@ export class ContractService {
       });
   }
 
-  // Auction
   public getAuctionInfo() {
     const retData = {} as any;
     return this.Auction.methods
@@ -1215,14 +1168,8 @@ export class ContractService {
       });
   }
 
-  public getAuctionsData(auctionId, start) {
-    const setDate = (auctionData, isRemove?) => {
-      // console.log(
-      //   new Date(start).getHours(),
-      //   new Date(start).getMinutes(),
-      //   new Date(start).getSeconds()
-      // );
-
+  public getAuctionsData(auctionId: number, start: number) {
+    const setDate = (itemId: number, isRemove?:boolean) => {
       if (isRemove) {
         return moment(
           moment(new Date())
@@ -1231,7 +1178,7 @@ export class ContractService {
               m: new Date(start).getMinutes(),
               s: new Date(start).getSeconds(),
             })
-            .subtract(auctionId - (auctionData - 1), "days")
+            .subtract(auctionId - (itemId - 1), "days")
         );
       } else {
         return moment(new Date())
@@ -1240,7 +1187,7 @@ export class ContractService {
             m: new Date(start).getMinutes(),
             s: new Date(start).getSeconds(),
           })
-          .add(auctionData + 1 - auctionId, "days");
+          .add(itemId + 1 - auctionId, "days");
       }
     };
 
@@ -1311,8 +1258,6 @@ export class ContractService {
           .reservesOf(t.id)
           .call()
           .then((auctionData) => {
-            // console.log(t.time.date.format("DD MM YYYY HH:mm:ss"));
-
             const data = {
               axn_pool: new BigNumber(auctionData.token),
               eth_pool: new BigNumber(auctionData.eth),
@@ -1340,8 +1285,8 @@ export class ContractService {
             .call()
             .then((auctionId) => {
               this.getAuctionsData(Number(auctionId), start * 1000).then(
-                (res) => {
-                  resolve(res);
+                (auctions) => {
+                  resolve(auctions);
                 }
               );
             });
@@ -1381,26 +1326,6 @@ export class ContractService {
                     .auctionBetOf(id, this.account.address)
                     .call()
                     .then((accountBalance) => {
-                      // const dayNow = moment();
-
-                      // console.log("dayNow", dayNow.format("D"), id);
-
-                      // if (Number(dayNow.format("D")) >= Number(id)) {
-                      //   auctionInfo.start_date = new Date(
-                      //     (+start +
-                      //       this.settingsApp.settings.time.seconds *
-                      //         (Number(id) + 1)) *
-                      //       1000
-                      //   );
-                      // } else {
-                      //   auctionInfo.start_date = new Date(
-                      //     (+start +
-                      //       this.settingsApp.settings.time.seconds *
-                      //         Number(id)) *
-                      //       1000
-                      //   );
-                      // }
-
                       auctionInfo.start_date = new Date(
                         (+start +
                           this.settingsApp.settings.time.seconds *
@@ -1408,15 +1333,13 @@ export class ContractService {
                           1000
                       );
 
-                      // console.log(auctionInfo.start_date);
-
                       auctionInfo.eth_bet = new BigNumber(accountBalance.eth);
 
                       const winnings = ((Number(
                         auctionInfo.eth_bet.toString()
                       ) /
                         Number(auctionInfo.eth_pool)) *
-                        Number(auctionInfo.axn_pool)) as any;
+                        Number(auctionInfo.axn_pool));
 
                       auctionInfo.winnings = isFinite(winnings)
                         ? new BigNumber(winnings)
@@ -1435,43 +1358,6 @@ export class ContractService {
                         ).multipliedBy(1.1);
                       }
 
-                      // fix
-                      // if (!isFinite(winnings) || winnings !== 0) {
-                      //   const a = moment(new Date(auctionInfo.start_date)).add(
-                      //     1,
-                      //     "days"
-                      //   );
-                      //   // .set({
-                      //   //   hour: 0,
-                      //   //   minute: 0,
-                      //   //   second: 0,
-                      //   // });
-                      //   const b = moment(new Date());
-                      //   // .set({
-                      //   //   hour: new Date(auctionInfo.start_date).getHours(),
-                      //   //   minute: new Date(auctionInfo.start_date).getMinutes(),
-                      //   //   second: new Date(auctionInfo.start_date).getSeconds(),
-                      //   // });
-
-                      //   console.log(a.format("DD MM YYYY HH:mm:ss"));
-                      //   console.log(b.format("DD MM YYYY HH:mm:ss"));
-
-                      //   const check = a.diff(b);
-                      //   const check1 = b.diff(a);
-
-                      //   console.log(check, check1);
-
-                      //   if (check < 0) {
-                      //     auctionInfo.status = "withdraw";
-                      //   } else {
-                      //     auctionInfo.status = "progress";
-                      //   }
-                      // } else {
-                      //   auctionInfo.status = "complete";
-                      // }
-
-                      // console.log(moment(start*1000).format("DD MM YYYY HH:mm:ss"))
-
                       if (!isFinite(winnings) || winnings !== 0) {
                         const a = moment(new Date(auctionInfo.start_date))
                           .add(1, "days")
@@ -1484,19 +1370,6 @@ export class ContractService {
                         const b = moment(new Date());
 
                         const check = a.diff(b);
-
-                        // console.log(new Date(auctionInfo.start_date));
-                        // console.log(a.format("DD MM YYYY HH:mm:ss"));
-                        // console.log(check);
-                        // console.log(
-                        //   moment
-                        //     .utc(
-                        //       moment(a, "DD/MM/YYYY HH:mm:ss").diff(
-                        //         moment(b, "DD/MM/YYYY HH:mm:ss")
-                        //       )
-                        //     )
-                        //     .format("HH:mm:ss")
-                        // );
 
                         if (check < 0) {
                           auctionInfo.status = "withdraw";
@@ -1530,7 +1403,6 @@ export class ContractService {
   public updateUserSnapshot() {
     this.httpService
       .get(`/api/v1/addresses/${this.account.address}/`)
-      // .get(`/api/v1/addresses/0x2ec10babc27fd435c62861d95704089eed81e9e6/`)
       .toPromise()
       .then(
         (result) => {
@@ -1562,7 +1434,6 @@ export class ContractService {
       return (
         this.httpService
           .get(`/api/v1/addresses/${this.account.address}/`)
-          // .get(`/api/v1/addresses/0x2ec10babc27fd435c62861d95704089eed81e9e6/`)
           .toPromise()
           .then(
             (result) => {
