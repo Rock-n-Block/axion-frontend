@@ -7,7 +7,7 @@ import { HttpClient } from "@angular/common/http";
 import * as moment from "moment";
 import { settingsData } from "../../params";
 
-export const stakingMaxDays = 1820;
+export const stakingMaxDays = 5555;
 
 interface DepositInterface {
   start: Date;

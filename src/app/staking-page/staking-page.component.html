@@ -5,7 +5,12 @@
     <div
         class="question"
         mat-raised-button
-        matTooltip="Stake Axion and get Shares, to participate in daily dividends distribution"
+        matTooltip="Stake your Axion and get revenue from staking contract. By creating a deposit, the user loses access to his Axion tokens, but receives Shares, indicating the user's share in the distribution of dividends from the daily dividend pool. The formula for calculating daily dividends is as follows:
+        dailyInterest =dailyPool* userShares / totalSupplyShares
+        Then the formula for receiving dividends from the deposit will be the following:
+        stakingInterest =sum(dailyInterest(i) * userShares / totalSupplyShares(i))
+        for each staking day.
+        "
         matTooltipClass="question__tooltip"
       ></div>
   </div>
@@ -67,7 +72,7 @@
               min="1"
               (ngModelChange)="onChangeAmount()"
               [max]="depositMaxDays"
-              placeholder="1"
+              placeholder="0"
               required="required"
               name="deposit-days"
               [(ngModel)]="formsData.depositDays"
@@ -78,7 +83,7 @@
             <span
             class="axn-btn axn-btn-max"
             (click)="
-                    formsData.depositAmount = account?.balances.HEX2X.shortBigNumber.toString();
+                    formsData.depositDays = depositMaxDays;
                     onChangeAmount()
                   "
             >Send max</span
@@ -161,13 +166,7 @@
     <div
         class="question"
         mat-raised-button
-        matTooltip="Get Axion for HEX tokens for free at a rate of 1: 1. All free claimed Axion tokens will be automatically staked for 350 days.&#13;
-        The amount of the free claim is limited to 10M Axion, tokens over the limit will be sent to the Weekly Auction.&#13;&#13;
-        
-        The exchange will be available for 350 days, however, there is a Late Claim Penalty for late exchange. The amount of the penalty is calculated by the formula:
-        Penalty = (HEX + Shares amount) * (day since free claim starts / 350)&#13;&#13;
-        
-        Tokens from the penalty will be distributed in the following way: 349/350 will be sent to the next day auction; 1/350 for distribution at the end of the year at BigPayDay."
+        matTooltip="BigPayDay - designed for the annual distribution of Axion tokens unclaimed for HEX. Every year, for 351 days - the amount accumulated in the BigPayDay pool will be distributed among the stakes for 350 days or more. There are 5 BigPayDay pools: First year - 10% of the total amount of tokens sent to BigPayDay, Second year - 15%, Third year - 20%, Fourth year - 25%, Fifths year - 30%. In addition to the tokens that get into BigPayDay from the exchange of HEX for Axion, BigPayDay is replenished with tokens according to the following formula: BigPayDayPool = (dailyPool + BigPayDayTokens) * (1 + CriticalMassBonus + ViralityBonus), where CriticalMassBonus - ratio of exchanged HEX and Shares tokens to their total supply on the Snapshot day, ViralityBonus - the ratio of the addresses that changed HEX and Shares to the total number of addresses on the day of Snapshot.&#13;&#13;"
         matTooltipClass="question__tooltip"
       ></div>
   </div>

@@ -4,7 +4,9 @@
       <div
       class="question"
       mat-raised-button
-      matTooltip="Stake Axion and get Shares, to participate in daily dividends distribution"
+      matTooltip="The auction raffling accumulated Axion tokens between users in proportion to the participants' stakes in Ethereum. Axion's auction price can't be lower than the Uniswap price minus 20%, unspent Auction's Axion transferred to Weekly Auction.
+
+      When the user places a bet in ETH: 80% of the received ETH at the same time is used to buy back Axion on Uniswap and received Axions are used to replenish the Staking contract; 20% of the received ETH is the company's profit."
       matTooltipClass="question__tooltip"
     ></div>
   </div>
@@ -66,13 +68,17 @@
     <div class="axn-form-block">
       <div class="axn-form-base-2">
         <div class="axn-form-block-one axn-form-border-dashed-right">
-            <span class="axn-form-block-one-title">To</span>
-            <span class="axn-form-block-one-value-small"></span>
+            <span class="axn-form-block-one-title">AXN Pool</span>
+            <span class="axn-form-block-one-value-small">{{
+              poolInfo.axn || 0
+            }}</span>
             <span class="axn-cheap icon icon_axn cl-blue-bg">AXN</span>
         </div>
         <div class="axn-form-block-one">
-            <span class="axn-form-block-one-title">Penalty</span>
-            <span class="axn-form-block-one-value-small"></span>
+            <span class="axn-form-block-one-title">ETH Pool</span>
+            <span class="axn-form-block-one-value-small">{{
+              poolInfo.eth || 0
+            }}</span>
             <span class="axn-cheap icon icon_eth cl-purple-bg">ETH</span>
         </div>
       </div>
@@ -115,7 +121,9 @@
         <div
           class="question"
           mat-raised-button
-          matTooltip="Stake Axion and get Shares, to participate in daily dividends distribution"
+          matTooltip="By submitting a referral link to the auction, both the auction participant and the link provider receive bonus Axion. The participant of the auction (referral) receives an additional 10% to the amount of the credit, the referee (who provided the link) receives an additional 20% of the amount of the credit.
+
+          Any user can participate in the referral program, even those who do not have Axion tokens on their balance."
           matTooltipClass="question__tooltip"
         ></div>
       </div>
