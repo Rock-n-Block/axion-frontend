@@ -96,6 +96,11 @@ body {
   top: 0;
   z-index: 100;
 
+  @include b(990) {
+    padding: 12px 0;
+    background-color: $bgColor;
+  }
+
   &.active {
     padding: 3px 0;
     background-color: $bgColor;
@@ -113,8 +118,51 @@ body {
     overflow: hidden;
     height: 0;
 
+    @include b(990) {
+      width: 100vw;
+      position: absolute;
+      background: #4b29a1;
+    }
+
+    &.active {
+      @include b(990) {
+        width: 100vw;
+        position: fixed;
+        background-color: $bgColor;
+        height: 100vh;
+        z-index: -1;
+        top: 0;
+        opacity: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+
     &-btn {
       display: none;
+
+      @include b(990) {
+        display: block;
+      }
+    }
+
+    &-item {
+      @include b(990) {
+        display: flex;
+        justify-content: center;
+        margin-top: 60px;
+      }
+
+      a {
+        @include b(990) {
+          font-size: 28px;
+          line-height: 107.2%;
+          color: #717274;
+          text-decoration: none;
+        }
+      }
     }
   }
 
@@ -122,12 +170,20 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    @include b(990) {
+      padding: 0 15px;
+    }
   }
 
   &-logo {
     vertical-align: middle;
     width: 190px;
     transition: 0.3s;
+
+    @include b(990) {
+      width: 137px;
+    }
   }
 
   &-menu {
@@ -136,6 +192,10 @@ body {
     align-items: center;
     margin: 0;
     padding: 0;
+
+    @include b(990) {
+      display: none;
+    }
 
     &_item {
       color: #fff;

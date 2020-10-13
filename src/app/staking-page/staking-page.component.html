@@ -136,8 +136,8 @@
 
           <ng-container *ngFor="let item of bpd let $index = index">
             <div class="axn-form-block-shares p-l-10">
-              <span class="icon icon-flex axn-form-block-shares-value-min" [ngClass]="{ 'icon_ok-1': item.show, 'icon_no': !item.show }">BPD {{ $index + 1 }}</span>
-              <span class="axn-form-block-shares-text-min cl-blue">{{ item.dateEnd | date:'dd.mm.yyyy' }}</span>
+              <span class="icon icon-flex axn-form-block-shares-text-min" [ngClass]="{ 'icon_ok-1': stakeDays > item.dateEnd, 'icon_no': stakeDays < item.dateEnd }">BPD {{ $index + 1 }}</span>
+              <span class="axn-form-block-shares-text-min cl-blue">{{ item.dateEnd | date:'dd.MM.yyyy' }}</span>
             </div>
           </ng-container>
         </div>

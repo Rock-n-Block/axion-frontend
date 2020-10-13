@@ -75,25 +75,23 @@
       </div>
       <div class="header-navbar-item" *ngIf="addToRopsten">
         <span
-          class="icon icon-flex icon__axion axn-btn axn-btn-purple"
-          (click)="addToken()"
-          >Add to MetaMask</span
-        >
+        class="axn-btn axn-btn-gray"
+        (click)="addToken()"
+        >Add to MetaMask</span
+      >
       </div>
       <div class="header-navbar-item">
         <button
-          class="metamask-button"
-          (click)="subscribeAccount()"
-          [ngClass]="{ 'no-clickable': !!account }"
-        >
-          <img
-            class="metamask-button_icon"
-            src="./assets/images/metamask.svg"
-          />
-          <span class="metamask-button_text">{{
-            account ? account.address : "MetaMask"
-          }}</span>
-        </button>
+            class="icon icon-flex icon_metamask axn-btn-metamask"
+            (click)="subscribeAccount()"
+            [ngClass]="{ 'no-clickable': !!account }"
+          >
+            <div class="axn-btn-metamask-block">
+              <span class="axn-btn-metamask-text">{{
+                account ? account.address : "MetaMask"
+              }}</span>
+            </div>
+          </button>
       </div>
     </div>
   </div>
