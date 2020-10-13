@@ -47,36 +47,28 @@ export class BigNumberDirective implements OnInit {
       ? parseInt(this.appBigNumber.decimals, 10)
       : 0;
 
+    const checkValue = () => {
+      this.currentDecimals = !isNaN(this.appBigNumber.decimals)
+        ? parseInt(this.appBigNumber.decimals, 10)
+        : 0;
+      setTimeout(() => {
+        this.control.control.setValue(this.latestValue);
+      });
+    }
+
     if (this.minValueChange) {
       this.minValueChange.subscribe(() => {
-        this.currentDecimals = !isNaN(this.appBigNumber.decimals)
-          ? parseInt(this.appBigNumber.decimals, 10)
-          : 0;
-        setTimeout(() => {
-          this.control.control.setValue(this.latestValue);
-        });
+        checkValue();
       });
     }
-
     if (this.maxValueChange) {
       this.maxValueChange.subscribe(() => {
-        this.currentDecimals = !isNaN(this.appBigNumber.decimals)
-          ? parseInt(this.appBigNumber.decimals, 10)
-          : 0;
-        setTimeout(() => {
-          this.control.control.setValue(this.latestValue);
-        });
+        checkValue();
       });
     }
-
     if (this.decimalsChange) {
       this.decimalsChange.subscribe(() => {
-        this.currentDecimals = !isNaN(this.appBigNumber.decimals)
-          ? parseInt(this.appBigNumber.decimals, 10)
-          : 0;
-        setTimeout(() => {
-          this.control.control.setValue(this.latestValue);
-        });
+        checkValue();
       });
     }
 
@@ -123,37 +115,27 @@ export class BigNumberDirective implements OnInit {
 
         if (modelValue.minus(this.appBigNumber.min).toNumber() < 0) {
           errors.min = true;
+          this.latestValue = modelValue.div(Math.pow(10, this.currentDecimals)).toString();
         }
-        if (modelValue.minus(this.appBigNumber.max).toNumber() > 0) {
-          errors.max = true;
+        if (modelValue.minus(this.appBigNumber.max).toNumber() >= 0) {
+          modelValue = new BigNumber(this.appBigNumber.max);
+          originalValue = modelValue.div(Math.pow(10, this.currentDecimals)).toString().replace(/\.([0-9]+)[0]+$/, '$1');
+          this.decimalPart = originalValue.split('.')[1];
         }
       }
 
       modelValue = modelValue.toString(10);
       if (JSON.stringify(errors) === "{}") {
         this.latestValue = originalValue;
-
         this.control.control.setValue(modelValue, {
           emitEvent: false,
         });
         this.control.control.setErrors(null);
       } else {
         if (this.latestValue) {
-          // console.log("modelValue", modelValue);
-
           modelValue = new BigNumber(this.latestValue)
             .times(Math.pow(10, this.currentDecimals))
             .toString();
-
-          // console.log("modelValue indexOf(+)", modelValue.indexOf("+"));
-
-          if (modelValue.indexOf("+") !== -1) {
-            const start = result.substr(result.indexOf(".") + 1);
-            const end = result.substr(result.indexOf(".") + 1);
-
-            // console.log(originalValue);
-            // console.log(start, end);
-          }
         }
         if (modelValue) {
           this.control.control.markAsTouched();
@@ -185,16 +167,6 @@ export class BigNumberDirective implements OnInit {
           )
           .toString() + (this.withEndPoint ? "." : "")
       : "";
-
-    // return visibleValue
-    //   ? visibleValue.toFormat(
-    //       Math.min(
-    //         this.decimalPart ? this.decimalPart.length : 0,
-    //         this.currentDecimals || 0
-    //       ),
-    //       { groupSeparator: ",", groupSize: 3, decimalSeparator: "." }
-    //     ) + (this.withEndPoint ? "." : "")
-    //   : "";
   }
 }
 
