@@ -76,24 +76,13 @@ export class MetamaskService {
       });
   }
 
-  public async addToken() {
-    const tokenAddress = "0x23c685094c439a0796a79d721ae37836567ab6ca";
-    const tokenSymbol = "AXN";
-    const tokenDecimals = 18;
-    const tokenImage =
-      "https://axiondev.rocknblock.io/assets/images/icons/axion-icon.svg";
-
+  public async addToken(tokenOptions) {
     try {
       const wasAdded = await this.metaMaskWeb3.request({
         method: "wallet_watchAsset",
         params: {
           type: "ERC20",
-          options: {
-            address: tokenAddress,
-            symbol: tokenSymbol,
-            decimals: tokenDecimals,
-            image: tokenImage,
-          },
+          options: tokenOptions,
         },
       });
 
