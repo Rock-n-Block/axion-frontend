@@ -137,10 +137,15 @@
     <div class="axn-form-block">
       <div class="axn-form-block-one axn-form-arrow">
         <span class="axn-form-block-one-title">Swap contract</span>
-        <span class="axn-form-block-one-value-mid">{{
-          swapContractBalance.fullValue || 0
-            | bigNumberFormat: tokensDecimals.HEX2X:true:false:18
-          }}</span>
+          <span class="axn-form-block-one-value-mid" matTooltipClass="table__tooltip"
+          mat-raised-button
+          matTooltip="{{
+            swapContractBalance.fullValue || 0 | bigNumberFormat: tokensDecimals.HEX2X:true:false:18
+          }}">
+              {{
+                swapContractBalance.fullValue || 0 | bigNumberFormat: tokensDecimals.HEX2X:true:false:8
+              }}
+        </span>
           <span class="axn-cheap icon icon_hex cl-gradient-bg">H2T</span>
           <div class="axn-form-block-button axn-form-bottom">
             <button
@@ -166,17 +171,28 @@
       <div class="axn-form-base-2">
         <div class="axn-form-block-one axn-form-border-dashed-right">
             <span class="axn-form-block-one-title">To</span>
-            <span class="axn-form-block-one-value-small">{{
+            <span class="axn-form-block-one-value-mid" matTooltipClass="table__tooltip"
+            mat-raised-button
+            matTooltip="{{
               toSwap || 0 | bigNumberFormat: tokensDecimals.HEX2X:true:false:18
-            }}</span>
-            <span class="axn-cheap icon icon_axn cl-blue-bg">AXN</span>
+            }}">
+                {{
+                  toSwap || 0 | bigNumberFormat: tokensDecimals.HEX2X:true:false:8
+                }}
+          </span>
+          <span class="axn-cheap icon icon_axn cl-blue-bg">AXN</span>
         </div>
         <div class="axn-form-block-one">
             <span class="axn-form-block-one-title">Penalty</span>
-            <span class="axn-form-block-one-value-small">{{
-              clacPenalty || 0
-                | bigNumberFormat: tokensDecimals.HEX2X:true:false:18
-            }}</span>
+            <span class="axn-form-block-one-value-mid" matTooltipClass="table__tooltip"
+            mat-raised-button
+            matTooltip="{{
+              clacPenalty || 0 | bigNumberFormat: tokensDecimals.HEX2X:true:false:18
+            }}">
+                {{
+                  clacPenalty || 0 | bigNumberFormat: tokensDecimals.HEX2X:true:false:8
+                }}
+          </span>
             <span class="axn-cheap icon icon_axn cl-blue-bg">AXN</span>
         </div>
       </div>

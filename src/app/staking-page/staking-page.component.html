@@ -156,7 +156,7 @@
 
 <section class="axn-section">
   <div class="axn-form-block p-20">
-  <div class="axn-title-block">
+  <div class="axn-title-block p-20">
     <span class="axn-title">Big Pay Day</span>
     <div
         class="question"
@@ -184,9 +184,7 @@
         <ng-container *ngFor="let item of bpd">
           <td *ngIf="item.show">
             {{ item.value | number }}
-            <span class="icon icon__axion-small icon-flex cl-red-light"
-              >AXN</span
-            >
+            <span class="axn-cheap icon icon_axn cl-blue-bg" style="margin: 10px auto 0px auto;">AXN</span>
           </td>
         </ng-container>
       </tr>
