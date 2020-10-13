@@ -102,7 +102,12 @@ export class ContractService {
   }
 
   public addToken() {
-    this.web3Service.addToken();
+    this.web3Service.addToken({
+      address: this.CONTRACTS_PARAMS.HEX2X.ADDRESS,
+      decimals: this.tokensDecimals.HEX2X,
+      image: "https://axiondev.rocknblock.io/assets/images/icons/axion-icon.svg",
+      symbol: 'AXN'
+    });
   }
 
   private getTokensInfo(noEnable?) {
