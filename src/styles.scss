@@ -20,14 +20,12 @@ body {
 }
 
 body {
-  padding-top: 83px;
+  padding-top: 70px;
   margin: 0;
   background: $bgColor;
-  background-size: cover;
   font-family: "Roboto", sans-serif;
-  color: #fff;
-  min-width: 880px;
-  padding-bottom: 100px;
+  color: #7b7d80;
+  padding-bottom: 50px;
   overflow-y: scroll;
 
   &:-webkit-scrollbar {
