@@ -25,6 +25,11 @@ a {
     &-block {
       text-align: center;
 
+      &-left {
+        text-align: left;
+        padding: 30px;
+      }
+
       &-button {
         display: flex;
         justify-content: space-between;
@@ -139,7 +144,25 @@ a {
 }
 
 .p {
+  &-bdp {
+    padding: 0 30px 15px 30px;
+  }
+
+  &-20 {
+    padding: 20px !important;
+  }
+
+  &-l {
+    &-10 {
+      padding-left: 10px;
+    }
+  }
+
   &-b {
+    &-15 {
+      padding-bottom: 15px;
+    }
+
     &-none {
       padding-bottom: 0 !important;
     }
@@ -192,6 +215,12 @@ a {
       @include b(550) {
         font-size: 12px;
       }
+    }
+  }
+
+  &-fw {
+    &-light {
+      font-weight: 300 !important;
     }
   }
 

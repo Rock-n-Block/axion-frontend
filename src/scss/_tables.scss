@@ -10,11 +10,14 @@
   }
 
   thead {
-    color: #8670fa;
+    color: #717274;
     font-size: 16px;
     line-height: 100%;
+
     th {
       padding: 10px 24px;
+      font-weight: 300 !important;
+
       &.as-sort {
         cursor: pointer;
         user-select: none;
@@ -70,10 +73,11 @@
       padding: 24px 10px;
       font-size: 18px;
       line-height: 21px;
-      color: #ffffff;
+      color: #717274;
       white-space: nowrap;
       text-align: center;
-      background: rgba(0, 0, 0, 0.2);
+      background: #ffffff7a;
+      font-weight: 300;
 
       @include b(900) {
         min-width: 120px;

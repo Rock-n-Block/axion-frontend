@@ -1,69 +1,62 @@
-<div class="content-container">
-  <div class="content-block" [ngClass]="{ 'no-active': !account }">
-    <div class="content-block_title">
-      <span>Create deposit</span>
-      <div
+
+<section class="axn-section" *ngIf="account">
+  <div class="axn-title-block">
+    <span class="axn-title">Create deposit</span>
+    <div
         class="question"
         mat-raised-button
         matTooltip="Stake Axion and get Shares, to participate in daily dividends distribution"
         matTooltipClass="question__tooltip"
       ></div>
-    </div>
-    <div class="blocks-list without-arrow_separator">
-      <form
-        #depositForm="ngForm"
-        class="staking-form"
-        [ngClass]="{ disabled: depositTokensProgress }"
-      >
-        <div class="staking-form__item staking-form__item-deposit">
-          <div class="staking-form__item-deposit__item-first">
-            <span class="staking-form__item-title cl-aqua"
-              >Enter depoist amount</span
-            >
-            <input
-              *ngIf="account"
-              type="text"
-              class="staking-form__item-input cl-aqua"
-              autocomplete="off"
-              required="required"
-              [appBigNumber]="{
-                decimals: tokensDecimals['HEX2X'],
-                min: 1,
-                max: account?.balances.HEX2X.wei
-              }"
-              name="deposit-amount"
-              placeholder="0.0"
-              (ngModelChange)="onChangeAmount()"
-              [maxValueChange]="onChangeAccount"
-              [(ngModel)]="formsData.depositAmount"
-              autocomplete="off"
-            />
-            <div class="staking-form__item-icon-wrap">
-              <span
-                class="staking-form__item-icon cl-red-light icon icon__axion"
-                >AXN</span
-              >
-            </div>
-            <div class="staking-form__item-actions">
-              <div class="staking-form__item-actions-amount">
-                <span
-                  (click)="
+  </div>
+
+  <div class="axn-form axn-form-3-1">
+    <div class="axn-form-block axn-form-staking">
+      <div class="axn-form-block-one">
+          <span class="axn-form-block-one-title">Deposit</span>
+          <input
+            *ngIf="account"
+            type="text"
+            class="axn-input axn-input-mid"
+            autocomplete="off"
+            required="required"
+            [appBigNumber]="{
+              decimals: tokensDecimals['HEX2X'],
+              min: 1,
+              max: account?.balances.HEX2X.wei
+            }"
+            name="deposit-amount"
+            placeholder="0.0"
+            (ngModelChange)="onChangeAmount()"
+            [maxValueChange]="onChangeAccount"
+            [(ngModel)]="formsData.depositAmount"
+            autocomplete="off"
+          />
+          <span class="axn-cheap icon icon_axn cl-blue-bg">AXN</span>
+
+          <div class="axn-form-block-sendmax axn-form-bottom-mid">
+            <span
+            class="axn-btn axn-btn-max"
+            (click)="
                     formsData.depositAmount = account?.balances.HEX2X.shortBigNumber.toString();
                     onChangeAmount()
                   "
-                  class="staking-form__item-actions-amount-btn"
-                  >Send max</span
-                >
-                <span class="staking-form__item-actions-amount-text"
-                  >Balance {{ account?.balances?.HEX2X.display }}</span
-                >
-              </div>
-            </div>
+            >Send max</span
+          >
+          <span class="axn-form-block-sendmax-text">
+            Balance
+            <span class="axn-form-block-sendmax-value-mid">
+              {{ account?.balances?.HEX2X.display }}
+            </span></span>
           </div>
-          <div class="staking-form__item-deposit__item">
-            <span class="staking-form__item-title">Set deposit period</span>
-            <input
-              class="staking-form__item-input cl-white"
+      </div>
+    </div>
+
+    <div class="axn-form-block axn-form-arrow axn-form-staking">
+      <div class="axn-form-block-one">
+          <span class="axn-form-block-one-title">Set deposit period</span>
+          <input
+              class="axn-input axn-input-mid"
               type="number"
               step="1"
               autocomplete="off"
@@ -80,217 +73,242 @@
               [(ngModel)]="formsData.depositDays"
               autocomplete="off"
             />
-            <div class="staking-form__item-actions">
-              <div class="staking-form__item-actions-amount">
-                <span class="staking-form__item-actions-amount-btn">{{
-                  [null, "", 0, 1].includes(formsData.depositDays)
-                    ? "DAY"
-                    : "DAYS"
-                }}</span>
-              </div>
-              <span class="staking-form__item-text"
-                >ENDS {{ stakeDays | date: "dd.MM.y" }}
-              </span>
+          <span class="axn-cheap cl-blue-bg">Day</span>
+          <div class="axn-form-block-sendmax axn-form-bottom-mid">
+            <span
+            class="axn-btn axn-btn-max"
+            (click)="
+                    formsData.depositAmount = account?.balances.HEX2X.shortBigNumber.toString();
+                    onChangeAmount()
+                  "
+            >Send max</span
+          >
+          </div>
+      </div>
+    </div>
+
+    <div class="axn-form-block p-20">
+      <div class="axn-form-block-one">
+        <div class="axn-form-base-2 p-b-15 axn-form-border-dashed-bottom">
+          <div class="axn-form-base-1 p-l-10">
+            <div class="axn-form-block-shares">
+              <span class="axn-form-block-shares-value cl-blue">{{ shareRate || 0 }}</span> <br>
+              <span class="axn-form-block-shares-text">Total Shares</span>
+            </div>
+            <div class="axn-form-block-shares">
+              <span class="axn-form-block-shares-value cl-blue">{{
+                stakingContractInfo.ShareRate
+                  | bigNumberFormat: tokensDecimals.HEX2X:true:false:4 || 0
+              }}</span>
+              <span class="axn-form-block-shares-text">Share rate</span>
+            </div>
+          </div>
+          <div class="axn-form-base-2">
+            <div class="axn-form-block-shares">
+              <span class="axn-form-block-shares-value-min">623</span> <br>
+              <span class="axn-form-block-shares-text-min">Shares</span>
+            </div>
+            <div class="axn-form-block-shares">
+              <span class="axn-form-block-shares-value-min">{{
+                bonusLongerPays
+                  | bigNumberFormat: tokensDecimals.HEX2X:true:false:4
+              }}</span> <br>
+              <span class="axn-form-block-shares-text-min">Longer pays better</span>
             </div>
           </div>
         </div>
-        <div class="staking-form__item">
-          <span class="staking-form__item-title" style="text-align: center"
-            >Shares</span
-          >
-          <hr />
-          <div class="staking-form__item-shares">
-            <div class="staking-form__item-shares__item">
-              <span class="staking-form__item-shares__item-value">
-                {{ shareRate || 0 }}</span
-              >
-              <span class="staking-form__item-shares__item-text"
-                >Share rate
-                {{
-                  stakingContractInfo.ShareRate
-                    | bigNumberFormat: tokensDecimals.HEX2X:true:false:4 || 0
-                }}
-              </span>
-            </div>
-            <div class="staking-form__item-shares__item">
-              <span class="staking-form__item-shares__item-text"
-                >Longer Pays <br />
-                Better</span
-              >
-              <span class="staking-form__item-shares__item-value">{{
-                bonusLongerPays
-                  | bigNumberFormat: tokensDecimals.HEX2X:true:false:4
-              }}</span>
-            </div>
+        <div class="axn-form-base p-b-15 axn-form-border-dashed-bottom">
+          <div class="axn-form-block-shares p-l-10">
+            <span class="axn-form-block-shares-value cl-blue">{{ shareRate || 0 }}</span> <br>
+            <span class="axn-form-block-shares-text-min">Start Day</span>
           </div>
+          <div class="axn-form-block-shares">
+            <span class="axn-form-block-shares-value cl-blue">{{ stakeDays | date: "dd.MM.y" }}</span><br>
+            <span class="axn-form-block-shares-text-min">Ends</span>
+          </div>
+        </div>
+        <div class="axn-form-bpd p-b-15 axn-form-border-dashed-bottom">
+
+          <ng-container *ngFor="let item of bpd let $index = index">
+            <div class="axn-form-block-shares p-l-10">
+              <span class="icon icon-flex axn-form-block-shares-value-min" [ngClass]="{ 'icon_ok-1': item.show, 'icon_no': !item.show }">BPD {{ $index + 1 }}</span>
+              <span class="axn-form-block-shares-text-min cl-blue">{{ item.dateEnd | date:'dd.mm.yyyy' }}</span>
+            </div>
+          </ng-container>
+        </div>
+        <button
+        class="axn-btn axn-btn-gray axn-btn-form axn-btn-max-width m-t-15"
+        (click)="openDeposit()"
+        [ngClass]="{ progress: depositTokensProgress }"
+
+      >
+        <span class="lds-ellipsis" *ngIf="depositTokensProgress">
+          <span class="lds-ellipsis-container">
+            <span></span><span></span><span></span><span></span>
+          </span>
+        </span>
+        <span>Deposit</span>
+      </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="axn-section">
+  <div class="axn-form-block p-20">
+  <div class="axn-title-block">
+    <span class="axn-title">Big Pay Day</span>
+    <div
+        class="question"
+        mat-raised-button
+        matTooltip="Get Axion for HEX tokens for free at a rate of 1: 1. All free claimed Axion tokens will be automatically staked for 350 days.&#13;
+        The amount of the free claim is limited to 10M Axion, tokens over the limit will be sent to the Weekly Auction.&#13;&#13;
+        
+        The exchange will be available for 350 days, however, there is a Late Claim Penalty for late exchange. The amount of the penalty is calculated by the formula:
+        Penalty = (HEX + Shares amount) * (day since free claim starts / 350)&#13;&#13;
+        
+        Tokens from the penalty will be distributed in the following way: 349/350 will be sent to the next day auction; 1/350 for distribution at the end of the year at BigPayDay."
+        matTooltipClass="question__tooltip"
+      ></div>
+  </div>
+  <table class="standard-table" cellpadding="0" cellspacing="0" border="0">
+    <thead>
+      <tr>
+        <ng-container *ngFor="let item of bpd">
+          <th *ngIf="item.show">{{ item.daysLeft }} Days left</th>
+        </ng-container>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <ng-container *ngFor="let item of bpd">
+          <td *ngIf="item.show">
+            {{ item.value | number }}
+            <span class="icon icon__axion-small icon-flex cl-red-light"
+              >AXN</span
+            >
+          </td>
+        </ng-container>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</section>
+
+<section class="axn-section" *ngIf="depositsLists?.opened.length && tokensDecimals">
+  <div class="axn-form-block p-20">
+  <div class="axn-title-block axn-title-block-left">
+    <span class="axn-title">Opened deposits</span>
+  </div>
+  <table class="standard-table" cellpadding="0" cellspacing="0" border="0">
+    <thead>
+      <tr>
+        <th>Start date</th>
+        <th>End date</th>
+        <th>Progress</th>
+        <th>Principal</th>
+        <th>Shares</th>
+        <th>BigPayDay</th>
+        <th>Interest</th>
+        <th width="10">&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let deposit of depositsLists.opened">
+        <td>{{ deposit.start | date: "dd.MM.yyyy" }}</td>
+        <td>{{ deposit.end | date: "dd.MM.yyyy" }}</td>
+        <td>{{ getProgress(deposit) }}%</td>
+        <td>
+          {{
+            deposit.amount
+              | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
+          }}&nbsp;AXN
+        </td>
+        <td>
+          {{
+            deposit.shares
+              | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
+          }}
+        </td>
+        <td>
+          {{
+            deposit.bigPayDay
+              | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
+          }}&nbsp;AXN
+        </td>
+        <td>
+          {{
+            deposit.interest
+              | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
+          }}
+        </td>
+        <td class="action-button">
           <button
-            class="btn btn__normal uppercase nowrap"
-            (click)="openDeposit()"
-            [ngClass]="{ progress: depositTokensProgress }"
-            [disabled]="depositForm.invalid || depositDaysInvalid"
+            class="axn-btn axn-btn-gray"
+            (click)="depositWithdraw(deposit)"
+            [ngClass]="{ progress: deposit.withdrawProgress }"
+            [disabled]="deposit.withdrawProgress"
           >
-            <span class="lds-ellipsis" *ngIf="depositTokensProgress">
+            <span class="lds-ellipsis" *ngIf="deposit.withdrawProgress">
               <span class="lds-ellipsis-container">
                 <span></span><span></span><span></span><span></span>
               </span>
             </span>
-            <span>Deposit</span>
+            <span class="t-fw-light">&nbsp;&nbsp;Withdraw&nbsp;&nbsp;</span>
           </button>
-        </div>
-      </form>
-    </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
   </div>
+</section>
 
-  <div class="content-block" *ngIf="tableInfo && bpd[4].show && account">
-    <div style="margin: 30px 0" class="content-block_title text-center">
-      <span>Big Pay Day</span>
-      <div
-        class="question"
-        mat-raised-button
-        matTooltip="Stake for more than 350 days and participate in Big Pay Day Pool token distribution"
-        matTooltipClass="question__tooltip"
-      ></div>
-    </div>
-    <table class="standard-table" cellpadding="0" cellspacing="0" border="0">
-      <thead>
-        <tr>
-          <ng-container *ngFor="let item of bpd">
-            <th *ngIf="item.show">{{ item.daysLeft }} Days left</th>
-          </ng-container>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <ng-container *ngFor="let item of bpd">
-            <td *ngIf="item.show">
-              {{ item.value | number }}
-              <span class="icon icon__axion-small icon-flex cl-red-light"
-                >AXN</span
-              >
-            </td>
-          </ng-container>
-        </tr>
-      </tbody>
-    </table>
+<section class="axn-section" *ngIf="depositsLists?.closed.length && tokensDecimals">
+  <div class="axn-form-block p-20">
+  <div class="axn-title-block axn-title-block-left">
+    <span class="axn-title">Deposit history</span>
   </div>
-
-  <div
-    class="content-block"
-    *ngIf="depositsLists?.opened.length && tokensDecimals"
-  >
-    <div class="content-block_title text-left">
-      <span>Opened deposits</span>
-    </div>
-    <table class="standard-table" cellpadding="0" cellspacing="0" border="0">
-      <thead>
-        <tr>
-          <th>Start date</th>
-          <th>End date</th>
-          <th>Progress</th>
-          <th>Principal</th>
-          <th>Shares</th>
-          <th>BigPayDay</th>
-          <th>Interest</th>
-          <th width="10">&nbsp;</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let deposit of depositsLists.opened">
-          <td>{{ deposit.start | date: "dd.MM.yyyy" }}</td>
-          <td>{{ deposit.end | date: "dd.MM.yyyy" }}</td>
-          <td>{{ getProgress(deposit) }}%</td>
-          <td>
-            {{
-              deposit.amount
-                | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
-            }}&nbsp;AXN
-          </td>
-          <td>
-            {{
-              deposit.shares
-                | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
-            }}
-          </td>
-          <td>
-            {{
-              deposit.bigPayDay
-                | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
-            }}&nbsp;AXN
-          </td>
-          <td>
-            {{
-              deposit.interest
-                | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
-            }}
-          </td>
-          <td class="action-button">
-            <button
-              class="btn btn__transparent"
-              (click)="depositWithdraw(deposit)"
-              [ngClass]="{ progress: deposit.withdrawProgress }"
-              [disabled]="deposit.withdrawProgress"
-            >
-              <span class="lds-ellipsis" *ngIf="deposit.withdrawProgress">
-                <span class="lds-ellipsis-container">
-                  <span></span><span></span><span></span><span></span>
-                </span>
-              </span>
-              <span>&nbsp;&nbsp;Withdraw&nbsp;&nbsp;</span>
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <table class="standard-table" cellpadding="0" cellspacing="0" border="0">
+    <thead>
+      <tr>
+        <th>Start date</th>
+        <th>End date</th>
+        <th>Principal</th>
+        <th>Shares</th>
+        <th>BigPayDay</th>
+        <th>Interest</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let deposit of depositsLists.closed">
+        <td>{{ deposit.start | date: "dd.MM.yyyy" }}</td>
+        <td>{{ deposit.end | date: "dd.MM.yyyy" }}</td>
+        <td>
+          {{
+            deposit.amount
+              | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
+          }}
+        </td>
+        <td>
+          {{
+            deposit.shares
+              | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
+          }}
+        </td>
+        <td>
+          {{
+            deposit.bigPayDay
+              | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
+          }}&nbsp;AXN
+        </td>
+        <td>
+          {{
+            deposit.interest
+              | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
+          }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
   </div>
-
-  <div
-    class="content-block"
-    *ngIf="depositsLists?.closed.length && tokensDecimals && account"
-  >
-    <div class="content-block_title text-left">
-      <span>Deposit history</span>
-    </div>
-    <table class="standard-table" cellpadding="0" cellspacing="0" border="0">
-      <thead>
-        <tr>
-          <th>Start date</th>
-          <th>End date</th>
-          <th>Principal</th>
-          <th>Shares</th>
-          <th>BigPayDay</th>
-          <th>Interest</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let deposit of depositsLists.closed">
-          <td>{{ deposit.start | date: "dd.MM.yyyy" }}</td>
-          <td>{{ deposit.end | date: "dd.MM.yyyy" }}</td>
-          <td>
-            {{
-              deposit.amount
-                | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
-            }}
-          </td>
-          <td>
-            {{
-              deposit.shares
-                | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
-            }}
-          </td>
-          <td>
-            {{
-              deposit.bigPayDay
-                | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
-            }}&nbsp;AXN
-          </td>
-          <td>
-            {{
-              deposit.interest
-                | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
-            }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
+</section>

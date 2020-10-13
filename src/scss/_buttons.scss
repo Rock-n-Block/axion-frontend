@@ -30,6 +30,10 @@
       transform: scale(0.96);
     }
 
+    &-max-width {
+      max-width: 100% !important;
+    }
+
     &-form {
       max-width: 270px;
       min-height: 50px;
@@ -190,6 +194,11 @@
     color: white;
     font-weight: 300;
     font-family: Roboto;
+    width: 100%;
+
+    &-mid {
+      font-size: 50px !important;
+    }
   }
 }
 

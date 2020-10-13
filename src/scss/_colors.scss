@@ -36,6 +36,14 @@
   &-gray {
     color: #ffffffa6 !important;
 
+    &-dark {
+      color: #71727491 !important;
+
+      &-bg {
+        background-color: #71727491 !important;
+      }
+    }
+
     &-bg {
       background-color: #ffffffa6 !important;
     }

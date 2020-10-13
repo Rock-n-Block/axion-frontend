@@ -255,7 +255,7 @@ body {
 }
 
 .question {
-  background: #7c52c1 url("./assets/images/styling/question.svg");
+  background: #717274 url("./assets/images/styling/question.svg");
   background-position: center center;
   background-repeat: no-repeat;
   border-radius: 50%;
@@ -266,7 +266,12 @@ body {
 
   &__tooltip {
     color: #fff !important;
-    background: #7c52c1 !important;
+    background: #717db8 !important;
+    box-shadow: -20px -20px 30px rgba(255, 255, 255, 0.5),
+      20px 20px 40px rgba(174, 174, 192, 0.25);
+    border-radius: 12px;
+    font-size: 14px !important;
+    line-height: 16px !important;
   }
 }
 
