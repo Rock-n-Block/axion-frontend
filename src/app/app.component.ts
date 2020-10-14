@@ -77,9 +77,11 @@ export class AppComponent implements OnInit {
     this.contractService
       .transactionsSubscribe()
       .subscribe((transaction: any) => {
+        console.log("transaction", transaction);
+
         if (transaction) {
           this.dialog.open(TransactionSuccessModalComponent, {
-            width: "400px",
+            width: "440px",
             data: transaction.hash,
           });
         }

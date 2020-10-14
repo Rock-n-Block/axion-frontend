@@ -152,12 +152,14 @@ a {
 }
 
 .p {
-  &-bdp {
-    padding: 0 30px 15px 30px;
-  }
-
   &-20 {
     padding: 20px !important;
+  }
+
+  &-r {
+    &-10 {
+      padding-right: 10px;
+    }
   }
 
   &-l {

@@ -43,6 +43,18 @@
     }
   }
 
+  &_share {
+    @include before-img(block, 17px, 17px, r) {
+      background-image: url("assets/images/icons/share-icon.svg");
+    }
+  }
+
+  &_copy {
+    @include before-img(block, 17px, 17px, r) {
+      background-image: url("assets/images/icons/copy-icon.svg");
+    }
+  }
+
   &_ok-1 {
     @include before-img(block, 10px, 10px, r) {
       background-image: url("assets/images/icons/ok-blue-icon.svg");

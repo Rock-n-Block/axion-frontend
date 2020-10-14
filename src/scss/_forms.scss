@@ -242,18 +242,20 @@
 
         &-value {
           font-size: 25px;
-          // margin-left: 5px;
+          margin-right: 5px;
+          margin-bottom: 5px;
 
           &-min {
             font-size: 20px;
             color: #717274;
+            margin-bottom: 5px;
             // opacity: 0.5;
           }
         }
 
         &-text {
           font-size: 16px;
-          margin-left: 5px;
+          // margin-left: 5px;
 
           &-min {
             font-size: 14px;
