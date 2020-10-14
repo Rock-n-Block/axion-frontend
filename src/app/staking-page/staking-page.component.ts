@@ -138,7 +138,7 @@ export class StakingPageComponent implements OnDestroy {
           this.getBPDInfo();
         }
       });
-    }, this.settingsData.settinngs.checkerBPD);
+    }, this.settingsData.settings.checkerBPD);
   }
 
   public depositList() {

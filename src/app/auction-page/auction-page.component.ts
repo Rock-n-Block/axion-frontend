@@ -1,4 +1,3 @@
-import { settings } from "./../../../.history/src/app/params_20201005164319";
 import {
   Component,
   EventEmitter,
