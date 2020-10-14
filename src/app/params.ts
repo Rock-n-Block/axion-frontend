@@ -1,9 +1,9 @@
 // ropsten
 
-// export const chackerDays = 3600000;
-// export const chackerAuctionPool = 15000;
-// export const chackerStakingInfo = 3600000;
-// export const chackerBPD = 3600000;
+// export const checkerDays = 3600000;
+// export const checkerAuctionPool = 15000;
+// export const checkerStakingInfo = 3600000;
+// export const checkerBPD = 3600000;
 
 // export const settingsData = {
 //   settings: {
@@ -30,10 +30,10 @@
 
 // rinkeby
 
-export const chackerDays = 5000;
-export const chackerAuctionPool = 5000;
-export const chackerStakingInfo = 3600000;
-export const chackerBPD = 3600000;
+export const checkerDays = 5000;
+export const checkerAuctionPool = 5000;
+export const checkerStakingInfo = 3600000;
+export const checkerBPD = 3600000;
 
 export const settingsData = {
   settings: {

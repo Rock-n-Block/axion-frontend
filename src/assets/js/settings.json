@@ -1,12 +1,17 @@
 {
   "settings": {
+    "checkerDays": 5000,
+    "checkerAuctionPool": 5000,
+    "checkerStakingInfo": 3600000,
+    "checkerBPD": 3600000,
+
     "production": false,
-    "network": "ropsten",
+    "network": "rinkeby",
     "tonkenUrl": "https://rinkeby.etherscan.io/token/",
-    "net": 3,
+    "net": 4,
     "time": {
-      "seconds": 86400,
-      "display": "days"
+      "seconds": 900,
+      "display": "minutes"
     }
   },
   "minutes": {

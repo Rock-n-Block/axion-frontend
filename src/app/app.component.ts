@@ -5,8 +5,7 @@ import { ContractService } from "./services/contract";
 import { MatDialog } from "@angular/material/dialog";
 import { ActivationStart, NavigationStart, Router } from "@angular/router";
 import { CookieService } from "ngx-cookie-service";
-import { settingsData } from "./params";
-// import { chackerDays } from "./params";
+import { AppConfig } from "./appconfig";
 
 @Component({
   selector: "app-root",
@@ -31,6 +30,7 @@ export class AppComponent implements OnInit {
     private ngZone: NgZone,
     public dialog: MatDialog,
     private cookieService: CookieService,
+    private config: AppConfig,
     route: Router
   ) {
     window["ethereum"].on("chainChanged", () => {
@@ -51,6 +51,7 @@ export class AppComponent implements OnInit {
         this.addToRopsten = Number(result) === 3;
       });
 
+    const settingsData = config.getConfig();
     this.chainNetwork = settingsData.settings.network;
 
     this.accountSubscribe = this.contractService

@@ -23,6 +23,7 @@ import { AngularFittextModule } from "angular-fittext";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { HttpClientModule } from "@angular/common/http";
 import { MatDialogModule, MatTooltipModule } from "@angular/material";
+import { AppConfig } from "./appconfig";
 
 export function initializeApp(injector: Injector) {
   return () =>
@@ -65,6 +66,7 @@ export function initializeApp(injector: Injector) {
     ClipboardModule,
   ],
   providers: [
+    AppConfig,
     {
       provide: APP_INITIALIZER,
       useFactory: initializeApp,

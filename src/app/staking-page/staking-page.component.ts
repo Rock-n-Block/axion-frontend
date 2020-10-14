@@ -7,7 +7,7 @@ import {
 } from "@angular/core";
 import { ContractService, stakingMaxDays } from "../services/contract";
 import BigNumber from "bignumber.js";
-import { chackerBPD, chackerStakingInfo } from "../params";
+import { AppConfig } from "../appconfig";
 
 interface StakingInfoInterface {
   ShareRate: number;
@@ -64,9 +64,12 @@ export class StakingPageComponent implements OnDestroy {
 
   public bpd: any = [];
 
+  private settingsData: any;
+
   constructor(
     private contractService: ContractService,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private config: AppConfig
   ) {
     this.accountSubscribe = this.contractService
       .accountSubscribe()
@@ -109,6 +112,7 @@ export class StakingPageComponent implements OnDestroy {
       });
 
     this.tokensDecimals = this.contractService.getCoinsDecimals();
+    this.settingsData = this.config.getConfig();
   }
 
   public getStakingInfo() {
@@ -122,7 +126,7 @@ export class StakingPageComponent implements OnDestroy {
             this.getStakingInfo();
           }
         });
-    }, chackerStakingInfo);
+    }, this.settingsData.settings.checkerStakingInfo);
   }
 
   public getBPDInfo() {
@@ -134,7 +138,7 @@ export class StakingPageComponent implements OnDestroy {
           this.getBPDInfo();
         }
       });
-    }, chackerBPD);
+    }, this.settingsData.settinngs.checkerBPD);
   }
 
   public depositList() {

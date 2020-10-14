@@ -2,7 +2,8 @@ import { Injectable } from "@angular/core";
 import Web3 from "web3";
 import { Observable } from "rxjs";
 import { WEB3_CONSTANTS } from "./constants";
-import { settingsData } from "../../params";
+// import { settingsData } from "../../params";
+import { AppConfig } from "src/app/appconfig";
 
 // const IS_PRODUCTION = location.protocol === "https:";
 
@@ -21,8 +22,10 @@ export class MetamaskService {
     testnet: "rinkeby",
   };
 
-  constructor() {
-    const settingsApp = settingsData;
+  constructor(private config: AppConfig) {
+    const settingsApp = config.getConfig();
+    console.log("web3", config.getConfig(), settingsApp);
+
     this.networks.testnet = settingsApp.settings.network;
 
     this.IS_PRODUCTION = settingsApp.settings.production;

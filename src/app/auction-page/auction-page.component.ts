@@ -1,3 +1,4 @@
+import { settings } from "./../../../.history/src/app/params_20201005164319";
 import {
   Component,
   EventEmitter,
@@ -10,7 +11,8 @@ import BigNumber from "bignumber.js";
 import * as moment from "moment";
 import { CookieService } from "ngx-cookie-service";
 import { AppComponent } from "../app.component";
-import { chackerAuctionPool } from "../params";
+import { AppConfig } from "../appconfig";
+
 import { ContractService } from "../services/contract";
 
 @Component({
@@ -66,11 +68,14 @@ export class AuctionPageComponent implements OnDestroy {
 
   public currentSort: any = {};
 
+  private settings: any;
+
   constructor(
     private contractService: ContractService,
     private cookieService: CookieService,
     private ngZone: NgZone,
-    private appComponent: AppComponent
+    private appComponent: AppComponent,
+    private config: AppConfig
   ) {
     this.referalAddress = this.cookieService.get("ref");
     // this.onChangeAmount();
@@ -104,6 +109,7 @@ export class AuctionPageComponent implements OnDestroy {
         }
       });
     this.tokensDecimals = this.contractService.getCoinsDecimals();
+    this.settings = config.getConfig();
   }
 
   ngOnDestroy() {
@@ -114,7 +120,6 @@ export class AuctionPageComponent implements OnDestroy {
   public scanDate(date) {
     const a1 = moment(new Date());
     const b1 = moment(date);
-    
 
     if (Number(a1.format("D")) === Number(b1.format("D"))) {
       a1.add(1, "day");
@@ -134,7 +139,6 @@ export class AuctionPageComponent implements OnDestroy {
     }
 
     this.setNewDayTimer();
-
 
     this.auctionTimer = moment
       .utc(
@@ -250,7 +254,7 @@ export class AuctionPageComponent implements OnDestroy {
           this.getAuctionPool();
         }
       });
-    }, chackerAuctionPool);
+    }, this.settings.settings.checkerAuctionPool);
   }
 
   public sendETHToAuction() {

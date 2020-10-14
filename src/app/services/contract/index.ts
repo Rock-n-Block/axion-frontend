@@ -5,7 +5,8 @@ import { Injectable } from "@angular/core";
 import BigNumber from "bignumber.js";
 import { HttpClient } from "@angular/common/http";
 import * as moment from "moment";
-import { settingsData } from "../../params";
+// import { settingsData } from "../../params";
+import { AppConfig } from "../../appconfig";
 
 export const stakingMaxDays = 5555;
 
@@ -47,6 +48,11 @@ export class ContractService {
   private allTransactionSubscribers = [];
   public settingsApp = {
     settings: {
+      checkerDays: 5000,
+      checkerAuctionPool: 5000,
+      checkerStakingInfo: 3600000,
+      checkerBPD: 3600000,
+
       production: false,
       network: "rinkeby",
       tonkenUrl: "https://rinkeby.etherscan.io/token/",
@@ -77,11 +83,9 @@ export class ContractService {
 
   public AxnTokenAddress = "none";
 
-  constructor(private httpService: HttpClient) {}
+  constructor(private httpService: HttpClient, private config: AppConfig) {}
 
   private initAll() {
-    this.settingsApp = settingsData;
-
     const promises = [
       this.httpService
         .get(`/assets/js/constants.json?v=${new Date().getTime()}`)
@@ -94,8 +98,22 @@ export class ContractService {
             ];
 
           this.CONTRACTS_PARAMS = CONTRACTS_PARAMS;
-          this.web3Service = new MetamaskService();
-          this.initializeContracts();
+        }),
+      this.httpService
+        .get(`/assets/js/settings.json?v=${new Date().getTime()}`)
+        .toPromise()
+        .then((config) => {
+          if (config) {
+            this.settingsApp = config as any;
+            this.config.setConfig(config);
+            console.log("init", config, this.settingsApp);
+          } else {
+            this.config.setConfig(this.settingsApp);
+          }
+        })
+        .catch((err) => {
+          console.log("err settings", err);
+          this.config.setConfig(this.settingsApp);
         }),
     ];
     return Promise.all(promises);
@@ -105,8 +123,9 @@ export class ContractService {
     this.web3Service.addToken({
       address: this.CONTRACTS_PARAMS.HEX2X.ADDRESS,
       decimals: this.tokensDecimals.HEX2X,
-      image: "https://axiondev.rocknblock.io/assets/images/icons/axion-icon.svg",
-      symbol: 'AXN'
+      image:
+        "https://axiondev.rocknblock.io/assets/images/icons/axion-icon.svg",
+      symbol: "AXN",
     });
   }
 
@@ -139,6 +158,8 @@ export class ContractService {
 
   public getStaticInfo() {
     return this.initAll().then(() => {
+      this.web3Service = new MetamaskService(this.config);
+      this.initializeContracts();
       const promises = [this.getTokensInfo(false)];
       return Promise.all(promises);
     });
@@ -925,7 +946,7 @@ export class ContractService {
     ];
 
     const results = await Promise.all(promises);
-    const values = ({} as any);
+    const values = {} as any;
 
     results.forEach((v) => {
       values[v.key] = v.value;
@@ -1174,7 +1195,7 @@ export class ContractService {
   }
 
   public getAuctionsData(auctionId: number, start: number) {
-    const setDate = (itemId: number, isRemove?:boolean) => {
+    const setDate = (itemId: number, isRemove?: boolean) => {
       if (isRemove) {
         return moment(
           moment(new Date())
@@ -1308,16 +1329,14 @@ export class ContractService {
           .auctionsOf_(this.account.address)
           .call()
           .then((result) => {
+            console.log("result", result);
 
-            console.log('result', result);
-            
             const auctionsPromises = result.map((id) => {
               return this.Auction.methods
                 .reservesOf(id)
                 .call()
                 .then((auctionData) => {
-
-                  console.log('auctionData', auctionData);
+                  console.log("auctionData", auctionData);
 
                   const auctionInfo = {
                     auctionId: id,
@@ -1337,23 +1356,20 @@ export class ContractService {
                     .auctionBetOf(id, this.account.address)
                     .call()
                     .then((accountBalance) => {
-
-                      console.log('accountBalance', accountBalance);
+                      console.log("accountBalance", accountBalance);
 
                       auctionInfo.start_date = new Date(
                         (+start +
-                          this.settingsApp.settings.time.seconds *
-                            Number(id)) *
+                          this.settingsApp.settings.time.seconds * Number(id)) *
                           1000
                       );
 
                       auctionInfo.eth_bet = new BigNumber(accountBalance.eth);
 
-                      const winnings = ((Number(
-                        auctionInfo.eth_bet.toString()
-                      ) /
-                        Number(auctionInfo.eth_pool)) *
-                        Number(auctionInfo.axn_pool));
+                      const winnings =
+                        (Number(auctionInfo.eth_bet.toString()) /
+                          Number(auctionInfo.eth_pool)) *
+                        Number(auctionInfo.axn_pool);
 
                       auctionInfo.winnings = isFinite(winnings)
                         ? new BigNumber(winnings)
@@ -1445,35 +1461,33 @@ export class ContractService {
 
   private getAccountSnapshot() {
     return new Promise((resolve) => {
-      return (
-        this.httpService
-          .get(`/api/v1/addresses/${this.account.address}/`)
-          .toPromise()
-          .then(
-            (result) => {
-              this.account.snapshot = result;
-              this.account.snapshot.user_dont_have_hex =
-                this.account.snapshot.hex_amount <= 0;
-              this.account.snapshot.show_hex = new BigNumber(
-                this.account.snapshot.hex_amount
-              )
-                .div(10000000000)
-                .toNumber();
-            },
-            () => {
-              this.account.snapshot = {
-                user_address: this.account.address,
-                user_dont_have_hex: true,
-                hex_amount: "0",
-                user_hash: "",
-                hash_signature: "",
-              };
-            }
-          )
-          .finally(() => {
-            resolve();
-          })
-      );
+      return this.httpService
+        .get(`/api/v1/addresses/${this.account.address}/`)
+        .toPromise()
+        .then(
+          (result) => {
+            this.account.snapshot = result;
+            this.account.snapshot.user_dont_have_hex =
+              this.account.snapshot.hex_amount <= 0;
+            this.account.snapshot.show_hex = new BigNumber(
+              this.account.snapshot.hex_amount
+            )
+              .div(10000000000)
+              .toNumber();
+          },
+          () => {
+            this.account.snapshot = {
+              user_address: this.account.address,
+              user_dont_have_hex: true,
+              hex_amount: "0",
+              user_hash: "",
+              hash_signature: "",
+            };
+          }
+        )
+        .finally(() => {
+          resolve();
+        });
     });
   }
 
