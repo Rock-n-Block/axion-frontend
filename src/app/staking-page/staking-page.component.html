@@ -110,7 +110,7 @@
           </div>
           <div class="axn-form-base-2">
             <div class="axn-form-block-shares">
-              <span class="axn-form-block-shares-value-min">623</span> <br>
+              <span class="axn-form-block-shares-value-min">{{ share || 0 }}</span> <br>
               <span class="axn-form-block-shares-text-min">Shares</span>
             </div>
             <div class="axn-form-block-shares">
@@ -124,7 +124,7 @@
         </div>
         <div class="axn-form-base p-b-15 axn-form-border-dashed-bottom">
           <div class="axn-form-block-shares p-l-10">
-            <span class="axn-form-block-shares-value cl-blue">{{ shareRate || 0 }}</span> <br>
+            <span class="axn-form-block-shares-value cl-blue">{{ startDay | date: "dd.MM.y" }}</span> <br>
             <span class="axn-form-block-shares-text-min">Start Day</span>
           </div>
           <div class="axn-form-block-shares">

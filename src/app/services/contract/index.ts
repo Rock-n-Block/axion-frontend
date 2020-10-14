@@ -1308,11 +1308,17 @@ export class ContractService {
           .auctionsOf_(this.account.address)
           .call()
           .then((result) => {
+
+            console.log('result', result);
+            
             const auctionsPromises = result.map((id) => {
               return this.Auction.methods
                 .reservesOf(id)
                 .call()
                 .then((auctionData) => {
+
+                  console.log('auctionData', auctionData);
+
                   const auctionInfo = {
                     auctionId: id,
                     start_date: new Date(),
@@ -1331,6 +1337,9 @@ export class ContractService {
                     .auctionBetOf(id, this.account.address)
                     .call()
                     .then((accountBalance) => {
+
+                      console.log('accountBalance', accountBalance);
+
                       auctionInfo.start_date = new Date(
                         (+start +
                           this.settingsApp.settings.time.seconds *

@@ -29,6 +29,8 @@ export class StakingPageComponent implements OnDestroy {
   private accountSubscribe;
   public shareRate: any;
   public stakeDays: any;
+  public startDay = new Date();
+  public share = 0;
   public onChangeAccount: EventEmitter<any> = new EventEmitter();
   public formsData: {
     depositAmount?: string;
@@ -208,6 +210,9 @@ export class StakingPageComponent implements OnDestroy {
       this.formsData.depositDays *
         this.contractService.settingsApp.settings.time.seconds *
         1000;
+
+    this.share = (Number(amount) / new BigNumber(this.stakingContractInfo.ShareRate).div(Math.pow(10, this.tokensDecimals.HEX2X))
+    .toNumber());
   }
 
   public getProgress(deposit) {

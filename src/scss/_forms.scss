@@ -5,6 +5,13 @@
     cursor: default;
     margin: 25px 0;
 
+    @for $i from 1 through 10 {
+      .axn-form-block:nth-child(#{10 - $i}) {
+        z-index: $i;
+        // background-color: lighten($base-color, $i * 5%);
+      }
+    }
+
     @include b(900) {
       grid-gap: 15px;
     }

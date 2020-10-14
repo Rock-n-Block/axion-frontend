@@ -72,7 +72,10 @@
       font-weight: 300;
 
       &:hover {
-        box-shadow: 0px -5px 10px #ffffff, -3px 8px 15px rgba(10, 17, 45, 0.1);
+        // box-shadow: 0px -5px 10px #ffffff, -3px 8px 15px rgba(10, 17, 45, 0.1);
+        box-shadow: 6px 6px 11px #d7dce2, -6px -6px 11px #fdffff,
+          inset 3px 3px 3px #d7dce2, inset -3px -3px 3px #fdffff;
+        color: #666;
       }
     }
 
