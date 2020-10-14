@@ -142,7 +142,7 @@
           <button
           *ngIf="referalLink != ''"
           class="axn-btn axn-btn-gray" 
-          style="max-width: 100px;"
+          style="max-width: 100px; margin-left: 10px;"
             ngxClipboard
             [cbContent]="referalLink"
             (cbOnSuccess)="onCopied()"
@@ -170,7 +170,7 @@
     <div class="axn-title-block axn-title-block-left">
       <span class="axn-title">My Bets</span>
     </div>
-    <span class="axn-text t-a-c t-t-u" *ngIf="!hasAuctionList">
+    <span class="axn-text t-a-c t-t-u axn-text-full-width" *ngIf="!hasAuctionList">
       You have no bets
     </span>
 

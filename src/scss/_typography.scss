@@ -74,6 +74,13 @@ a {
       }
     }
 
+    &-full-width {
+      width: 100%;
+      text-align: center;
+      display: block;
+      padding-bottom: 20px;
+    }
+
     &-input {
       font-size: 30px;
       text-align: center;
@@ -93,22 +100,22 @@ a {
       }
     }
 
-    &-copy {
-      color: #ffffff;
-      background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2));
-      font-size: 12px;
-      padding: 10px 15px;
-      margin-right: 10px;
-      border-radius: 5px;
-      width: 450px;
-      border: none;
+    // &-copy {
+    //   color: #ffffff;
+    //   background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2));
+    //   font-size: 12px;
+    //   padding: 10px 15px;
+    //   margin-right: 10px;
+    //   border-radius: 5px;
+    //   width: 450px;
+    //   border: none;
 
-      @include b(750) {
-        width: 90%;
-        text-align: center;
-        margin: 0;
-      }
-    }
+    //   @include b(750) {
+    //     width: 90%;
+    //     text-align: center;
+    //     margin: 0;
+    //   }
+    // }
 
     &-copied {
       font-size: 10px;
