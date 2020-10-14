@@ -218,13 +218,21 @@ export class StakingPageComponent implements OnDestroy {
         this.contractService.settingsApp.settings.time.seconds *
         1000;
 
-    this.share.full =
-      Number(amount) /
-      new BigNumber(this.stakingContractInfo.ShareRate)
-        .div(Math.pow(10, this.tokensDecimals.HEX2X))
-        .toNumber();
+    // this.share.full =
+    //   Number(amount) /
+    //   new BigNumber(this.stakingContractInfo.ShareRate)
+    //     .div(Math.pow(10, this.tokensDecimals.HEX2X))
+    //     .toNumber();
 
-    this.share.short = parseFloat(this.share.full.toFixed(4).toString());
+    const sharefull = new BigNumber(amount).div(
+      new BigNumber(this.stakingContractInfo.ShareRate).div(
+        Math.pow(10, this.tokensDecimals.HEX2X)
+      )
+    );
+
+    this.share.short = parseFloat(sharefull.toFixed(4).toString());
+
+    this.share.full = !isNaN(sharefull.toNumber()) ? sharefull : 0;
   }
 
   public getProgress(deposit) {

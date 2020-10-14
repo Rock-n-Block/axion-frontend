@@ -336,15 +336,31 @@ body {
 }
 
 .question {
-  background: #717274 url("./assets/images/styling/question.svg");
-  background-position: center center;
-  background-repeat: no-repeat;
   border-radius: 50%;
   width: 20px;
   height: 20px;
   display: inline-block;
   margin-left: 5px;
-  background-size: 7px;
+  background: #717274;
+  position: relative;
+
+  &:before {
+    content: "";
+    content: "";
+    background-image: url("./assets/images/styling/question.svg");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 8px;
+    width: 8px;
+    height: 11px;
+    display: block;
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
 
   &__tooltip {
     color: #fff !important;

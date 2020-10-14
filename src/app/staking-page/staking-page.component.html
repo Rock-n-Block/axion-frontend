@@ -133,7 +133,9 @@
                 class="axn-form-block-shares-value-min"
                 matTooltipClass="table__tooltip"
                 mat-raised-button
-                matTooltip="{{ share.full || 0 }}"
+                matTooltip="{{
+                  share.full | bigNumberFormat: 0:true:false:18 || 0
+                }}"
               >
                 {{ share.short || 0 }}
               </span>
