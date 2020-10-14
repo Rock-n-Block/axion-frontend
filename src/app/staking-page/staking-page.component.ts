@@ -28,6 +28,7 @@ export class StakingPageComponent implements OnDestroy {
   public depositMaxDays = stakingMaxDays;
   private accountSubscribe;
   public shareRate: any;
+  public hasBigPayDay = false;
   public stakeDays: any;
   public startDay = new Date();
   public share = 0;
@@ -97,7 +98,7 @@ export class StakingPageComponent implements OnDestroy {
 
               this.contractService.geBPDInfo().then((result) => {
                 this.bpd = result;
-                // console.log("BPD data", this.bpd);
+                console.log("BPD data", this.bpd);
                 this.tableInfo = result[4].show;
                 this.getBPDInfo();
                 this.bpdInfoChecker = true;
@@ -127,7 +128,6 @@ export class StakingPageComponent implements OnDestroy {
   public getBPDInfo() {
     setTimeout(() => {
       this.contractService.geBPDInfo().then((result) => {
-        // console.log("BPD data", result);
         this.bpd = result;
         this.tableInfo = result[4].show;
         if (this.bpdInfoChecker && this.account) {
