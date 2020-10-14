@@ -211,8 +211,11 @@ export class StakingPageComponent implements OnDestroy {
         this.contractService.settingsApp.settings.time.seconds *
         1000;
 
-    this.share = (Number(amount) / new BigNumber(this.stakingContractInfo.ShareRate).div(Math.pow(10, this.tokensDecimals.HEX2X))
-    .toNumber());
+    this.share =
+      Number(amount) /
+      new BigNumber(this.stakingContractInfo.ShareRate)
+        .div(Math.pow(10, this.tokensDecimals.HEX2X))
+        .toNumber();
   }
 
   public getProgress(deposit) {
