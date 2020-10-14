@@ -117,14 +117,24 @@
 }
 
 .table {
+  // &__tooltip {
+  //   color: #fff !important;
+  //   font-size: 16px !important;
+  //   background: black !important;
+  //   padding: 7px 15px !important;
+  //   border-radius: 10px !important;
+  //   font-style: normal !important;
+  //   font-weight: normal !important;
+  //   max-width: max-content !important;
+  // }
+
   &__tooltip {
     color: #fff !important;
-    font-size: 16px !important;
-    background: black !important;
-    padding: 7px 15px !important;
-    border-radius: 10px !important;
-    font-style: normal !important;
-    font-weight: normal !important;
-    max-width: max-content !important;
+    background: #717db8 !important;
+    box-shadow: none !important;
+    border-radius: 12px;
+    font-size: 14px !important;
+    line-height: 16px !important;
+    margin: 0 !important;
   }
 }

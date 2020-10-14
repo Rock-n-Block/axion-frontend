@@ -94,33 +94,63 @@
         <div class="axn-form-base-2 p-b-15 axn-form-border-dashed-bottom">
           <div class="axn-form-base-1 p-l-10">
             <div class="axn-form-block-shares">
-              <span class="axn-form-block-shares-value cl-blue">{{
-                shareRate || 0
-              }}</span>
+              <span
+                class="axn-form-block-shares-value cl-blue"
+                matTooltipClass="table__tooltip"
+                mat-raised-button
+                matTooltip="{{ shareRate | bigNumberFormat: 0:true:false:18 }}"
+              >
+                {{ shareRate | bigNumberFormat: 0:true:false:4 }}
+              </span>
               <br />
               <span class="axn-form-block-shares-text">Total Shares</span>
             </div>
             <div class="axn-form-block-shares">
-              <span class="axn-form-block-shares-value cl-blue">{{
-                stakingContractInfo.ShareRate
-                  | bigNumberFormat: tokensDecimals.HEX2X:true:false:4 || 0
-              }}</span>
+              <span
+                class="axn-form-block-shares-value cl-blue"
+                matTooltipClass="table__tooltip"
+                mat-raised-button
+                matTooltip="{{
+                  stakingContractInfo.ShareRate || 0
+                    | bigNumberFormat: tokensDecimals.HEX2X:true:false:4
+                }}"
+              >
+                {{
+                  stakingContractInfo.ShareRate || 0
+                    | bigNumberFormat: tokensDecimals.HEX2X:true:false:4
+                }}
+              </span>
               <span class="axn-form-block-shares-text">Share rate</span>
             </div>
           </div>
           <div class="axn-form-base-2">
             <div class="axn-form-block-shares p-r-10">
-              <span class="axn-form-block-shares-value-min">{{
-                share || 0
-              }}</span>
+              <span
+                class="axn-form-block-shares-value-min"
+                matTooltipClass="table__tooltip"
+                mat-raised-button
+                matTooltip="{{ share.full || 0 }}"
+              >
+                {{ share.short || 0 }}
+              </span>
               <br />
               <span class="axn-form-block-shares-text-min">Shares</span>
             </div>
             <div class="axn-form-block-shares">
-              <span class="axn-form-block-shares-value-min">{{
-                bonusLongerPays
-                  | bigNumberFormat: tokensDecimals.HEX2X:true:false:4
-              }}</span>
+              <span
+                class="axn-form-block-shares-value-min"
+                matTooltipClass="table__tooltip"
+                mat-raised-button
+                matTooltip="{{
+                  bonusLongerPays
+                    | bigNumberFormat: tokensDecimals.HEX2X:true:false:18
+                }}"
+              >
+                {{
+                  bonusLongerPays
+                    | bigNumberFormat: tokensDecimals.HEX2X:true:false:4
+                }}
+              </span>
               <br />
               <span class="axn-form-block-shares-text-min"
                 >Longer pays better</span
@@ -242,28 +272,64 @@
           <td>{{ deposit.end | date: "dd.MM.yyyy" }}</td>
           <td>{{ getProgress(deposit) }}%</td>
           <td>
-            {{
-              deposit.amount
-                | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
-            }}&nbsp;AXN
+            <span
+              matTooltipClass="table__tooltip"
+              mat-raised-button
+              matTooltip="{{
+                deposit.amount
+                  | bigNumberFormat: tokensDecimals['HEX2X']:true:false:18
+              }}"
+            >
+              {{
+                deposit.amount
+                  | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
+              }}&nbsp;AXN</span
+            >
           </td>
           <td>
-            {{
-              deposit.shares
-                | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
-            }}
+            <span
+              matTooltipClass="table__tooltip"
+              mat-raised-button
+              matTooltip="{{
+                deposit.shares
+                  | bigNumberFormat: tokensDecimals['HEX2X']:true:false:18
+              }}"
+            >
+              {{
+                deposit.shares
+                  | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
+              }}</span
+            >
           </td>
           <td>
-            {{
-              deposit.bigPayDay
-                | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
-            }}&nbsp;AXN
+            <span
+              matTooltipClass="table__tooltip"
+              mat-raised-button
+              matTooltip="{{
+                deposit.bigPayDay
+                  | bigNumberFormat: tokensDecimals['HEX2X']:true:false:18
+              }}"
+            >
+              {{
+                deposit.bigPayDay
+                  | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
+              }}&nbsp;AXN</span
+            >
           </td>
           <td>
-            {{
-              deposit.interest
-                | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
-            }}
+            <span
+              matTooltipClass="table__tooltip"
+              mat-raised-button
+              matTooltip="{{
+                deposit.interest
+                  | bigNumberFormat: tokensDecimals['HEX2X']:true:false:18
+              }}"
+            >
+              {{
+                deposit.interest
+                  | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
+              }}</span
+            >
           </td>
           <td class="action-button">
             <button
@@ -310,28 +376,64 @@
           <td>{{ deposit.start | date: "dd.MM.yyyy" }}</td>
           <td>{{ deposit.end | date: "dd.MM.yyyy" }}</td>
           <td>
-            {{
-              deposit.amount
-                | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
-            }}
+            <span
+              matTooltipClass="table__tooltip"
+              mat-raised-button
+              matTooltip="{{
+                deposit.amount
+                  | bigNumberFormat: tokensDecimals['HEX2X']:true:false:18
+              }}"
+            >
+              {{
+                deposit.amount
+                  | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
+              }}</span
+            >
           </td>
           <td>
-            {{
-              deposit.shares
-                | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
-            }}
+            <span
+              matTooltipClass="table__tooltip"
+              mat-raised-button
+              matTooltip="{{
+                deposit.shares
+                  | bigNumberFormat: tokensDecimals['HEX2X']:true:false:18
+              }}"
+            >
+              {{
+                deposit.shares
+                  | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
+              }}</span
+            >
           </td>
           <td>
-            {{
-              deposit.bigPayDay
-                | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
-            }}&nbsp;AXN
+            <span
+              matTooltipClass="table__tooltip"
+              mat-raised-button
+              matTooltip="{{
+                deposit.bigPayDay
+                  | bigNumberFormat: tokensDecimals['HEX2X']:true:false:18
+              }}"
+            >
+              {{
+                deposit.bigPayDay
+                  | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
+              }}&nbsp; AXN</span
+            >
           </td>
           <td>
-            {{
-              deposit.interest
-                | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
-            }}
+            <span
+              matTooltipClass="table__tooltip"
+              mat-raised-button
+              matTooltip="            {{
+                deposit.interest
+                  | bigNumberFormat: tokensDecimals['HEX2X']:true:false:18
+              }}"
+            >
+              {{
+                deposit.interest
+                  | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
+              }}</span
+            >
           </td>
         </tr>
       </tbody>

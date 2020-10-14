@@ -27,11 +27,11 @@ export class StakingPageComponent implements OnDestroy {
   public tokensDecimals;
   public depositMaxDays = stakingMaxDays;
   private accountSubscribe;
-  public shareRate: any;
+  public shareRate = 0;
   public hasBigPayDay = false;
   public stakeDays: any;
   public startDay = new Date();
-  public share = 0;
+  public share: any = {};
   public onChangeAccount: EventEmitter<any> = new EventEmitter();
   public formsData: {
     depositAmount?: string;
@@ -98,7 +98,7 @@ export class StakingPageComponent implements OnDestroy {
 
               this.contractService.geBPDInfo().then((result) => {
                 this.bpd = result;
-                console.log("BPD data", this.bpd);
+                // console.log("BPD data", this.bpd);
                 this.tableInfo = result[4].show;
                 this.getBPDInfo();
                 this.bpdInfoChecker = true;
@@ -197,13 +197,16 @@ export class StakingPageComponent implements OnDestroy {
       .div(divDecimals)
       .toString();
 
-    const rate = (
+    const rate =
       (Number(amount) *
         (1 + (this.formsData.depositDays - 1) / stakingMaxDays)) /
-      Number(stareRate)
-    ).toFixed(4);
+      Number(stareRate);
 
-    this.shareRate = parseFloat(rate.toString());
+    const shareRate = new BigNumber(rate);
+
+    this.shareRate = isNaN(shareRate.toNumber())
+      ? (new BigNumber(0) as any)
+      : (new BigNumber(rate) as any);
 
     this.stakeDays =
       Date.now() +
@@ -211,11 +214,13 @@ export class StakingPageComponent implements OnDestroy {
         this.contractService.settingsApp.settings.time.seconds *
         1000;
 
-    this.share =
+    this.share.full =
       Number(amount) /
       new BigNumber(this.stakingContractInfo.ShareRate)
         .div(Math.pow(10, this.tokensDecimals.HEX2X))
         .toNumber();
+
+    this.share.short = parseFloat(this.share.full.toFixed(4).toString());
   }
 
   public getProgress(deposit) {
