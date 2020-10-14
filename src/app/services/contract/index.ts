@@ -1029,6 +1029,7 @@ export class ContractService {
                           .getAmountOutAndPenalty(sessionId, res)
                           .call()
                           .then((resultInterest) => {
+                            console.log("resultInterest", resultInterest);
                             interest =
                               resultInterest[1].length < 40
                                 ? resultInterest[1]

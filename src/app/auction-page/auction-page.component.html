@@ -21,6 +21,8 @@
           required="required"
           class="axn-input"
           placeholder="0.0"
+          onfocus="this.placeholder = ''"
+          onblur="this.placeholder = '0.0'"
           [appBigNumber]="{
             decimals: tokensDecimals['ETH'],
             min: 1,
