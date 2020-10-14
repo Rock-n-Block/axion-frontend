@@ -1328,14 +1328,14 @@ export class ContractService {
           .auctionsOf_(this.account.address)
           .call()
           .then((result) => {
-            console.log("result", result);
+            console.log("auctionsOf_", result);
 
             const auctionsPromises = result.map((id) => {
               return this.Auction.methods
                 .reservesOf(id)
                 .call()
                 .then((auctionData) => {
-                  console.log("auctionData", auctionData);
+                  console.log("reservesOf", auctionData);
 
                   const auctionInfo = {
                     auctionId: id,
@@ -1355,7 +1355,7 @@ export class ContractService {
                     .auctionBetOf(id, this.account.address)
                     .call()
                     .then((accountBalance) => {
-                      console.log("accountBalance", accountBalance);
+                      console.log("auctionBetOf", accountBalance);
 
                       auctionInfo.start_date = new Date(
                         (+start +

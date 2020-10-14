@@ -248,7 +248,7 @@
       "ADDRESS": "0xc778417E063141139Fce010982780140Aa0cD5Ab"
     },
     "HEX2X": {
-      "ADDRESS": "0x97B5B6CaAddEd61a11a9E12d356e60BE86a5709d",
+      "ADDRESS": "0x94C35038da32fabCc2AC13016Ab67cE40f18D22B",
       "ABI": [
         {
           "inputs": [
@@ -905,7 +905,7 @@
       ]
     },
     "NativeSwap": {
-      "ADDRESS": "0x8B340D2d91722B2cC6C9787c587eFa9A8460c5E3",
+      "ADDRESS": "0x9F141acCCF6321A54313eC984dC059F0ceeC8baD",
       "ABI": [
         {
           "inputs": [],
@@ -1051,7 +1051,7 @@
       ]
     },
     "Staking": {
-      "ADDRESS": "0x623fafdeb49B88b984565B30dcD41303D0879Eb0",
+      "ADDRESS": "0x1BCeaa95900EDA17103b5b1956BA233a0Cf65f37",
       "ABI": [
         {
           "inputs": [],
@@ -1522,7 +1522,7 @@
       ]
     },
     "BPD": {
-      "ADDRESS": "0x8018494751c4Ddd9c208Ffe7cD0046CB3e119c7e",
+      "ADDRESS": "0x4374140C54cf6A81C60Fa45e08f1A8114B9842D0",
       "ABI": [
         {
           "inputs": [
@@ -1849,7 +1849,7 @@
       ]
     },
     "ForeignSwap": {
-      "ADDRESS": "0xbaf253901C4c2EE4dEbF8c36c3D1FC9338f2B80a",
+      "ADDRESS": "0x4d51320918213Bc860B6b7504CaaBf64d34BacF3",
       "ABI": [
         {
           "inputs": [
@@ -2303,7 +2303,7 @@
       ]
     },
     "SubBalance": {
-      "ADDRESS": "0xAdfC3B02FC3d2CA46Db890e0dd3489837Ac11f5E",
+      "ADDRESS": "0x4504ebDFDaca4853ea7C13a96019e5DCd3FB13b2",
       "ABI": [
         {
           "inputs": [
@@ -3509,12 +3509,68 @@
       ]
     },
     "Auction": {
-      "ADDRESS": "0x4E5Becf77845Bc45844B5B80A1A9256FfD1a925D",
+      "ADDRESS": "0x16F63CF61A18ae739855d9Df0D1C6d2acd5B47F2",
       "ABI": [
         {
           "inputs": [],
           "stateMutability": "nonpayable",
           "type": "constructor"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "eth",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "token",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "auctionId",
+              "type": "uint256"
+            }
+          ],
+          "name": "AuctionIsOver",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "auctionId",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "time",
+              "type": "uint256"
+            }
+          ],
+          "name": "Bet",
+          "type": "event"
         },
         {
           "anonymous": false,
@@ -3589,6 +3645,37 @@
             }
           ],
           "name": "RoleRevoked",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "auctionId",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "time",
+              "type": "uint256"
+            }
+          ],
+          "name": "Withdraval",
           "type": "event"
         },
         {
@@ -3749,6 +3836,24 @@
           "type": "function"
         },
         {
+          "inputs": [],
+          "name": "getUniswapLastPrice",
+          "outputs": [
+            { "internalType": "uint256", "name": "", "type": "uint256" }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "getUniswapMiddlePriceForSevenDays",
+          "outputs": [
+            { "internalType": "uint256", "name": "", "type": "uint256" }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
           "inputs": [
             { "internalType": "bytes32", "name": "role", "type": "bytes32" },
             { "internalType": "address", "name": "account", "type": "address" }
@@ -3809,6 +3914,11 @@
               "internalType": "address",
               "name": "_foreignSwap",
               "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_subbalances",
+              "type": "address"
             }
           ],
           "name": "init",
@@ -3825,9 +3935,29 @@
         },
         {
           "inputs": [],
+          "name": "lastAuctionEventId",
+          "outputs": [
+            { "internalType": "uint256", "name": "", "type": "uint256" }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
           "name": "mainToken",
           "outputs": [
             { "internalType": "address", "name": "", "type": "address" }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            { "internalType": "uint256", "name": "", "type": "uint256" }
+          ],
+          "name": "prices",
+          "outputs": [
+            { "internalType": "uint256", "name": "", "type": "uint256" }
           ],
           "stateMutability": "view",
           "type": "function"
@@ -3858,7 +3988,17 @@
           "name": "reservesOf",
           "outputs": [
             { "internalType": "uint256", "name": "eth", "type": "uint256" },
-            { "internalType": "uint256", "name": "token", "type": "uint256" }
+            { "internalType": "uint256", "name": "token", "type": "uint256" },
+            {
+              "internalType": "uint256",
+              "name": "uniswapLastPrice",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "uniswapMiddlePrice",
+              "type": "uint256"
+            }
           ],
           "stateMutability": "view",
           "type": "function"
