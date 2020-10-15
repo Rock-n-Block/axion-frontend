@@ -1,73 +1,75 @@
+@import "./variables.scss";
+
 .cl {
   &-aqua {
-    color: #37c8b4 !important;
+    color: $clGreen !important;
 
     &-bg {
-      background-color: #37c8b4 !important;
+      background-color: $clGreen !important;
     }
   }
 
   &-white {
-    color: white !important;
+    color: $clWhite !important;
 
     &-bg {
-      background-color: white !important;
+      background-color: $clWhite !important;
     }
   }
 
   &-green {
-    color: #37c8b4 !important;
+    color: $clGreen !important;
 
     &-bg {
-      background-color: #37c8b4 !important;
+      background-color: $clGreen !important;
     }
   }
 
   &-purple {
-    color: #8670fa !important;
+    color: $clPurple !important;
 
     &-bg {
-      background-color: #8670fa !important;
+      background-color: $clPurple !important;
     }
   }
 
   &-red {
     &-light {
-      color: #cf7575 !important;
+      color: $clRegLight !important;
 
       &-bg {
-        background-color: #cf7575 !important;
+        background-color: $clRegLight !important;
       }
     }
   }
 
   &-gray {
-    color: #ffffffa6 !important;
+    color: $clGray !important;
 
     &-dark {
-      color: #71727491 !important;
+      color: $clGrayDark !important;
 
       &-bg {
-        background-color: #71727491 !important;
+        background-color: $clGrayDark !important;
       }
     }
 
     &-bg {
-      background-color: #ffffffa6 !important;
+      background-color: $clGray !important;
     }
   }
 
   &-blue {
-    color: #4d588e !important;
+    color: $clBlue !important;
 
     &-bg {
-      background-color: #4d588e !important;
+      background-color: $clBlue !important;
     }
   }
 
   &-gradient {
     &-bg {
-      background: linear-gradient(90deg, #efb321 0%, #ed18cc 100%);
+      background: $clGradient-Background;
     }
   }
 }

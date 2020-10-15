@@ -1,3 +1,5 @@
+@import "./variables.scss";
+
 .cdk-global-overlay-wrapper,
 .cdk-overlay-container {
   pointer-events: none;
@@ -28,7 +30,7 @@
   opacity: 0;
 }
 .cdk-overlay-dark-backdrop {
-  background: rgba(0, 0, 0, 0.35);
+  background: $clDialog-Overlay-Dark-Backfrop;
 }
 .cdk-overlay-backdrop.cdk-overlay-backdrop-showing {
   opacity: 1;
@@ -46,8 +48,8 @@
 .mat-dialog-container {
   padding: 0 !important;
   overflow: hidden !important;
-  color: #717274;
-  background-color: #eaeff6;
+  color: $clDialog-Mat-Container;
+  background-color: $clDialog-Mat-Container-Background;
   border-radius: 20px !important;
 }
 
@@ -66,7 +68,7 @@
 
 .dialog-block {
   cursor: default;
-  color: #717274;
+  color: $clDialog-Block;
   &__content {
     padding: 30px 20px;
   }
@@ -129,7 +131,7 @@
   align-items: center;
   padding: 20px 10px;
   margin: 0 -20px -30px -20px;
-  background-color: rgba(0, 0, 0, 0.04);
+  background-color: $clDialog-Bottom-Background;
 
   .axn-btn {
     max-width: 200px;

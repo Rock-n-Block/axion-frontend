@@ -22,15 +22,15 @@ body {
 body {
   padding-top: 70px;
   margin: 0;
-  background: $bgColor;
+  background: $clBody-Background;
   font-family: "Roboto", sans-serif;
-  color: #7b7d80;
+  color: $clBody-Text;
   padding-bottom: 50px;
   overflow-y: scroll;
 
   &:-webkit-scrollbar {
     width: 12px;
-    background-color: #4d2696;
+    background-color: $clPurple;
     opacity: 0;
   }
 
@@ -98,13 +98,13 @@ body {
 
   @include b(990) {
     padding: 12px 0;
-    background-color: $bgColor;
+    background-color: $clHeader-Background;
   }
 
   &.active {
     padding: 3px 0;
-    background-color: $bgColor;
-    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.09);
+    background-color: $clHeader-Active-Background;
+    box-shadow: $clHeader-Active-Shadow;
 
     .header-logo {
       width: 140px;
@@ -114,21 +114,21 @@ body {
   &-navbar {
     z-index: -1;
     opacity: 0;
-    background-color: #4b29a1;
+    background-color: $clNavbar-Background;
     overflow: hidden;
     height: 0;
 
     @include b(990) {
       width: 100vw;
       position: absolute;
-      background: #4b29a1;
+      background: $clNavbar-Background;
     }
 
     &.active {
       @include b(990) {
         width: 100vw;
         position: fixed;
-        background-color: $bgColor;
+        background-color: $clNavbar-Active-Background;
         height: 100vh;
         z-index: -1;
         top: 0;
@@ -159,7 +159,7 @@ body {
         @include b(990) {
           font-size: 28px;
           line-height: 107.2%;
-          color: #717274;
+          color: $clNavbar-Item-Text;
           text-decoration: none;
         }
       }
@@ -198,14 +198,14 @@ body {
     }
 
     &_item {
-      color: #fff;
+      color: $clHeader-Menu-Item-Text;
       margin: 0;
       padding: 0;
 
       a {
         display: inline-block;
         vertical-align: middle;
-        color: #717274;
+        color: $clHeader-Menu-Item-Text-Link;
         font-size: 16px;
         text-align: center;
         padding: 5px 10px;
@@ -221,15 +221,13 @@ body {
           height: 1px;
           bottom: 0px;
           left: 0;
-          background-color: #717274;
+          background-color: $clHeader-Menu-Item-Text-Link-Background;
           visibility: hidden;
           transform: scaleX(0);
           transition: all 0.2s ease-in-out 0s;
         }
 
         &:hover {
-          // opacity: 0.7;
-
           &:before {
             visibility: visible;
             transform: scaleX(0.8);
@@ -237,7 +235,6 @@ body {
         }
 
         &.active-link {
-          // border-bottom: 1px solid #717274;
           font-weight: bold;
           cursor: default;
           transition: 0.4s ease;
@@ -252,7 +249,7 @@ body {
 }
 
 .left-days-info {
-  background: linear-gradient(0deg, #efd444, #efd444);
+  background: $clLeftDays-Background;
   border-radius: 33px;
   padding: 8px 0;
   color: #000;
@@ -275,44 +272,20 @@ body {
 
   &:after {
     left: 0;
-    background: -moz-linear-gradient(
-      left,
-      rgba(239, 212, 68, 1) 0%,
-      rgba(239, 212, 68, 0) 100%
-    );
-    background: -webkit-linear-gradient(
-      left,
-      rgba(239, 212, 68, 1) 0%,
-      rgba(239, 212, 68, 0) 100%
-    );
-    background: linear-gradient(
-      to right,
-      rgba(239, 212, 68, 1) 0%,
-      rgba(239, 212, 68, 0) 100%
-    );
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#efd444', endColorstr='#00efd444',GradientType=1 );
+    background: $clLeftDays-After-Background;
+    background: $clLeftDays-After-Background-1;
+    background: $clLeftDays-After-Background-2;
+    filter: $clLeftDays-After-Filter;
     border-bottom-left-radius: 33px;
     border-top-left-radius: 33px;
   }
 
   &:before {
     right: 0;
-    background: -moz-linear-gradient(
-      left,
-      rgba(239, 212, 68, 0) 0%,
-      rgba(239, 212, 68, 1) 100%
-    );
-    background: -webkit-linear-gradient(
-      left,
-      rgba(239, 212, 68, 0) 0%,
-      rgba(239, 212, 68, 1) 100%
-    );
-    background: linear-gradient(
-      to right,
-      rgba(239, 212, 68, 0) 0%,
-      rgba(239, 212, 68, 1) 100%
-    );
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00efd444', endColorstr='#efd444',GradientType=1 );
+    background: $clLeftDays-Before-Background;
+    background: $clLeftDays-Before-Background-1;
+    background: $clLeftDays-Before-Background-2;
+    filter: $clLeftDays-Before-Filter;
     border-bottom-right-radius: 33px;
     border-top-right-radius: 33px;
   }
@@ -341,7 +314,7 @@ body {
   height: 20px;
   display: inline-block;
   margin-left: 5px;
-  background: #717274;
+  background: $clQuestion-Background;
   position: relative;
 
   &:before {
@@ -363,10 +336,9 @@ body {
   }
 
   &__tooltip {
-    color: #fff !important;
-    background: #717db8 !important;
-    box-shadow: -20px -20px 30px rgba(255, 255, 255, 0.5),
-      20px 20px 40px rgba(174, 174, 192, 0.25);
+    color: $clQuestion-Tooltip-Text !important;
+    background: $clQuestion-Tooltip-Background !important;
+    box-shadow: $clQuestion-Tooltip-Shadow;
     border-radius: 12px;
     font-size: 14px !important;
     line-height: 16px !important;
@@ -412,16 +384,12 @@ body {
     span {
       position: absolute;
       top: 50%;
-      background: #7b7d80;
+      background: $clEllips-Container-Background;
       animation-timing-function: cubic-bezier(0, 1, 1, 0);
       margin-top: -5px;
       width: 8px;
       height: 8px;
       border-radius: 100%;
-
-      .btn__transparent & {
-        background: #37c8b4;
-      }
 
       &:nth-child(1) {
         left: 6px;

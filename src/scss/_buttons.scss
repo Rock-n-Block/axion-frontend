@@ -1,3 +1,5 @@
+@import "./variables.scss";
+
 .axn {
   &-btn {
     display: flex;
@@ -55,27 +57,25 @@
     &-max {
       text-transform: uppercase;
       font-size: 14px;
-      border: 1px solid #717274;
+      border: $clButton-Max-Border;
       max-width: 88px;
       border-radius: 15px;
       padding: 8px 13px;
       font-size: 12px;
       line-height: 1;
-      color: #717274;
+      color: $clButton-Max-Text;
     }
 
     &-gray {
-      color: #717274;
-      background-color: #eaeff6;
-      box-shadow: -5px -5px 10px #ffffff, 8px 8px 15px rgba(10, 17, 45, 0.1);
+      color: $clButton-Gray-Text;
+      background-color: $clButton-Gray-Background;
+      box-shadow: $clButton-Gray-Shadow;
       font-size: 13px;
       font-weight: 300;
 
       &:hover {
-        // box-shadow: 0px -5px 10px #ffffff, -3px 8px 15px rgba(10, 17, 45, 0.1);
-        box-shadow: 6px 6px 11px #d7dce2, -6px -6px 11px #fdffff,
-          inset 3px 3px 3px #d7dce2, inset -3px -3px 3px #fdffff;
-        color: #666;
+        box-shadow: $clButton-Gray-Hover-Shadow;
+        color: $clButton-Gray-Hover-Text;
       }
     }
 
@@ -87,7 +87,7 @@
       &:before {
         border-radius: 15px !important;
         padding: 7px;
-        background-color: rgba(255, 255, 255, 0.5);
+        background-color: $clButton-Metamask-Before-Background;
       }
 
       &-block {
@@ -104,7 +104,7 @@
         display: inline-block;
         vertical-align: middle;
         word-break: initial;
-        color: #717274;
+        color: $clButton-Metamask-Text;
         text-transform: uppercase;
       }
     }
@@ -117,25 +117,25 @@
       align-items: center;
     }
 
-    &-green {
-      background-color: #37c8b4;
-      padding: 15px;
-      max-width: 250px;
-      width: 100%;
-      margin: 0 auto;
-      border: none;
-      color: white;
-    }
+    // &-green {
+    //   background-color: $clGreen;
+    //   padding: 15px;
+    //   max-width: 250px;
+    //   width: 100%;
+    //   margin: 0 auto;
+    //   border: none;
+    //   color: $clWhite;
+    // }
 
-    &-green-border {
-      border: 1px solid #37c8b4;
-      background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2));
-      padding: 15px;
-      max-width: 250px;
-      width: 100%;
-      margin: 0 auto;
-      color: white;
-    }
+    // &-green-border {
+    //   border: 1px solid $clGreen;
+    //   background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2));
+    //   padding: 15px;
+    //   max-width: 250px;
+    //   width: 100%;
+    //   margin: 0 auto;
+    //   color: $clWhite;
+    // }
 
     &-arrow {
       &-left {
@@ -160,23 +160,23 @@
     }
 
     &-purple {
-      background: linear-gradient(0deg, #8670fa, #8670fa);
+      background: $clButton-Purple-Background;
       border-radius: 4px;
       font-weight: bold;
       font-size: 14px;
       line-height: 16px;
-      color: white;
+      color: $clButton-Purple-Text;
     }
 
     &-copy {
-      background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2));
+      background: $clButton-Copy-Background;
       border-radius: 6px;
       font-size: 16px;
       text-align: center;
       padding: 10px 15px;
-      color: white;
+      color: $clButton-Copy-Text;
       cursor: pointer;
-      border: 1px solid #37c8b4;
+      border: $clButton-Copy-Border;
 
       @include b(750) {
         max-width: 100%;
@@ -194,7 +194,7 @@
     box-shadow: none;
     outline: none;
     border: none;
-    color: white;
+    color: $clButton-Input-Text;
     font-weight: 300;
     font-family: Roboto;
     width: 100%;

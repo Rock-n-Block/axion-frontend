@@ -1,3 +1,5 @@
+@import "./variables.scss";
+
 .axn {
   &-form {
     display: grid;
@@ -8,7 +10,6 @@
     @for $i from 1 through 10 {
       .axn-form-block:nth-child(#{10 - $i}) {
         z-index: $i;
-        // background-color: lighten($base-color, $i * 5%);
       }
     }
 
@@ -19,10 +20,10 @@
     &-border {
       &-dashed {
         &-right {
-          border-right: 1px dashed rgba(113, 114, 116, 0.5);
+          border-right: $clForm-Border;
         }
         &-bottom {
-          border-bottom: 1px dashed rgba(113, 114, 116, 0.5);
+          border-bottom: $clForm-Border;
         }
       }
     }
@@ -116,7 +117,7 @@
     }
 
     &-accent {
-      background-color: #e7ecf2 !important;
+      background-color: $clForm-Accent-Background !important;
     }
 
     &-transparent {
@@ -127,7 +128,7 @@
     input {
       font-size: 18px;
       font-weight: 300;
-      color: #717274;
+      color: $clForm-Input;
       padding: 5px 0;
     }
 
@@ -140,7 +141,7 @@
         width: 40px;
         height: 40px;
         border-radius: 5em;
-        background-color: #4e598f;
+        background-color: $clForm-Arrow-Background;
         background-image: url("assets/images/base/arrow-white.svg");
         background-repeat: no-repeat;
         background-position: center;
@@ -159,9 +160,8 @@
     }
 
     &-block {
-      background-color: #e7eaef;
-      box-shadow: -20px -20px 30px rgba(255, 255, 255, 0.5),
-        20px 20px 40px rgba(174, 174, 192, 0.25);
+      background-color: $clForm-Block-Background;
+      box-shadow: $clForm-Block-Shadow;
       border-radius: 12px;
       padding: 20px 5px;
 
@@ -183,7 +183,7 @@
 
         input {
           font-size: 16px !important;
-          color: #717274 !important;
+          color: $clForm-Block-Input !important;
           width: 60%;
         }
 
@@ -247,20 +247,17 @@
 
           &-min {
             font-size: 20px;
-            color: #717274;
+            color: $clForm-Shares;
             margin-bottom: 5px;
-            // opacity: 0.5;
           }
         }
 
         &-text {
           font-size: 16px;
-          // margin-left: 5px;
 
           &-min {
             font-size: 14px;
-            color: #717274;
-            // opacity: 0.5;
+            color: $clForm-Shares;
             margin-top: 5px;
           }
         }
@@ -280,7 +277,7 @@
           display: flex;
           flex-direction: column;
           font-size: 14px;
-          color: rgba(113, 114, 116, 0.5);
+          color: $clForm-Sendmax;
           margin-top: 5px;
 
           @include b(900) {
@@ -301,7 +298,7 @@
         display: grid;
         grid-template-columns: 1fr;
         grid-gap: 15px;
-        color: #717274;
+        color: $clForm-Block-One;
         text-transform: uppercase;
         text-align: center;
         padding: 10px 0 20px 0;
@@ -317,7 +314,7 @@
         }
 
         &-title {
-          color: #717274;
+          color: $clForm-Block-One-Title;
           font-size: 14px;
         }
 

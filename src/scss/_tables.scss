@@ -1,3 +1,5 @@
+@import "./variables.scss";
+
 .standard-table {
   text-align: center;
   width: 100%;
@@ -10,7 +12,7 @@
   }
 
   thead {
-    color: #717274;
+    color: $clTable-Thead;
     font-size: 16px;
     line-height: 100%;
 
@@ -27,7 +29,7 @@
         }
       }
       &.active {
-        color: #37c8b4;
+        color: $clTable-Thead-Active;
         .sort-indicator {
           visibility: visible;
         }
@@ -47,7 +49,7 @@
         width: 16px;
         height: 16px;
         border-radius: 4px;
-        background-color: #37c8b4;
+        background-color: $clTable-Thead-Sort;
         margin-left: 6px;
         text-align: center;
         line-height: 16px;
@@ -59,7 +61,7 @@
           height: 4px;
           border-width: 0 2px 2px 0;
           border-style: solid;
-          border-color: #fff;
+          border-color: $clTable-Thead-Sort-Before;
           transform: rotate(45deg);
           vertical-align: middle;
           position: relative;
@@ -73,10 +75,10 @@
       padding: 24px 10px;
       font-size: 18px;
       line-height: 21px;
-      color: #717274;
+      color: $clTable-Tbody-Td-Text;
       white-space: nowrap;
       text-align: center;
-      background: #ffffff7a;
+      background: $clTable-Tbody-Td-Background;
       font-weight: 300;
 
       @include b(900) {
@@ -109,7 +111,7 @@
           margin-top: -11px;
           height: 22px;
           width: 1px;
-          background-color: rgba(255, 255, 255, 0.1);
+          background-color: $clTable-Tbody-Td-Action-Button-Before-Background;
         }
       }
     }
@@ -117,20 +119,9 @@
 }
 
 .table {
-  // &__tooltip {
-  //   color: #fff !important;
-  //   font-size: 16px !important;
-  //   background: black !important;
-  //   padding: 7px 15px !important;
-  //   border-radius: 10px !important;
-  //   font-style: normal !important;
-  //   font-weight: normal !important;
-  //   max-width: max-content !important;
-  // }
-
   &__tooltip {
-    color: #fff !important;
-    background: #717db8 !important;
+    color: $clTooltip-Text !important;
+    background: $clTooltip-Background !important;
     box-shadow: none !important;
     border-radius: 12px;
     font-size: 14px !important;

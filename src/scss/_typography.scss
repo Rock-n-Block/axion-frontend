@@ -1,3 +1,5 @@
+@import "./variables.scss";
+
 p,
 span,
 a {
@@ -7,7 +9,7 @@ a {
 .axn {
   &-link {
     text-decoration: none;
-    color: #8670fa;
+    color: $clLink;
     transition: 0.4s ease;
 
     &:hover {
@@ -20,7 +22,7 @@ a {
     font-style: normal;
     font-weight: 300;
     font-size: 28px;
-    color: #717274;
+    color: $clTitle;
 
     &-block {
       text-align: center;
@@ -57,7 +59,7 @@ a {
   }
 
   &-text {
-    color: #717274;
+    color: $clText;
     font-size: 16px;
     font-weight: normal;
 
@@ -84,7 +86,7 @@ a {
     &-input {
       font-size: 30px;
       text-align: center;
-      color: white;
+      color: $clText-Input;
       font-weight: 300;
       line-height: 1.5;
       padding: 5px 0;
@@ -99,23 +101,6 @@ a {
         padding: 3px 0;
       }
     }
-
-    // &-copy {
-    //   color: #ffffff;
-    //   background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2));
-    //   font-size: 12px;
-    //   padding: 10px 15px;
-    //   margin-right: 10px;
-    //   border-radius: 5px;
-    //   width: 450px;
-    //   border: none;
-
-    //   @include b(750) {
-    //     width: 90%;
-    //     text-align: center;
-    //     margin: 0;
-    //   }
-    // }
 
     &-copied {
       font-size: 10px;
@@ -138,8 +123,8 @@ a {
     font-size: 15px;
     line-height: 1;
     padding: 6px;
-    color: white;
-    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+    color: $clCheap-Text;
+    box-shadow: $clCheap-Shadow;
     height: 18px;
 
     &:before {

@@ -1,3 +1,4 @@
+import { async } from "@angular/core/testing";
 import { MetamaskService } from "../web3";
 import { Contract } from "web3-eth-contract";
 import { Observable } from "rxjs";
@@ -1354,7 +1355,7 @@ export class ContractService {
                   return this.Auction.methods
                     .auctionBetOf(id, this.account.address)
                     .call()
-                    .then((accountBalance) => {
+                    .then(async (accountBalance) => {
                       console.log("auctionBetOf", accountBalance);
 
                       auctionInfo.start_date = new Date(
@@ -1362,8 +1363,72 @@ export class ContractService {
                           this.settingsApp.settings.time.seconds * Number(id)) *
                           1000
                       );
+                      // tokensDecimals["HEX2X"]
 
                       auctionInfo.eth_bet = new BigNumber(accountBalance.eth);
+
+                      const winnings1 = new BigNumber(accountBalance.eth)
+                        .multipliedBy(
+                          new BigNumber(auctionData.token).div(
+                            new BigNumber(auctionData.eth)
+                          )
+                        )
+                        .div(new BigNumber(10).pow(this.tokensDecimals.HEX2X));
+
+                      const firstValue = new BigNumber(auctionData.token).div(
+                        auctionData.eth
+                      );
+
+                      const uniPercent = await this.Auction.methods
+                        .uniswapPercent()
+                        .call()
+                        .then((res) => {
+                          console.log("uni %", res);
+                          return res;
+                        });
+
+                      // const uniPriceWithPercent =
+                      //   Number(auctionData.uniswapMiddlePrice) *
+                      //   (1 - uniPercent / 100);
+
+                      const secondValue = new BigNumber(
+                        auctionData.uniswapMiddlePrice
+                      )
+                        .multipliedBy(1 - uniPercent / 100)
+                        .div(new BigNumber(10).pow(this.tokensDecimals.HEX2X));
+
+                      const uniswap = new BigNumber(
+                        auctionData.uniswapMiddlePrice
+                      ).div(new BigNumber(10).pow(this.tokensDecimals.HEX2X));
+
+                      // secondValue = new BigNumber(secondValue)
+                      //   .div(new BigNumber(10).pow(this.tokensDecimals.HEX2X))
+                      //   .toNumber();
+
+                      // new BigNumber(accountBalance.eth).div(
+                      //   auctionData.uniswapMiddlePrice
+                      // );
+                      // .div(new BigNumber(10).pow(this.tokensDecimals.HEX2X));
+
+                      // new BigNumber(
+                      //   auctionData.uniswapMiddlePrice
+                      // ).toNumber();
+                      // .multipliedBy(uniPercent)
+                      // .div(new BigNumber(10).pow(this.tokensDecimals.HEX2X));
+
+                      console.log(
+                        "axn pool/eth pool - ",
+                        firstValue.toNumber()
+                      );
+                      console.log("uniswap - 20% - ", secondValue.toNumber());
+                      console.log("uniswap - ", uniswap.toNumber());
+                      console.log(
+                        "mey bet / uniswap - ",
+                        1 / uniswap.toNumber()
+                      );
+                      // console.log("2 - ", secondValue);
+
+                      console.log("winnings1", winnings1.toNumber());
 
                       const winnings =
                         (Number(auctionInfo.eth_bet.toString()) /
