@@ -1,7 +1,11 @@
 <header class="header" [ngClass]="{ active: isHeaderActive }">
   <div class="axn">
     <div class="header-content">
-      <img class="header-logo" src="./assets/images/base/axion-logo-full.svg" alt="axion logo" />
+      <img
+        class="header-logo"
+        src="./assets/images/base/axion-logo-full.svg"
+        alt="axion logo"
+      />
       <ul class="header-menu">
         <li *ngIf="leftDaysInfoShow" class="header-menu_item">
           <a routerLink="claim" routerLinkActive="active-link">Claim</a>
@@ -11,6 +15,14 @@
         </li>
         <li class="header-menu_item">
           <a routerLink="staking" routerLinkActive="active-link">Staking</a>
+        </li>
+        <li class="header-menu_item">
+          <div class="icon icon-flex icon_switch-theme">
+            <label class="switch">
+              <input class="switch-input" type="checkbox" />
+              <span class="slider round"></span>
+            </label>
+          </div>
         </li>
         <li class="header-menu_item" *ngIf="addToRopsten">
           <span
@@ -74,24 +86,22 @@
         >
       </div>
       <div class="header-navbar-item" *ngIf="addToRopsten">
-        <span
-        class="axn-btn axn-btn-gray"
-        (click)="addToken()"
-        >Add to MetaMask</span
-      >
+        <span class="axn-btn axn-btn-gray" (click)="addToken()"
+          >Add to MetaMask</span
+        >
       </div>
       <div class="header-navbar-item">
         <button
-            class="icon icon-flex icon_metamask axn-btn-metamask"
-            (click)="subscribeAccount()"
-            [ngClass]="{ 'no-clickable': !!account }"
-          >
-            <div class="axn-btn-metamask-block">
-              <span class="axn-btn-metamask-text">{{
-                account ? account.address : "MetaMask"
-              }}</span>
-            </div>
-          </button>
+          class="icon icon-flex icon_metamask axn-btn-metamask"
+          (click)="subscribeAccount()"
+          [ngClass]="{ 'no-clickable': !!account }"
+        >
+          <div class="axn-btn-metamask-block">
+            <span class="axn-btn-metamask-text">{{
+              account ? account.address : "MetaMask"
+            }}</span>
+          </div>
+        </button>
       </div>
     </div>
   </div>
@@ -130,11 +140,11 @@
 
   <section class="axn-section" *ngIf="!account">
     <div class="axn-container t-a-c">
-        <span class="axn-text">Enter by Metamask</span>
-          <div class="axn-form-block axn-form-transparent">
-            <div class="axn-form-block-button">
+      <span class="axn-text">Enter by Metamask</span>
+      <div class="axn-form-block axn-form-transparent">
+        <div class="axn-form-block-button">
           <button
-          class="axn-btn axn-btn-gray axn-btn-form"
+            class="axn-btn axn-btn-gray axn-btn-form"
             (click)="subscribeAccount()"
             [ngClass]="{ 'no-clickable': !!account }"
             [disabled]="!!account"
@@ -143,10 +153,8 @@
               account ? account.address : "MetaMask"
             }}</span>
           </button>
-      </div>
+        </div>
       </div>
     </div>
   </section>
-
-  
 </div>

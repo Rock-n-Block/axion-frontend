@@ -75,6 +75,12 @@
     }
   }
 
+  &_switch-theme {
+    @include before-img(block, 16px, 16px, r) {
+      background-image: $imgSwitch-Theme;
+    }
+  }
+
   &__axion-small {
     @include before-img(block, 18px, 16px, r) {
       background-size: cover;
@@ -86,7 +92,7 @@
     padding-left: 6px;
 
     @include before-img(block, 22px, 24px, r) {
-      background-image: url("assets/images/icons/axion-gray-icon.svg");
+      background-image: $imgIcon-Unicorn;
     }
   }
 

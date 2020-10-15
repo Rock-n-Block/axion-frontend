@@ -142,7 +142,7 @@
         @include before-img(block, 19px, 14px, r) {
           background-size: contain;
           background-repeat: no-repeat;
-          background-image: url("assets/images/base/arrow-left.svg");
+          background-image: $imgButton-Arrow-Right;
           margin-right: 10px;
         }
       }
@@ -151,7 +151,7 @@
         @include after-img(block, 17px, 17px, r) {
           background-size: contain;
           background-repeat: no-repeat;
-          background-image: url("assets/images/base/arrow-left.svg");
+          background-image: $imgButton-Arrow-Right;
           margin-left: 10px;
           transform: rotate(180deg);
           margin-bottom: 5px;
