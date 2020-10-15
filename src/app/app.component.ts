@@ -21,6 +21,7 @@ export class AppComponent implements OnInit {
   public leftDaysInfoShow = false;
   public leftDaysInfoChecker = false;
   public addToRopsten = false;
+  public changingTheme = false;
   public theme = "white";
   public chainNetwork = "rinkeby";
   public tableInfo;
@@ -37,6 +38,8 @@ export class AppComponent implements OnInit {
     this.theme = this.cookieService.get("theme")
       ? this.cookieService.get("theme")
       : "white";
+
+    this.changeTheme(true);
 
     console.log(this.cookieService.get("theme"), this.theme);
 
@@ -122,8 +125,14 @@ export class AppComponent implements OnInit {
     this.contractService.addToken();
   }
 
-  public changeTheme() {
-    const themeName = this.theme === "white" ? "dark" : "white";
+  public changeTheme(switchTheme?) {
+    this.changingTheme = true;
+
+    const themeName = switchTheme
+      ? this.theme
+      : this.theme === "white"
+      ? "dark"
+      : "white";
 
     console.log(themeName);
     const elem = document.getElementById("themeAsset");
@@ -135,6 +144,10 @@ export class AppComponent implements OnInit {
     this.cookieService.set("theme", themeName);
 
     this.theme = themeName;
+
+    setTimeout(() => {
+      this.changingTheme = false;
+    }, 3000);
   }
 
   public checkDays() {
