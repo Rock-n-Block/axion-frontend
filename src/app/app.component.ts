@@ -34,6 +34,12 @@ export class AppComponent implements OnInit {
     private config: AppConfig,
     route: Router
   ) {
+    this.theme = this.cookieService.get("theme")
+      ? this.cookieService.get("theme")
+      : "white";
+
+    console.log(this.cookieService.get("theme"), this.theme);
+
     window["ethereum"].on("chainChanged", () => {
       window["ethereum"]
         .request({
@@ -117,13 +123,16 @@ export class AppComponent implements OnInit {
   }
 
   public changeTheme() {
-    const elem = document.getElementById("myLink");
     const themeName = this.theme === "white" ? "dark" : "white";
 
     console.log(themeName);
+    const elem = document.getElementById("themeAsset");
+
     elem.setAttribute("href", `./${themeName}.css`);
     elem.setAttribute("rel", "stylesheet");
     elem.setAttribute("type", "text/css");
+
+    this.cookieService.set("theme", themeName);
 
     this.theme = themeName;
   }

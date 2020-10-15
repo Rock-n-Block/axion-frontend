@@ -34,7 +34,7 @@
               {
                 "input": "src/styles-dark.scss",
                 "bundleName": "dark",
-                "lazy": false
+                "lazy": true
               }
             ],
             "scripts": []
