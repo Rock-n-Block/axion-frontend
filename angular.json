@@ -26,7 +26,16 @@
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
-              "src/styles.scss"
+              {
+                "input": "src/styles.scss",
+                "bundleName": "white",
+                "lazy": false
+              },
+              {
+                "input": "src/styles-dark.scss",
+                "bundleName": "dark",
+                "lazy": false
+              }
             ],
             "scripts": []
           },

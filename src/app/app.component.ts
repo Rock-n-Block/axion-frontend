@@ -21,6 +21,7 @@ export class AppComponent implements OnInit {
   public leftDaysInfoShow = false;
   public leftDaysInfoChecker = false;
   public addToRopsten = false;
+  public theme = "white";
   public chainNetwork = "rinkeby";
   public tableInfo;
   public runLineCountArray = new Array(1);
@@ -113,6 +114,18 @@ export class AppComponent implements OnInit {
 
   public addToken() {
     this.contractService.addToken();
+  }
+
+  public changeTheme() {
+    const elem = document.getElementById("myLink");
+    const themeName = this.theme === "white" ? "dark" : "white";
+
+    console.log(themeName);
+    elem.setAttribute("href", `./${themeName}.css`);
+    elem.setAttribute("rel", "stylesheet");
+    elem.setAttribute("type", "text/css");
+
+    this.theme = themeName;
   }
 
   public checkDays() {
