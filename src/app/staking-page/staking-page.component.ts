@@ -208,21 +208,17 @@ export class StakingPageComponent implements OnDestroy {
 
     const shareRate = new BigNumber(rate);
 
-    this.shareRate = isNaN(shareRate.toNumber())
-      ? (new BigNumber(0) as any)
-      : (new BigNumber(rate) as any);
+    if (this.formsData.depositDays) {
+      this.shareRate = isNaN(shareRate.toNumber())
+        ? (new BigNumber(0) as any)
+        : (new BigNumber(rate) as any);
+    }
 
     this.stakeDays =
       Date.now() +
       this.formsData.depositDays *
         this.contractService.settingsApp.settings.time.seconds *
         1000;
-
-    // this.share.full =
-    //   Number(amount) /
-    //   new BigNumber(this.stakingContractInfo.ShareRate)
-    //     .div(Math.pow(10, this.tokensDecimals.HEX2X))
-    //     .toNumber();
 
     const sharefull = new BigNumber(amount).div(
       new BigNumber(this.stakingContractInfo.ShareRate).div(

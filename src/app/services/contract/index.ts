@@ -1348,7 +1348,7 @@ export class ContractService {
                       new BigNumber(auctionData.eth).toString()
                     ),
                     eth_bet: new BigNumber(0),
-                    winnings: new BigNumber(0),
+                    winnings: 0,
                     hasWinnings: false,
                     status: "complete",
                   };
@@ -1365,20 +1365,6 @@ export class ContractService {
                       );
                       // tokensDecimals["HEX2X"]
 
-                      auctionInfo.eth_bet = new BigNumber(accountBalance.eth);
-
-                      const winnings1 = new BigNumber(accountBalance.eth)
-                        .multipliedBy(
-                          new BigNumber(auctionData.token).div(
-                            new BigNumber(auctionData.eth)
-                          )
-                        )
-                        .div(new BigNumber(10).pow(this.tokensDecimals.HEX2X));
-
-                      const firstValue = new BigNumber(auctionData.token).div(
-                        auctionData.eth
-                      );
-
                       const uniPercent = await this.Auction.methods
                         .uniswapPercent()
                         .call()
@@ -1387,72 +1373,113 @@ export class ContractService {
                           return res;
                         });
 
-                      // const uniPriceWithPercent =
-                      //   Number(auctionData.uniswapMiddlePrice) *
-                      //   (1 - uniPercent / 100);
+                      // START FORMULA
 
-                      const secondValue = new BigNumber(
+                      const ethInPoolWithUserBet =
+                        auctionData.eth + accountBalance.eth; // eth со ставкой
+
+                      const uniswapPriceWithPercent = new BigNumber(
                         auctionData.uniswapMiddlePrice
                       )
                         .multipliedBy(1 - uniPercent / 100)
                         .div(new BigNumber(10).pow(this.tokensDecimals.HEX2X));
 
-                      const uniswap = new BigNumber(
-                        auctionData.uniswapMiddlePrice
-                      ).div(new BigNumber(10).pow(this.tokensDecimals.HEX2X));
+                      const maxAxnPerEth =
+                        auctionData.uniswapMiddlePrice *
+                        (1 + uniswapPriceWithPercent.toNumber());
 
-                      // secondValue = new BigNumber(secondValue)
-                      //   .div(new BigNumber(10).pow(this.tokensDecimals.HEX2X))
-                      //   .toNumber();
+                      const currentAuctionPrice =
+                        ethInPoolWithUserBet > 0
+                          ? auctionData.eth / ethInPoolWithUserBet
+                          : auctionData.eth;
 
-                      // new BigNumber(accountBalance.eth).div(
-                      //   auctionData.uniswapMiddlePrice
+                      const bestPrice =
+                        currentAuctionPrice > maxAxnPerEth
+                          ? maxAxnPerEth
+                          : currentAuctionPrice;
+
+                      const userWinnings = bestPrice * accountBalance.eth;
+
+                      console.log("userWinnings", userWinnings);
+
+                      // END FORMULA
+
+                      // auctionInfo.eth_bet = new BigNumber(accountBalance.eth);
+
+                      // const winnings1 = new BigNumber(accountBalance.eth)
+                      //   .multipliedBy(
+                      //     new BigNumber(auctionData.token).div(
+                      //       new BigNumber(auctionData.eth)
+                      //     )
+                      //   )
+                      //   .div(new BigNumber(10).pow(this.tokensDecimals.HEX2X));
+
+                      // const firstValue = new BigNumber(auctionData.token).div(
+                      //   auctionData.eth
                       // );
-                      // .div(new BigNumber(10).pow(this.tokensDecimals.HEX2X));
 
-                      // new BigNumber(
+                      // // const uniPriceWithPercent =
+                      // //   Number(auctionData.uniswapMiddlePrice) *
+                      // //   (1 - uniPercent / 100);
+
+                      // const secondValue = new BigNumber(
                       //   auctionData.uniswapMiddlePrice
-                      // ).toNumber();
-                      // .multipliedBy(uniPercent)
-                      // .div(new BigNumber(10).pow(this.tokensDecimals.HEX2X));
+                      // )
+                      //   .multipliedBy(1 - uniPercent / 100)
+                      //   .div(new BigNumber(10).pow(this.tokensDecimals.HEX2X));
 
-                      console.log(
-                        "axn pool/eth pool - ",
-                        firstValue.toNumber()
-                      );
-                      console.log("uniswap - 20% - ", secondValue.toNumber());
-                      console.log("uniswap - ", uniswap.toNumber());
-                      console.log(
-                        "mey bet / uniswap - ",
-                        1 / uniswap.toNumber()
-                      );
-                      // console.log("2 - ", secondValue);
+                      // const uniswap = new BigNumber(
+                      //   auctionData.uniswapMiddlePrice
+                      // ).div(new BigNumber(10).pow(this.tokensDecimals.HEX2X));
 
-                      console.log("winnings1", winnings1.toNumber());
+                      // // secondValue = new BigNumber(secondValue)
+                      // //   .div(new BigNumber(10).pow(this.tokensDecimals.HEX2X))
+                      // //   .toNumber();
 
-                      const winnings =
-                        (Number(auctionInfo.eth_bet.toString()) /
-                          Number(auctionInfo.eth_pool)) *
-                        Number(auctionInfo.axn_pool);
+                      // // new BigNumber(accountBalance.eth).div(
+                      // //   auctionData.uniswapMiddlePrice
+                      // // );
+                      // // .div(new BigNumber(10).pow(this.tokensDecimals.HEX2X));
 
-                      auctionInfo.winnings = isFinite(winnings)
-                        ? new BigNumber(winnings)
-                        : new BigNumber(0);
+                      // // new BigNumber(
+                      // //   auctionData.uniswapMiddlePrice
+                      // // ).toNumber();
+                      // // .multipliedBy(uniPercent)
+                      // // .div(new BigNumber(10).pow(this.tokensDecimals.HEX2X));
 
-                      auctionInfo.hasWinnings = !isFinite(
-                        auctionInfo.winnings.toNumber()
-                      );
+                      // console.log(
+                      //   "axn pool/eth pool - ",
+                      //   firstValue.toNumber()
+                      // );
+                      // console.log("uniswap - 20% - ", secondValue.toNumber());
+                      // console.log("uniswap - ", uniswap.toNumber());
+                      // console.log(
+                      //   "mey bet / uniswap - ",
+                      //   1 / uniswap.toNumber()
+                      // );
+                      // // console.log("2 - ", secondValue);
+
+                      // console.log("winnings1", winnings1.toNumber());
+
+                      // const winnings =
+                      //   (Number(auctionInfo.eth_bet.toString()) /
+                      //     Number(auctionInfo.eth_pool)) *
+                      //   Number(auctionInfo.axn_pool);
+
+                      auctionInfo.winnings = isFinite(userWinnings)
+                        ? userWinnings
+                        : 0;
+
+                      auctionInfo.hasWinnings = !isFinite(auctionInfo.winnings);
 
                       if (
                         accountBalance.ref !==
                         "0x0000000000000000000000000000000000000000"
                       ) {
-                        auctionInfo.winnings = new BigNumber(
-                          winnings
-                        ).multipliedBy(1.1);
+                        auctionInfo.winnings = userWinnings * 1.1;
                       }
 
-                      if (!isFinite(winnings) || winnings !== 0) {
+                      if (!isFinite(userWinnings) || userWinnings !== 0) {
                         const a = moment(new Date(auctionInfo.start_date))
                           .add(1, "days")
                           .set({
