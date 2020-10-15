@@ -131,29 +131,29 @@
 // Dark
 
 $clGreen: #37c8b4;
-$clPurple: #8670fa;
+$clPurple: #7185d6;
 $clRegLight: #cf7575;
-$clGray: #ffffffa6;
-$clGrayDark: #71727491;
-$clBlue: #4d588e;
+$clGray: #ffffff;
+$clGrayDark: #ffffff;
+$clBlue: #7185d6;
 $clWhite: #ffffff;
 $clYellow: #efb321;
 $clPink: #ed18cc;
 $clGradient-Background: linear-gradient(90deg, $clYellow 0%, $clPink 100%);
 
-$clBody-Background: #e7eaef;
-$clBody-Text: #717274;
+$clBody-Background: #232839;
+$clBody-Text: #ffffff;
 
-$clHeader-Background: #e7eaef;
-$clHeader-Active-Background: #e7eaef;
+$clHeader-Background: #232839;
+$clHeader-Active-Background: #232839;
 $clHeader-Active-Shadow: 0 3px 7px rgba(0, 0, 0, 0.09);
 $clHeader-Menu-Item-Text: #ffffff;
-$clHeader-Menu-Item-Text-Link: #717274;
-$clHeader-Menu-Item-Text-Link-Background: #717274;
+$clHeader-Menu-Item-Text-Link: #ffffff;
+$clHeader-Menu-Item-Text-Link-Background: #ffffff;
 
-$clNavbar-Background: #8670fa;
-$clNavbar-Active-Background: #e7eaef;
-$clNavbar-Item-Text: #717274;
+$clNavbar-Background: #232839;
+$clNavbar-Active-Background: #232839;
+$clNavbar-Item-Text: #ffffff;
 
 $clLeftDays-Background: linear-gradient(0deg, #efd444, #efd444);
 $clLeftDays-After-Background: linear-gradient(
@@ -189,27 +189,26 @@ $clLeftDays-Before-Background-2: -moz-linear-gradient(
 );
 $clLeftDays-Before-Filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00efd444', endColorstr='#efd444',GradientType=1 );
 
-$clQuestion-Background: #717274;
-$clQuestion-Tooltip-Background: #717db8;
+$clQuestion-Background: #7185d6;
+$clQuestion-Tooltip-Background: rgb(113, 125, 184);
 $clQuestion-Tooltip-Text: #ffffff;
-$clQuestion-Tooltip-Shadow: -20px -20px 30px rgba(255, 255, 255, 0.5),
-  20px 20px 40px rgba(174, 174, 192, 0.25);
+$clQuestion-Tooltip-Shadow: -20px -20px 30px rgba(113, 125, 184, 0.5),
+  20px 20px 40px rgba(113, 125, 184, 0.25);
 
 $clEllips-Container-Background: #717274;
 
-$clText: #717274;
-$clText-Input: #717274;
-$clTitle: #717274;
+$clText: #ffffff;
+$clText-Input: #ffffff;
+$clTitle: #ffffff;
 $clLink: #8670fa;
 
-$clTable-Thead: #717274;
+$clTable-Thead: #ffffff;
 $clTable-Thead-Active: #37c8b4;
 $clTable-Thead-Sort: #37c8b4;
 $clTable-Thead-Sort-Before: #ffffff;
-
-$clTable-Tbody-Td-Text: #717274;
-$clTable-Tbody-Td-Background: #ffffff7a;
-$clTable-Tbody-Td-Action-Button-Before-Background: rgba(255, 255, 255, 0.1);
+$clTable-Tbody-Td-Text: #ffffff;
+$clTable-Tbody-Td-Background: rgba(255, 255, 255, 0.478);
+$clTable-Tbody-Td-Action-Button-Before-Background: rgba(255, 255, 255, 0.478);
 
 $clTooltip-Text: #ffffff;
 $clTooltip-Background: #717db8;
@@ -217,36 +216,37 @@ $clTooltip-Background: #717db8;
 $clCheap-Text: #ffffff;
 $clCheap-Shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
 
-$clForm-Border: 1px dashed rgba(113, 114, 116, 0.5);
-$clForm-Accent-Background: #e7ecf2;
-$clForm-Input: #717274;
-$clForm-Arrow-Background: #4e598f;
-$clForm-Block-Background: #e7eaef;
-$clForm-Block-Shadow: -20px -20px 30px rgba(255, 255, 255, 0.5),
-  20px 20px 40px rgba(174, 174, 192, 0.25);
-$clForm-Block-Input: #717274;
-$clForm-Shares: #717274;
-$clForm-Sendmax: rgba(113, 114, 116, 0.5);
-$clForm-Block-One: #717274;
-$clForm-Block-One-Title: #717274;
+$clForm-Border: 1px dashed rgba(255, 255, 255, 0.5);
+$clForm-Accent-Background: #4c598e;
+$clForm-Input: #ffffff;
+$clForm-Arrow-Background: #7185d6;
+$clForm-Block-Background: #4c598e;
+$clForm-Block-Shadow: -20px -20px 30px rgba(94, 112, 191, 0.25),
+  20px 20px 40px rgba(10, 17, 45, 0.25);
+$clForm-Block-Input: #ffffff;
+$clForm-Shares: #ffffff;
+$clForm-Sendmax: rgba(255, 255, 255, 0.5);
+$clForm-Block-One: #ffffff;
+$clForm-Block-One-Title: #ffffff;
 
 $clDialog-Overlay-Dark-Backfrop: rgba(0, 0, 0, 0.35);
-$clDialog-Mat-Container: #717274;
+$clDialog-Mat-Container: #ffffff;
 $clDialog-Mat-Container-Background: #eaeff6;
-$clDialog-Block: #717274;
+$clDialog-Block: #ffffff;
 $clDialog-Bottom-Background: rgba(0, 0, 0, 0.04);
 
-$clButton-Max-Border: 1px solid #717274;
-$clButton-Max-Text: #717274;
-$clButton-Gray-Text: #717274;
-$clButton-Gray-Background: #eaeff6;
-$clButton-Gray-Shadow: -5px -5px 10px $clWhite,
-  8px 8px 15px rgba(10, 17, 45, 0.1);
-$clButton-Gray-Hover-Text: #666;
-$clButton-Gray-Hover-Shadow: 6px 6px 11px #d7dce2, -6px -6px 11px #fdffff,
-  inset 3px 3px 3px #d7dce2, inset -3px -3px 3px #fdffff;
-$clButton-Metamask-Before-Background: rgba(255, 255, 255, 0.5);
-$clButton-Metamask-Text: #717274;
+$clButton-Max-Border: 1px solid #ffffff;
+$clButton-Max-Text: #ffffff;
+$clButton-Gray-Text: #ffffff;
+$clButton-Gray-Background: #4d5a8c;
+$clButton-Gray-Shadow: -5px -5px 10px #5c6ba4,
+  8px 8px 15px rgba(10, 17, 45, 0.25);
+$clButton-Gray-Hover-Text: #ffffff;
+$clButton-Gray-Hover-Shadow: -2px -2px 10px #5c6ba4,
+  8px 8px 15px rgba(10, 17, 45, 0.25), inset 3px 3px 3px rgba(10, 17, 45, 0.25),
+  inset -3px -3px 3px rgba(10, 17, 45, 0.25);
+$clButton-Metamask-Before-Background: rgba(0, 0, 0, 0.15);
+$clButton-Metamask-Text: #ffffff;
 $clButton-Purple-Background: linear-gradient(0deg, #8670fa, #8670fa);
 $clButton-Purple-Text: #ffffff;
 $clButton-Copy-Text: #ffffff;
