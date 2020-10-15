@@ -39,7 +39,7 @@ export class AppComponent implements OnInit {
       ? this.cookieService.get("theme")
       : "white";
 
-    this.changeTheme(true);
+    this.changeTheme(true, true);
 
     console.log(this.cookieService.get("theme"), this.theme);
 
@@ -125,8 +125,10 @@ export class AppComponent implements OnInit {
     this.contractService.addToken();
   }
 
-  public changeTheme(switchTheme?) {
-    this.changingTheme = true;
+  public changeTheme(switchTheme?, firstLoad?) {
+    if (!firstLoad) {
+      this.changingTheme = true;
+    }
 
     const themeName = switchTheme
       ? this.theme
@@ -145,9 +147,11 @@ export class AppComponent implements OnInit {
 
     this.theme = themeName;
 
-    setTimeout(() => {
-      this.changingTheme = false;
-    }, 3000);
+    if (!firstLoad) {
+      setTimeout(() => {
+        this.changingTheme = false;
+      }, 1000);
+    }
   }
 
   public checkDays() {
