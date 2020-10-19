@@ -471,11 +471,11 @@
 <ng-template #warningModal class="dialog-block" mat-dialog-content>
   <div class="dialog-block__content">
     <div class="dialog-title">
-      Warning
+      Attention!
     </div>
 
     <div class="dialog-description">
-      Attention! {{confirmWithdrawData.early ? 'Early' : 'Late'}} unstake!
+      {{confirmWithdrawData.early ? 'Early' : 'Late'}} unstake!
       You will get
       {{confirmWithdrawData.deposit.forWithdraw | bigNumberFormat : tokensDecimals.HEX2X : true : false : 2}}
       Axion,
