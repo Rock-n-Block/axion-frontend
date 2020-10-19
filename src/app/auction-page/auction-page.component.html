@@ -2,10 +2,14 @@
   <div class="axn-title-block">
     <span class="axn-title">Auction</span>
     <div
+      #tooltip2="matTooltip" (click)="tooltip2.toggle()"
       class="question"
       mat-raised-button
-      matTooltip="The auction raffling accumulated Axion tokens between users in proportion to the participants' stakes in Ethereum. Axion's auction price is can't be lower than the Uniswap price minus 10%, unspent Auction Axion transferred to Weekly Auction.
+      matTooltip="
+      The auction raffling accumulated Axion tokens between users in proportion to the participants' stakes in Ethereum. Axion's auction price is can't be lower than the Uniswap price minus 10%, unspent Auction Axion transferred to Weekly Auction.
+
       When the user places a bet in ETH: 80% of the received ETH at the same time is used to buy back Axion on Uniswap and received Axions are used to replenish the Staking contract; 20% of the received ETH is the company's profit.
+
       All Axion got from the Auction including referral bonuses will be autostaked for 14 days."
       matTooltipClass="question__tooltip"
     ></div>
@@ -100,20 +104,18 @@
       <div class="axn-form-block-pool axn-form-bottom">
         <span class="axn-form-block-pool-title">Auction price</span>
         <div class="axn-form-block-pool-axn">
-          <span class="icon icon-flex icon__axion">1 AXN</span>
+          <span class="icon icon-flex icon__axion">{{poolInfo.axnToEth}} AXN</span>
           <span class="cl-purple">=</span>
-          <span class="icon icon-flex icon__eth-purple cl-purple">{{
-            poolInfo.axnToEth
-          }}</span>
+          <span class="icon icon-flex icon__eth-purple cl-purple">1 ETH</span>
         </div>
 
         <span class="axn-form-block-pool-title">Uniswap price</span>
         <div class="axn-form-block-pool-uni">
           <span class="icon icon-flex icon__axion-gray cl-gray-dark"
-            >1 AXN</span
+            >{{ poolInfo.uniToEth || 0 }} AXN</span
           >
           <span class="cl-gray-dark">=</span>
-          <span class="cl-gray-dark"> {{ poolInfo.uniToEth || 0 }}</span>
+          <span class="cl-gray-dark">1 ETH</span>
         </div>
       </div>
     </div>
@@ -130,6 +132,7 @@
         <span class="axn-title">Referral program</span>
         <div
           class="question"
+          #tooltip="matTooltip" (click)="tooltip.toggle()"
           mat-raised-button
           matTooltip="By submitting a referral link to the auction, both the auction participant and the link provider receive bonus Axion. The participant of the auction (referral) receives an additional 10% to the amount of the credit, the referee (who provided the link) receives an additional 20% of the amount of the credit.
 
@@ -373,3 +376,26 @@
     </table>
   </div>
 </section>
+
+<ng-template #warningModal class="dialog-block" mat-dialog-content>
+  <div class="dialog-block__content">
+    <div class="dialog-title">
+      Warning
+    </div>
+
+    <div class="dialog-description">
+      Attention! Your bid too low, you might get nothing from the auction
+    </div>
+
+    <div class="dialog-bottom">
+      <button class="axn-btn axn-btn-gray" type="button" mat-dialog-close>
+        <span>Close</span>
+      </button>
+      <button class="axn-btn axn-btn-gray" type="button" (click)="successLowProfit()">
+        <span>Ok</span>
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+

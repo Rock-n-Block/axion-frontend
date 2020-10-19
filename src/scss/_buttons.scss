@@ -73,9 +73,11 @@
       font-size: 13px;
       font-weight: 300;
 
-      &:hover {
-        box-shadow: $clButton-Gray-Hover-Shadow;
-        color: $clButton-Gray-Hover-Text;
+      &:not([disabled]) {
+        &:hover {
+          box-shadow: $clButton-Gray-Hover-Shadow;
+          color: $clButton-Gray-Hover-Text;
+        }
       }
     }
 

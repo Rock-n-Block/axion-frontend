@@ -113,7 +113,9 @@
     margin-right: 15px;
     transition: 0.4s ease;
     cursor: pointer;
-
+    &.icon_copy {
+      margin-left: -32px;
+    }
     &:hover {
       opacity: 0.6;
       transition: 0.4s ease;
@@ -137,6 +139,7 @@
     max-width: 200px;
     width: 100%;
     text-transform: uppercase;
+    margin: 0 10px;
   }
 }
 

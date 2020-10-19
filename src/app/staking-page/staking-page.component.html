@@ -4,8 +4,13 @@
     <div
       class="question"
       mat-raised-button
-      matTooltip="Stake your Axion and get revenue from staking contract. By creating a deposit, the user loses access to his Axion tokens, but receives Shares, indicating the user's share in the distribution of dividends from the daily dividend pool. The formula for calculating daily dividends is as follows:
-        dailyInterest =dailyPool* userShares / totalSupplyShares
+      #tooltip="matTooltip" (click)="tooltip.toggle()"
+      matTooltip="
+        Stake your Axion and get revenue from staking contract. By creating a deposit, the user loses access to his Axion tokens, but receives Shares, indicating the user's share in the distribution of dividends from the daily dividend pool.
+
+        The formula for calculating daily dividends is as follows:
+        dailyInterest = dailyPool * userShares / totalSupplyShares
+
         Then the formula for receiving dividends from the deposit will be the following:
         stakingInterest =sum(dailyInterest(i) * userShares / totalSupplyShares(i))
         for each staking day.
@@ -13,8 +18,7 @@
       matTooltipClass="question__tooltip"
     ></div>
   </div>
-
-  <div class="axn-form axn-form-3-1">
+  <form #depositForm="ngForm" class="axn-form axn-form-3-1">
     <div class="axn-form-block axn-form-staking">
       <div class="axn-form-block-one">
         <span class="axn-form-block-one-title">Deposit</span>
@@ -200,6 +204,7 @@
         <button
           class="axn-btn axn-btn-gray axn-btn-form axn-btn-max-width m-t-15"
           (click)="openDeposit()"
+          [disabled]="!depositForm.valid"
           [ngClass]="{ progress: depositTokensProgress }"
         >
           <span class="lds-ellipsis" *ngIf="depositTokensProgress">
@@ -211,7 +216,7 @@
         </button>
       </div>
     </div>
-  </div>
+  </form>
 </section>
 
 <section class="axn-section" *ngIf="tableInfo">
@@ -221,7 +226,21 @@
       <div
         class="question"
         mat-raised-button
-        matTooltip="BigPayDay - designed for the annual distribution of Axion tokens unclaimed for HEX. Every year, for 351 days - the amount accumulated in the BigPayDay pool will be distributed among the stakes for 350 days or more. There are 5 BigPayDay pools: First year - 10% of the total amount of tokens sent to BigPayDay, Second year - 15%, Third year - 20%, Fourth year - 25%, Fifths year - 30%. In addition to the tokens that get into BigPayDay from the exchange of HEX for Axion, BigPayDay is replenished with tokens according to the following formula: BigPayDayPool = (dailyPool + BigPayDayTokens) * (1 + CriticalMassBonus + ViralityBonus), where CriticalMassBonus - ratio of exchanged HEX and Shares tokens to their total supply on the Snapshot day, ViralityBonus - the ratio of the addresses that changed HEX and Shares to the total number of addresses on the day of Snapshot.&#13;&#13;"
+        #tooltip2="matTooltip" (click)="tooltip2.toggle()"
+        matTooltip="
+        BigPayDay - designed for the annual distribution of Axion tokens unclaimed for HEX. Every year, for 351 days - the amount accumulated in the BigPayDay pool will be distributed among the stakes for 350 days or more.
+
+        There are 5 BigPayDay pools:
+        First year - 10% of the total amount of tokens sent to BigPayDay,
+        Second year - 15%,
+        Third year - 20%,
+        Fourth year - 25%,
+        Fifths year - 30%.
+
+        In addition to the tokens that get into BigPayDay from the exchange of HEX for Axion, BigPayDay is replenished with tokens according to the following formula:
+        BigPayDayPool = (dailyPool + BigPayDayTokens) * (1 + CriticalMassBonus + ViralityBonus), where
+        CriticalMassBonus - ratio of exchanged HEX and Shares tokens to their total supply on the Snapshot day,
+        ViralityBonus - the ratio of the addresses that changed HEX and Shares to the total number of addresses on the day of Snapshot.&#13;&#13;"
         matTooltipClass="question__tooltip"
       ></div>
     </div>
@@ -446,3 +465,34 @@
     </table>
   </div>
 </section>
+
+
+
+<ng-template #warningModal class="dialog-block" mat-dialog-content>
+  <div class="dialog-block__content">
+    <div class="dialog-title">
+      Warning
+    </div>
+
+    <div class="dialog-description">
+      Attention! {{confirmWithdrawData.early ? 'Early' : 'Late'}} unstake!
+      You will get
+      {{confirmWithdrawData.deposit.forWithdraw | bigNumberFormat : tokensDecimals.HEX2X : true : false : 2}}
+      Axion,
+      {{confirmWithdrawData.deposit.penalty | bigNumberFormat : tokensDecimals.HEX2X : true : false : 2}}
+      Axion will be penalized!
+    </div>
+
+    <div class="dialog-bottom">
+      <button class="axn-btn axn-btn-gray" type="button" mat-dialog-close>
+        <span>Close</span>
+      </button>
+      <button class="axn-btn axn-btn-gray" type="button" (click)="successWithPenalty()">
+        <span>Ok</span>
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+
+

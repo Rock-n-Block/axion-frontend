@@ -2,12 +2,16 @@
   <div class="axn-title-block">
     <span class="axn-title">Convert HEX2T to AXN</span>
     <div
+      #tooltip="matTooltip" (click)="tooltip.toggle()"
       class="question"
       mat-raised-button
-      matTooltip="Exchange HEX2T tokens to Axion at a 1:1 rate. To receive Axion tokens, send tokens to the Burn contract and burn them. The exchange will be available for 350 days, however, there is a Late Claim Penalty for late exchange. The amount of the penalty is calculated by the formula:
-    Penalty = HEX2T amount * (day since free claim starts / 350)
-    
-    All penalized tokens will be sent to the next day auction."
+      matTooltip="
+      Exchange HEX2T tokens to Axion at a 1:1 rate. To receive Axion tokens, send tokens to the Burn contract and burn them. The exchange will be available for 350 days, however, there is a Late Claim Penalty for late exchange.
+
+      The amount of the penalty is calculated by the formula:
+      Penalty = HEX2T amount * (day since free claim starts / 350)
+
+      All penalized tokens will be sent to the next day auction."
       matTooltipClass="question__tooltip"
     ></div>
   </div>
@@ -34,7 +38,7 @@
           name="swap-amount"
           autocomplete="off"
         />
-        <span class="axn-cheap icon icon_hex cl-gradient-bg">H2T</span>
+        <span class="axn-cheap icon icon_hex cl-gradient-bg">HEX2T</span>
 
         <div class="axn-form-base-2 axn-form-bottom">
           <div class="axn-form-block-sendmax">
@@ -89,7 +93,7 @@
               | bigNumberFormat: tokensDecimals.HEX2X:true:false:4
           }}
         </span>
-        <span class="axn-cheap icon icon_hex cl-gradient-bg">H2T</span>
+        <span class="axn-cheap icon icon_hex cl-gradient-bg">HEX2T</span>
         <div class="axn-form-block-button axn-form-bottom">
           <button
             class="axn-btn axn-btn-gray axn-btn-form axn-btn-form-mid"
@@ -170,15 +174,16 @@
   <div class="axn-title-block">
     <span class="axn-title">Convert HEX to AXN</span>
     <div
+      #tooltip2="matTooltip" (click)="tooltip2.toggle()"
       class="question"
       mat-raised-button
       matTooltip="Get Axion for HEX tokens for free at a rate of 1: 1. All free claimed Axion tokens will be automatically staked for 350 days.
 
     The amount of the free claim is limited to 10M Axion, tokens over the limit will be sent to the Weekly Auction.
-    
+
     The exchange will be available for 350 days, however, there is a Late Claim Penalty for late exchange. The amount of the penalty is calculated by the formula:
     Penalty = (HEX + Shares amount) * (day since free claim starts / 350)
-    
+
     Tokens from the penalty will be distributed in the following way: 349/350 will be sent to the next day auction; 1/350 for distribution at the end of the year at BigPayDay."
       matTooltipClass="question__tooltip"
     ></div>
@@ -187,7 +192,7 @@
   <div class="axn-form axn-form-base-3">
     <div class="axn-form-block axn-form-accent">
       <div class="axn-form-block-one axn-form-arrow">
-        <span class="axn-form-block-one-title"><b>From</b></span>
+        <span class="axn-form-block-one-title">From</span>
         <span
           class="axn-form-block-one-value"
           matTooltipClass="table__tooltip"
@@ -202,13 +207,13 @@
               | bigNumberFormat: tokensDecimals.HEX:true:false:4
           }}</b>
         </span>
-        <span class="axn-cheap icon icon_hex cl-gradient-bg">HEX</span>
+        <span class="axn-cheap cl-gradient-bg">HEX</span>
       </div>
     </div>
 
     <div class="axn-form-block axn-form-accent">
       <div class="axn-form-block-one">
-        <span class="axn-form-block-one-title"><b>To</b></span>
+        <span class="axn-form-block-one-title">To</span>
         <span
           class="axn-form-block-one-value"
           matTooltipClass="table__tooltip"
@@ -229,7 +234,7 @@
 
     <div class="axn-form-block axn-form-accent">
       <div class="axn-form-block-one">
-        <span class="axn-form-block-one-title"><b>Penalty</b></span>
+        <span class="axn-form-block-one-title">Penalty</span>
         <span
           class="axn-form-block-one-value"
           matTooltipClass="table__tooltip"

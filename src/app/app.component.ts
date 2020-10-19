@@ -39,7 +39,7 @@ export class AppComponent implements OnInit {
       ? this.cookieService.get("theme")
       : "white";
 
-    this.changeTheme(true, true);
+    this.changeTheme(true);
 
     console.log(this.cookieService.get("theme"), this.theme);
 
@@ -125,33 +125,21 @@ export class AppComponent implements OnInit {
     this.contractService.addToken();
   }
 
-  public changeTheme(switchTheme?, firstLoad?) {
-    if (!firstLoad) {
-      this.changingTheme = true;
-    }
-
+  public changeTheme(switchTheme?) {
     const themeName = switchTheme
       ? this.theme
       : this.theme === "white"
       ? "dark"
       : "white";
 
-    console.log(themeName);
-    const elem = document.getElementById("themeAsset");
 
-    elem.setAttribute("href", `./${themeName}.css`);
-    elem.setAttribute("rel", "stylesheet");
-    elem.setAttribute("type", "text/css");
-
-    this.cookieService.set("theme", themeName);
-
+    const body = document.getElementsByTagName('body')[0];
+    body.className = body.className.replace(this.theme, '');
+    body.className+= themeName;
     this.theme = themeName;
 
-    if (!firstLoad) {
-      setTimeout(() => {
-        this.changingTheme = false;
-      }, 1000);
-    }
+    this.cookieService.set("theme", themeName);
+    this.theme = themeName;
   }
 
   public checkDays() {

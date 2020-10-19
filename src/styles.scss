@@ -1,4 +1,6 @@
 @import "./scss/variables.scss";
+@import "./scss/variables-dark.scss";
+
 @import "./scss/mixins.scss";
 @import "./scss/typography.scss";
 @import "./scss/buttons.scss";
@@ -524,4 +526,14 @@ body {
 
 .slider.round:before {
   border-radius: 50%;
+}
+
+
+
+
+@import "./scss/_dark-theme.scss";
+
+
+.mat-tooltip {
+  white-space: pre-line;
 }

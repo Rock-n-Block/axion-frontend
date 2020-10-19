@@ -2,12 +2,13 @@ import {
   Component,
   EventEmitter,
   NgZone,
-  OnDestroy,
+  OnDestroy, TemplateRef,
   ViewChild,
 } from "@angular/core";
 import { ContractService, stakingMaxDays } from "../services/contract";
 import BigNumber from "bignumber.js";
 import { AppConfig } from "../appconfig";
+import {MatDialog} from "@angular/material/dialog";
 
 interface StakingInfoInterface {
   ShareRate: number;
@@ -44,6 +45,11 @@ export class StakingPageComponent implements OnDestroy {
   };
   @ViewChild("depositForm", { static: false }) depositForm;
 
+  @ViewChild("warningModal", {
+    static: true,
+  })
+  warningModal: TemplateRef<any>;
+
   public stakingContractInfo: StakingInfoInterface = {
     ShareRate: 0,
     StepsFromStart: 0,
@@ -65,11 +71,13 @@ export class StakingPageComponent implements OnDestroy {
   public bpd: any = [];
 
   private settingsData: any;
+  private dayEndSubscriber;
 
   constructor(
     private contractService: ContractService,
     private ngZone: NgZone,
-    private config: AppConfig
+    private config: AppConfig,
+    private dialog: MatDialog
   ) {
     this.accountSubscribe = this.contractService
       .accountSubscribe()
@@ -80,18 +88,7 @@ export class StakingPageComponent implements OnDestroy {
             window.dispatchEvent(new Event("resize"));
             if (account) {
               this.onChangeAccount.emit();
-              this.contractService.getAccountStakes().then((res) => {
-                this.depositsLists = res;
-
-                // console.log("user deposits lists", this.depositsLists);
-
-                this.applySort("opened");
-                this.applySort("closed");
-                window.dispatchEvent(new Event("resize"));
-                this.getStakingInfo();
-                this.stakingInfoChecker = true;
-              });
-
+              this.depositList();
               this.contractService
                 .getStakingContractInfo()
                 .then((data: StakingInfoInterface) => {
@@ -113,6 +110,9 @@ export class StakingPageComponent implements OnDestroy {
 
     this.tokensDecimals = this.contractService.getCoinsDecimals();
     this.settingsData = this.config.getConfig();
+    this.dayEndSubscriber = this.contractService.onDayEnd().subscribe(() => {
+      this.depositList();
+    })
   }
 
   public getStakingInfo() {
@@ -144,7 +144,6 @@ export class StakingPageComponent implements OnDestroy {
   public depositList() {
     this.contractService.getAccountStakes().then((res) => {
       this.depositsLists = res;
-
       // console.log("user deposits lists", this.depositsLists);
 
       this.applySort("opened");
@@ -274,7 +273,7 @@ export class StakingPageComponent implements OnDestroy {
       });
     } else {
       this.depositsLists[table].sort((a, b) => {
-        return Number(a.sessionId) > Number(b.sessionId) ? 1 : -1;
+        return Number(a.sessionId) < Number(b.sessionId) ? 1 : -1;
       });
     }
   }
@@ -296,7 +295,29 @@ export class StakingPageComponent implements OnDestroy {
     this.applySort(table);
   }
 
-  public depositWithdraw(deposit) {
+  public successWithPenalty() {
+    this.confirmWithdrawData.openedWarning.close();
+    this.depositWithdraw(
+      this.confirmWithdrawData.deposit,
+      true
+    );
+  }
+
+  public confirmWithdrawData;
+
+  public depositWithdraw(deposit, withoutConfirm?) {
+
+    if (!withoutConfirm) {
+      if (!deposit.penalty.isZero()) {
+        const openedWarning = this.dialog.open(this.warningModal, {});
+        this.confirmWithdrawData = {
+          deposit,
+          openedWarning,
+          early: Date.now() > deposit.end
+        }
+        return;
+      }
+    }
     deposit.withdrawProgress = true;
 
     this.contractService
@@ -313,11 +334,10 @@ export class StakingPageComponent implements OnDestroy {
                 // console.log("deposit unstake step 3", res3);
                 this.contractService.updateHEX2XBalance(true);
                 deposit.withdrawProgress = false;
-                this.depositList();
               });
+          } else {
+            this.depositList();
           }
-
-          this.depositList();
         });
       })
       .catch(() => {
@@ -329,5 +349,6 @@ export class StakingPageComponent implements OnDestroy {
     this.stakingInfoChecker = false;
     this.bpdInfoChecker = false;
     this.accountSubscribe.unsubscribe();
+    this.dayEndSubscriber.unsubscribe();
   }
 }

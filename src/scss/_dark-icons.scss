@@ -1,0 +1,13 @@
+.icon {
+  &_switch-theme {
+    @include before-img(block, 16px, 16px, r) {
+      background-image: $imgSwitch-Theme-dark;
+    }
+  }
+
+  &__axion-gray {
+    @include before-img(block, 22px, 24px, r) {
+      background-image: $imgIcon-Unicorn-dark;
+    }
+  }
+}

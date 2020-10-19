@@ -193,10 +193,9 @@ export class ClaimPageComponent implements OnInit, OnDestroy {
       .then(() => {
         this.contractService.updateH2TBalance(true).then(() => {
           this.formsData.swapAmount = "";
-          this.swapTokensProgress = false;
         });
       })
-      .catch(() => {
+      .finally(() => {
         this.swapTokensProgress = false;
       });
   }
@@ -220,8 +219,6 @@ export class ClaimPageComponent implements OnInit, OnDestroy {
     this.contractService
       .swapNativeToken()
       .then(() => {
-        this.burnTokensProgress = false;
-
         this.readPenalty();
         this.swapContractBalance = {
           value: 0,
@@ -256,13 +253,12 @@ export class ClaimPageComponent implements OnInit, OnDestroy {
     this.contractService
       .claimFromForeign()
       .then(() => {
-        this.claimTokensProgress = false;
         this.contractService.updateH2TBalance(true).then(() => {
           this.claimTokensProgress = false;
           this.updateUserSnapshot();
         });
       })
-      .catch(() => {
+      .finally(() => {
         this.claimTokensProgress = false;
       });
   }

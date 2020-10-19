@@ -13,6 +13,7 @@ import { AppComponent } from "../app.component";
 import { AppConfig } from "../appconfig";
 
 import { ContractService } from "../services/contract";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: "app-auction-page",
@@ -24,6 +25,13 @@ export class AuctionPageComponent implements OnDestroy {
     static: true,
   })
   successModal: TemplateRef<any>;
+
+  @ViewChild("warningModal", {
+    static: true,
+  })
+  warningModal: TemplateRef<any>;
+
+  private warningDialog;
 
   public changeSort = true;
 
@@ -74,10 +82,10 @@ export class AuctionPageComponent implements OnDestroy {
     private cookieService: CookieService,
     private ngZone: NgZone,
     private appComponent: AppComponent,
-    private config: AppConfig
+    private config: AppConfig,
+    private dialog: MatDialog
   ) {
     this.referalAddress = this.cookieService.get("ref");
-    // this.onChangeAmount();
     this.getAuctions();
 
     this.accountSubscribe = this.contractService
@@ -243,7 +251,8 @@ export class AuctionPageComponent implements OnDestroy {
   private getAuctionPool() {
     setTimeout(() => {
       this.contractService.getAuctionPool().then((info: any) => {
-        if (info.axnToEth === 0) {
+        console.log(info);
+        if (info.axnToEth.toNumber() === 0) {
           info.axnToEth = this.poolInfo.axnToEth;
         }
 
@@ -256,40 +265,40 @@ export class AuctionPageComponent implements OnDestroy {
     }, this.settings.settings.checkerAuctionPool);
   }
 
-  public sendETHToAuction() {
+  public successLowProfit() {
+    this.warningDialog.close();
+    this.sendETHToAuction(true);
+  }
+
+  public sendETHToAuction(withoutWarning?) {
+
+    if (!withoutWarning) {
+      const myTokens = new BigNumber(this.poolInfo.uniswapMiddlePrice)
+        .times(this.formsData.auctionAmount)
+        .div(new BigNumber(10).pow(this.tokensDecimals.ETH)).dp(0);
+      if (myTokens.isZero()) {
+        this.warningDialog = this.dialog.open(this.warningModal, {});
+        return;
+      }
+    }
+
     this.sendAuctionProgress = true;
 
-    if (this.formsData.auctionAmount === this.account.balances.ETH.wei) {
-      this.contractService
-        .sendMaxETHToAuction(
-          this.formsData.auctionAmount,
-          this.cookieService.get("ref")
-        )
-        .then(({ transactionHash }) => {
-          this.contractService.updateETHBalance(true).then(() => {
-            this.sendAuctionProgress = false;
-            this.formsData.auctionAmount = undefined;
-          });
-        })
-        .catch(() => {
-          this.sendAuctionProgress = false;
+    const callMethod = (this.formsData.auctionAmount === this.account.balances.ETH.wei) ?
+      'sendMaxETHToAuction' : 'sendETHToAuction';
+
+    this.contractService[callMethod](
+      this.formsData.auctionAmount,
+      this.cookieService.get("ref")
+    )
+      .then(({ transactionHash }) => {
+        this.contractService.updateETHBalance(true).then(() => {
+          this.formsData.auctionAmount = undefined;
         });
-    } else {
-      this.contractService
-        .sendETHToAuction(
-          this.formsData.auctionAmount,
-          this.cookieService.get("ref")
-        )
-        .then(({ transactionHash }) => {
-          this.contractService.updateETHBalance(true).then(() => {
-            this.sendAuctionProgress = false;
-            this.formsData.auctionAmount = undefined;
-          });
-        })
-        .catch(() => {
-          this.sendAuctionProgress = false;
-        });
-    }
+      })
+      .finally(() => {
+        this.sendAuctionProgress = false;
+      });
   }
 
   public generateRefLink() {
@@ -311,11 +320,10 @@ export class AuctionPageComponent implements OnDestroy {
       .withdrawFromAuction(auction.auctionId)
       .then(() => {
         this.contractService.loadAccountInfo();
-        auction.withdrawProgress = false;
         auction.status = "complete";
         this.getUserAuctions();
       })
-      .catch(() => {
+      .finally(() => {
         auction.withdrawProgress = false;
       });
   }

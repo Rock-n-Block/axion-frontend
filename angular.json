@@ -27,14 +27,7 @@
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
               {
-                "input": "src/styles.scss",
-                "bundleName": "white",
-                "lazy": false
-              },
-              {
-                "input": "src/styles-dark.scss",
-                "bundleName": "dark",
-                "lazy": true
+                "input": "src/styles.scss"
               }
             ],
             "scripts": []
