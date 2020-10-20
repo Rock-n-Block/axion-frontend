@@ -39,12 +39,9 @@ export function initializeApp(injector: Injector) {
 }
 
 import { LocaleService } from "./services/locale/locale.service";
-
-// import { registerLocaleData } from "@angular/common";
-// import localeEu from "@angular/common/locales/eu";
-// import localeRu from "@angular/common/locales/zh-Hans";
-// registerLocaleData(localeEu, "eu");
-// registerLocaleData(localeRu, "ru");
+import { registerLocaleData } from "@angular/common";
+import localeGB from "@angular/common/locales/en-GB";
+registerLocaleData(localeGB, "en-gb");
 
 @NgModule({
   entryComponents: [TransactionSuccessModalComponent, MetamaskErrorComponent],

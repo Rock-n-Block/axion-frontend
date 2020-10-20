@@ -33,6 +33,7 @@ export class LocaleService {
     }
     this.registerCulture(this._localeBase);
     // this.registerCulture("zh-hk"); // test, will show 2020/10/20
+    // this.registerCulture("en-us"); // test, will show 10/20/2020
     // this.registerCulture("en"); // test, will show 20/10/20
     // this.registerCulture("ru-RU"); // test, will show 20.10.2020
   }
@@ -45,33 +46,22 @@ export class LocaleService {
     }
 
     switch (culture.toLowerCase()) {
-      case "en-uk": {
+      case "en-us": {
         this._locale = "en";
-        // console.log("Application Culture Set to English");
-        break;
-      }
-      case "zh-hk": {
-        this._locale = "zh-Hant";
-        // console.log("Application Culture Set to Traditional Chinese");
-        break;
-      }
-      case "ru-ru": {
-        this._locale = "ru";
-        // console.log("Application Culture Set to Russian");
+        console.log("Application Culture Set to US");
         break;
       }
       default: {
-        this._locale = "en";
-        // console.log("Application Culture Set to default - English");
+        this._locale = "en-gb";
         break;
       }
     }
 
-    await import(`@angular/common/locales/${this._locale}.js`).then(
-      (locale) => {
-        console.log(this._locale, locale);
-        registerLocaleData(locale.default);
-      }
-    );
+    // await import(`@angular/common/locales/${this._locale}.js`).then(
+    //   (locale) => {
+    //     console.log(this._locale, locale);
+    //     registerLocaleData(locale.default);
+    //   }
+    // );
   }
 }

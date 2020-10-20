@@ -21,8 +21,8 @@ export class AppComponent implements OnInit {
   public leftDaysInfoShow = false;
   public leftDaysInfoChecker = false;
   public addToRopsten = false;
-  public changingTheme = false;
   public theme = "white";
+  public themeSwitch = false;
   public chainNetwork = "rinkeby";
   public tableInfo;
   public runLineCountArray = new Array(1);
@@ -39,9 +39,9 @@ export class AppComponent implements OnInit {
       ? this.cookieService.get("theme")
       : "white";
 
-    this.changeTheme(true);
+    this.themeSwitch = this.theme === "white";
 
-    // console.log(this.cookieService.get("theme"), this.theme);
+    this.changeTheme(true);
 
     window["ethereum"].on("chainChanged", () => {
       window["ethereum"]
@@ -138,7 +138,6 @@ export class AppComponent implements OnInit {
     this.theme = themeName;
 
     this.cookieService.set("theme", themeName);
-    this.theme = themeName;
   }
 
   public checkDays() {
