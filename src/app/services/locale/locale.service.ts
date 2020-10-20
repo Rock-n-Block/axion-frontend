@@ -1,4 +1,3 @@
-import { async } from "@angular/core/testing";
 import { registerLocaleData } from "@angular/common";
 import { Injectable } from "@angular/core";
 import { isNullOrUndefined } from "util";
