@@ -41,7 +41,7 @@ export class AppComponent implements OnInit {
 
     this.changeTheme(true);
 
-    console.log(this.cookieService.get("theme"), this.theme);
+    // console.log(this.cookieService.get("theme"), this.theme);
 
     window["ethereum"].on("chainChanged", () => {
       window["ethereum"]
@@ -88,7 +88,7 @@ export class AppComponent implements OnInit {
     this.contractService
       .transactionsSubscribe()
       .subscribe((transaction: any) => {
-        console.log("transaction", transaction);
+        // console.log("transaction", transaction);
 
         if (transaction) {
           this.dialog.open(TransactionSuccessModalComponent, {
@@ -132,10 +132,9 @@ export class AppComponent implements OnInit {
       ? "dark"
       : "white";
 
-
-    const body = document.getElementsByTagName('body')[0];
-    body.className = body.className.replace(this.theme, '');
-    body.className+= themeName;
+    const body = document.getElementsByTagName("body")[0];
+    body.className = body.className.replace(this.theme, "");
+    body.className += themeName;
     this.theme = themeName;
 
     this.cookieService.set("theme", themeName);

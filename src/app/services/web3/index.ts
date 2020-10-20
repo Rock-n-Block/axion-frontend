@@ -24,7 +24,7 @@ export class MetamaskService {
 
   constructor(private config: AppConfig) {
     const settingsApp = config.getConfig();
-    console.log("web3", config.getConfig(), settingsApp);
+    // console.log("web3", config.getConfig(), settingsApp);
 
     this.networks.testnet = settingsApp.settings.network;
 

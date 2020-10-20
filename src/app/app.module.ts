@@ -1,5 +1,5 @@
 import { BrowserModule } from "@angular/platform-browser";
-import { APP_INITIALIZER, NgModule, Injector } from "@angular/core";
+import { APP_INITIALIZER, NgModule, Injector, LOCALE_ID } from "@angular/core";
 import { ClipboardModule } from "ngx-clipboard";
 import { CookieService } from "ngx-cookie-service";
 
@@ -38,6 +38,14 @@ export function initializeApp(injector: Injector) {
     });
 }
 
+import { LocaleService } from "./services/locale/locale.service";
+
+// import { registerLocaleData } from "@angular/common";
+// import localeEu from "@angular/common/locales/eu";
+// import localeRu from "@angular/common/locales/zh-Hans";
+// registerLocaleData(localeEu, "eu");
+// registerLocaleData(localeRu, "ru");
+
 @NgModule({
   entryComponents: [TransactionSuccessModalComponent, MetamaskErrorComponent],
   declarations: [
@@ -66,6 +74,7 @@ export function initializeApp(injector: Injector) {
     ClipboardModule,
   ],
   providers: [
+    LocaleService,
     AppConfig,
     {
       provide: APP_INITIALIZER,
@@ -74,6 +83,12 @@ export function initializeApp(injector: Injector) {
       multi: true,
     },
     CookieService,
+    {
+      provide: LOCALE_ID,
+      deps: [LocaleService],
+      useFactory: (LocaleService: { locale: string }) => LocaleService.locale,
+      // useFactory: (LocaleService) => LocaleService.initCulture(),
+    },
   ],
   bootstrap: [AppComponent],
 })

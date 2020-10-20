@@ -2,7 +2,8 @@
   <div class="axn-title-block">
     <span class="axn-title">Auction</span>
     <div
-      #tooltip2="matTooltip" (click)="tooltip2.toggle()"
+      #tooltip2="matTooltip"
+      (click)="tooltip2.toggle()"
       class="question"
       mat-raised-button
       matTooltip="
@@ -104,7 +105,9 @@
       <div class="axn-form-block-pool axn-form-bottom">
         <span class="axn-form-block-pool-title">Auction price</span>
         <div class="axn-form-block-pool-axn">
-          <span class="icon icon-flex icon__axion">{{poolInfo.axnToEth}} AXN</span>
+          <span class="icon icon-flex icon__axion"
+            >{{ poolInfo.axnToEth }} AXN</span
+          >
           <span class="cl-purple">=</span>
           <span class="icon icon-flex icon__eth-purple cl-purple">1 ETH</span>
         </div>
@@ -132,7 +135,8 @@
         <span class="axn-title">Referral program</span>
         <div
           class="question"
-          #tooltip="matTooltip" (click)="tooltip.toggle()"
+          #tooltip="matTooltip"
+          (click)="tooltip.toggle()"
           mat-raised-button
           matTooltip="By submitting a referral link to the auction, both the auction participant and the link provider receive bonus Axion. The participant of the auction (referral) receives an additional 10% to the amount of the credit, the referee (who provided the link) receives an additional 20% of the amount of the credit.
 
@@ -221,7 +225,8 @@
       </thead>
       <tbody>
         <tr *ngFor="let auction of auctionsList">
-          <td>{{ auction.start_date | date: "dd.MM.yyyy" }}</td>
+          <!-- <td>{{ auction.start_date | date: "dd.MM.yyyy" }}</td> -->
+          <td>{{ auction.start_date | date: "shortDate" }}</td>
           <td>
             <span
               matTooltipClass="table__tooltip"
@@ -327,7 +332,8 @@
       </thead>
       <tbody>
         <tr *ngFor="let auction of auctions">
-          <td>{{ auction.time.date | date: "dd.MM.yyyy" }}</td>
+          <!-- <td>{{ auction.time.date | date: "dd.MM.yyyy" }}</td> -->
+          <td>{{ auction.time.date | date: "shortDate" }}</td>
           <td>
             <span
               matTooltipClass="table__tooltip"
@@ -379,9 +385,7 @@
 
 <ng-template #warningModal class="dialog-block" mat-dialog-content>
   <div class="dialog-block__content">
-    <div class="dialog-title">
-      Attention!
-    </div>
+    <div class="dialog-title">Attention!</div>
 
     <div class="dialog-description">
       Your bid too low, you might get nothing from the auction
@@ -391,11 +395,13 @@
       <button class="axn-btn axn-btn-gray" type="button" mat-dialog-close>
         <span>Close</span>
       </button>
-      <button class="axn-btn axn-btn-gray" type="button" (click)="successLowProfit()">
+      <button
+        class="axn-btn axn-btn-gray"
+        type="button"
+        (click)="successLowProfit()"
+      >
         <span>Ok</span>
       </button>
     </div>
   </div>
 </ng-template>
-
-
