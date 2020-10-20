@@ -5,6 +5,12 @@
     }
   }
 
+  &_ok-1 {
+    @include before-img(block, 10px, 10px, r) {
+      background-image: url("assets/images/icons/ok-blue-icon-dark-theme.svg");
+    }
+  }
+
   &__axion-gray {
     @include before-img(block, 22px, 24px, r) {
       background-image: $imgIcon-Unicorn-dark;

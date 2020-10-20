@@ -57,7 +57,7 @@
 
   &_ok-1 {
     @include before-img(block, 10px, 10px, r) {
-      background-image: url("assets/images/icons/ok-blue-icon.svg");
+      background-image: $imgStakingOk-1;
       margin-right: 5px;
     }
   }

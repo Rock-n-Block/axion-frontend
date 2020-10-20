@@ -9,7 +9,11 @@ $clBlue-dark: #7185d6;
 $clWhite-dark: #ffffff;
 $clYellow-dark: #efb321;
 $clPink-dark: #ed18cc;
-$clGradient-Background-dark: linear-gradient(90deg, $clYellow-dark 0%, $clPink-dark 100%);
+$clGradient-Background-dark: linear-gradient(
+  90deg,
+  $clYellow-dark 0%,
+  $clPink-dark 100%
+);
 
 $clBody-Background-dark: #232839;
 $clBody-Text-dark: #ffffff;
@@ -81,7 +85,12 @@ $clTable-Thead-Sort-dark: #37c8b4;
 $clTable-Thead-Sort-Before-dark: #ffffff;
 $clTable-Tbody-Td-Text-dark: #ffffff;
 $clTable-Tbody-Td-Background-dark: rgb(120 138 206 / 35%);
-$clTable-Tbody-Td-Action-Button-Before-Background-dark: rgba(255, 255, 255, 0.478);
+$clTable-Tbody-Td-Action-Button-Before-Background-dark: rgba(
+  255,
+  255,
+  255,
+  0.478
+);
 
 $clTooltip-Text-dark: #ffffff;
 $clTooltip-Background-dark: #717db8;
@@ -94,8 +103,11 @@ $clForm-Accent-Background-dark: #4c598e;
 $clForm-Input-dark: #ffffff;
 $clForm-Arrow-Background-dark: #7185d6;
 $clForm-Block-Background-dark: #4c598e;
-$clForm-Block-Shadow-dark: -20px -20px 30px rgba(94, 112, 191, 0.25),
-  20px 20px 40px rgba(10, 17, 45, 0.25);
+// $clForm-Block-Shadow-dark: -20px -20px 30px rgba(94, 112, 191, 0.25),
+//   20px 20px 40px rgba(10, 17, 45, 0.25);
+$clForm-Block-Shadow-dark: 5px 5px 10px rgba(94, 112, 191, 0.25),
+  -5px -5px 10px rgba(10, 17, 45, 0.25);
+
 $clForm-Block-Input-dark: #ffffff;
 $clForm-Shares-dark: #ffffff;
 $clForm-Sendmax-dark: rgba(255, 255, 255, 0.5);
@@ -134,3 +146,4 @@ $clButton-Input-Text-dark: #ffffff;
 $imgIcon-Unicorn-dark: url("assets/images/icons/unicorn-dark-theme.svg");
 $imgButton-Arrow-Right-dark: url("assets/images/base/arrow-left-dark-theme.svg");
 $imgSwitch-Theme-dark: url("assets/images/base/white-theme.svg");
+// $imgStakingOk-1: url("assets/images/icons/ok-blue-icon-dark-theme.svg");
