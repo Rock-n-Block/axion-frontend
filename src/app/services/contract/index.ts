@@ -127,18 +127,6 @@ export class ContractService {
   private initAll() {
     const promises = [
       this.httpService
-        .get(`/assets/js/constants.json?v=${new Date().getTime()}`)
-        .toPromise()
-        .then((result) => {
-          const IS_PRODUCTION = this.settingsApp.settings.production;
-          const CONTRACTS_PARAMS =
-            result[
-              IS_PRODUCTION ? "mainnet" : this.settingsApp.settings.network
-            ];
-
-          this.CONTRACTS_PARAMS = CONTRACTS_PARAMS;
-        }),
-      this.httpService
         .get(`/assets/js/settings.json?v=${new Date().getTime()}`)
         .toPromise()
         .then((config) => {
@@ -153,8 +141,22 @@ export class ContractService {
           console.log("err settings", err);
           this.config.setConfig(this.settingsApp);
         }),
+      this.httpService
+        .get(`/assets/js/constants.json?v=${new Date().getTime()}`)
+        .toPromise().then((result) => {
+        return result;
+      })
+        .catch((err) => {
+          console.log("err settings", err);
+          this.config.setConfig(this.settingsApp);
+        }),
     ];
-    return Promise.all(promises);
+
+    return Promise.all(promises).then((result) => {
+      const IS_PRODUCTION = this.settingsApp.settings.production;
+      this.CONTRACTS_PARAMS =
+        result[1][IS_PRODUCTION ? "mainnet" : this.settingsApp.settings.network];
+    });
   }
 
   public addToken() {
@@ -1391,7 +1393,7 @@ export class ContractService {
                       // console.log("auctionBetOf", accountBalance);
                       auctionInfo.eth_bet = new BigNumber(accountBalance.eth);
                       const startTS = (+start +
-                        this.secondsInDay * Number(id)) *
+                        this.secondsInDay * (+id + 1)) *
                       1000;
                       const endTS = moment(startTS + this.secondsInDay * 1000);
                       auctionInfo.start_date = new Date(startTS);
