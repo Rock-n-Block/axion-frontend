@@ -1,6 +1,8 @@
 import { Component, Inject } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { settingsData } from "src/app/params";
+import {HttpClient} from "@angular/common/http";
+import {AppConfig} from "../../appconfig";
 
 @Component({
   selector: "app-transaction-success-modal",
@@ -8,11 +10,14 @@ import { settingsData } from "src/app/params";
 })
 export class TransactionSuccessModalComponent {
   public ethLink: string;
+  private appConfig;
   constructor(
     public dialogRef: MatDialogRef<TransactionSuccessModalComponent>,
+    private config: AppConfig,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.ethLink = `https://${settingsData.settings.network}.etherscan.io/tx/${data}`;
+    this.appConfig = config.getConfig();
+    this.ethLink = `https://${this.appConfig.settings.network}.etherscan.io/tx/${data}`;
   }
   public closeModal() {
     this.dialogRef.close();

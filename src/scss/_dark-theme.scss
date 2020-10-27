@@ -21,7 +21,7 @@ body {
       @include b(990) {
         background-color: $clHeader-Background-dark;
       }
-      &.active {
+      .cdk-global-scrollblock &, &.active {
         background-color: $clHeader-Active-Background-dark;
         box-shadow: $clHeader-Active-Shadow-dark;
       }

@@ -11,6 +11,7 @@ import * as moment from "moment";
 import { CookieService } from "ngx-cookie-service";
 import { AppComponent } from "../app.component";
 import { AppConfig } from "../appconfig";
+import { MetamaskErrorComponent } from "../components/metamaskError/metamask-error.component";
 
 import { ContractService } from "../services/contract";
 import {MatDialog} from "@angular/material/dialog";
@@ -115,6 +116,7 @@ export class AuctionPageComponent implements OnDestroy {
           });
         }
       });
+
     this.tokensDecimals = this.contractService.getCoinsDecimals();
     this.settings = config.getConfig();
   }
@@ -295,6 +297,15 @@ export class AuctionPageComponent implements OnDestroy {
         this.contractService.updateETHBalance(true).then(() => {
           this.formsData.auctionAmount = undefined;
         });
+      }, (err) => {
+        if (err.msg) {
+          this.dialog.open(MetamaskErrorComponent, {
+            width: "400px",
+            data: {
+              msg: err.msg
+            },
+          });
+        }
       })
       .finally(() => {
         this.sendAuctionProgress = false;

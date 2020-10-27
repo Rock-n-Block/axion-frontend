@@ -1185,30 +1185,40 @@ export class ContractService {
 
     const gasPrice = await this.web3Service.gasPrice();
 
-    return this.web3Service
-      .estimateGas(
-        this.account.address,
-        this.CONTRACTS_PARAMS.Auction.ADDRESS,
-        amount,
-        dataForFee,
-        gasPrice
-      )
-      .then((res) => {
-        const feeRate = res;
-        const newAmount = new BigNumber(amount).minus(feeRate * gasPrice);
+    return new Promise((resolve, reject) => {
+      return this.web3Service
+        .estimateGas(
+          this.account.address,
+          this.CONTRACTS_PARAMS.Auction.ADDRESS,
+          amount,
+          dataForFee,
+          gasPrice
+        )
+        .then((res) => {
+          const feeRate = res;
+          const newAmount = new BigNumber(amount).minus(feeRate * gasPrice);
+          if (newAmount.isNegative()) {
+            reject({
+              msg: 'Not enough gas'
+            });
+            return;
+          }
+          return this.Auction.methods
+            .bet(date, refLink)
+            .send({
+              from: this.account.address,
+              value: newAmount,
+              gasPrice,
+              gasLimit: feeRate,
+            })
+            .then((res) => {
+              return this.checkTransaction(res).then((res) => {
+                resolve(res);
+              });
+            });
+        });
+    });
 
-        return this.Auction.methods
-          .bet(date, refLink)
-          .send({
-            from: this.account.address,
-            value: newAmount,
-            gasPrice,
-            gasLimit: feeRate,
-          })
-          .then((res) => {
-            return this.checkTransaction(res);
-          });
-      });
   }
 
   public async sendETHToAuction(amount, ref?) {

@@ -103,7 +103,7 @@ body {
     background-color: $clHeader-Background;
   }
 
-  &.active {
+  .cdk-global-scrollblock &, &.active {
     padding: 3px 0;
     background-color: $clHeader-Active-Background;
     box-shadow: $clHeader-Active-Shadow;
