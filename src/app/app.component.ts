@@ -20,7 +20,7 @@ export class AppComponent implements OnInit {
   public leftDaysInfo;
   public leftDaysInfoShow = false;
   public leftDaysInfoChecker = false;
-  public addToRopsten = false;
+  public addToMetamask = false;
   public theme = "white";
   public themeSwitch = false;
   public chainNetwork = "rinkeby";
@@ -43,13 +43,17 @@ export class AppComponent implements OnInit {
 
     this.changeTheme(true);
 
+    const settingsData = config.getConfig();
+
     window["ethereum"].on("chainChanged", () => {
       window["ethereum"]
         .request({
           method: "net_version",
         })
         .then((result) => {
-          this.addToRopsten = Number(result) === 3;
+          this.addToMetamask = settingsData.settings.chainsForButtonAddToMetamask.includes(
+            Number(result)
+          );
         });
     });
 
@@ -58,10 +62,11 @@ export class AppComponent implements OnInit {
         method: "net_version",
       })
       .then((result) => {
-        this.addToRopsten = Number(result) === 3;
+        this.addToMetamask = settingsData.settings.chainsForButtonAddToMetamask.includes(
+          Number(result)
+        );
       });
 
-    const settingsData = config.getConfig();
     this.chainNetwork = settingsData.settings.network;
 
     this.accountSubscribe = this.contractService
