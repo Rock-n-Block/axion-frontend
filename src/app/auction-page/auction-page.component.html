@@ -95,9 +95,14 @@
             class="axn-form-block-one-value-small p-tb-5"
             matTooltipClass="table__tooltip"
             mat-raised-button
-            matTooltip="{{ poolInfo.eth || 0 }}"
+            matTooltip="{{
+              poolInfo.eth
+                | bigNumberFormat: tokensDecimals['ETH']:true:false:18
+            }}"
           >
-            {{ poolInfo.eth || 0 }}
+            {{
+              poolInfo.eth | bigNumberFormat: tokensDecimals["ETH"]:true:false:2
+            }}
           </span>
           <span class="axn-cheap icon icon_eth cl-purple-bg">ETH</span>
         </div>

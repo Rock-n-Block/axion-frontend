@@ -14,7 +14,7 @@ import { AppConfig } from "../appconfig";
 import { MetamaskErrorComponent } from "../components/metamaskError/metamask-error.component";
 
 import { ContractService } from "../services/contract";
-import {MatDialog} from "@angular/material/dialog";
+import { MatDialog } from "@angular/material/dialog";
 
 @Component({
   selector: "app-auction-page",
@@ -273,11 +273,11 @@ export class AuctionPageComponent implements OnDestroy {
   }
 
   public sendETHToAuction(withoutWarning?) {
-
     if (!withoutWarning) {
       const myTokens = new BigNumber(this.poolInfo.uniswapMiddlePrice)
         .times(this.formsData.auctionAmount)
-        .div(new BigNumber(10).pow(this.tokensDecimals.ETH)).dp(0);
+        .div(new BigNumber(10).pow(this.tokensDecimals.ETH))
+        .dp(0);
       if (myTokens.isZero()) {
         this.warningDialog = this.dialog.open(this.warningModal, {});
         return;
@@ -286,27 +286,32 @@ export class AuctionPageComponent implements OnDestroy {
 
     this.sendAuctionProgress = true;
 
-    const callMethod = (this.formsData.auctionAmount === this.account.balances.ETH.wei) ?
-      'sendMaxETHToAuction' : 'sendETHToAuction';
+    const callMethod =
+      this.formsData.auctionAmount === this.account.balances.ETH.wei
+        ? "sendMaxETHToAuction"
+        : "sendETHToAuction";
 
     this.contractService[callMethod](
       this.formsData.auctionAmount,
       this.cookieService.get("ref")
     )
-      .then(({ transactionHash }) => {
-        this.contractService.updateETHBalance(true).then(() => {
-          this.formsData.auctionAmount = undefined;
-        });
-      }, (err) => {
-        if (err.msg) {
-          this.dialog.open(MetamaskErrorComponent, {
-            width: "400px",
-            data: {
-              msg: err.msg
-            },
+      .then(
+        ({ transactionHash }) => {
+          this.contractService.updateETHBalance(true).then(() => {
+            this.formsData.auctionAmount = undefined;
           });
+        },
+        (err) => {
+          if (err.msg) {
+            this.dialog.open(MetamaskErrorComponent, {
+              width: "400px",
+              data: {
+                msg: err.msg,
+              },
+            });
+          }
         }
-      })
+      )
       .finally(() => {
         this.sendAuctionProgress = false;
       });

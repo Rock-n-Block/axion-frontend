@@ -38,13 +38,6 @@ export class MetamaskService {
     this.providers = {};
     this.providers.metamask = Web3.givenProvider;
 
-    console.log(
-      this.networks,
-      WEB3_CONSTANTS[
-        this.networks[this.IS_PRODUCTION ? "production" : "testnet"]
-      ]
-    );
-
     // this.providers.infura = new Web3.providers.HttpProvider(
     //   WEB3_CONSTANTS[
     //     this.networks[this.IS_PRODUCTION ? "mainnet" : "testnet"]

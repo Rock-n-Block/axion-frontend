@@ -2,8 +2,8 @@
 // mainnet
 
 /*
-  For mainnet set use param "production" to true
-  If you need to show button (add to metamask) add chain in array [1,2,3,4,5 ....] (mainnet chain = 1)
+  For mainnet set param "production" to true
+  If you need to show button (add to metamask) - add chain in array [1,2,3,4,5 ....] (mainnet chain = 1)
   */
 
 {

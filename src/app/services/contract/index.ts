@@ -1,7 +1,7 @@
 import { async } from "@angular/core/testing";
 import { MetamaskService } from "../web3";
 import { Contract } from "web3-eth-contract";
-import {Observable, Subscriber} from "rxjs";
+import { Observable, Subscriber } from "rxjs";
 import { Injectable } from "@angular/core";
 import BigNumber from "bignumber.js";
 import { HttpClient } from "@angular/common/http";
@@ -94,8 +94,11 @@ export class ContractService {
       }
       const oldLeftDays = this.leftDays;
 
-      const finishDate = this.startDate * 1000 + this.swapDaysPeriod * this.secondsInDay * 1000;
-      this.leftDays = Math.floor((finishDate - new Date().getTime()) / (this.secondsInDay * 1000));
+      const finishDate =
+        this.startDate * 1000 + this.swapDaysPeriod * this.secondsInDay * 1000;
+      this.leftDays = Math.floor(
+        (finishDate - new Date().getTime()) / (this.secondsInDay * 1000)
+      );
 
       if (oldLeftDays) {
         if (oldLeftDays !== this.leftDays) {
@@ -104,11 +107,8 @@ export class ContractService {
           });
         }
       }
-    }, 60000
-
-    );
+    }, 60000);
   }
-
 
   public onDayEnd() {
     return new Observable((observer) => {
@@ -118,11 +118,10 @@ export class ContractService {
           this.dayEndSubscribers = this.dayEndSubscribers.filter((obs) => {
             return obs !== observer;
           });
-        }
-      }
-    })
+        },
+      };
+    });
   }
-
 
   private initAll() {
     const promises = [
@@ -143,19 +142,21 @@ export class ContractService {
         }),
       this.httpService
         .get(`/assets/js/constants.json?v=${new Date().getTime()}`)
-        .toPromise().then((result) => {
-        return result;
-      })
+        .toPromise()
+        .then((result) => {
+          return result;
+        })
         .catch((err) => {
-          console.log("err settings", err);
-          this.config.setConfig(this.settingsApp);
+          console.log("err constants", err);
         }),
     ];
 
     return Promise.all(promises).then((result) => {
       const IS_PRODUCTION = this.settingsApp.settings.production;
       this.CONTRACTS_PARAMS =
-        result[1][IS_PRODUCTION ? "mainnet" : this.settingsApp.settings.network];
+        result[1][
+          IS_PRODUCTION ? "mainnet" : this.settingsApp.settings.network
+        ];
     });
   }
 
@@ -677,22 +678,33 @@ export class ContractService {
             .reservesOf(auctionId)
             .call()
             .then((res) => {
+              // console.log("res", res);
               const data = {} as any;
-              data.eth = parseFloat(new BigNumber(res[0])
-                .div(Math.pow(10, this.tokensDecimals.ETH))
-                .toFixed(8)
-                .toString());
+              // data.eth = new BigNumber(res[0])
+              //   .div(Math.pow(10, this.tokensDecimals.ETH))
+              //   .toNumber();
+              data.eth = new BigNumber(res[0]);
 
-              data.axn = parseFloat(new BigNumber(res[1])
-                .div(Math.pow(10, this.tokensDecimals.HEX2X))
-                .toFixed(8)
-                .toString());
+              // console.log(
+              //   "data.eth",
+              //   data.eth,
+              //   new BigNumber(res[0])
+              //     .div(Math.pow(10, this.tokensDecimals.ETH))
+              //     .toNumber()
+              // );
+
+              data.axn = parseFloat(
+                new BigNumber(res[1])
+                  .div(Math.pow(10, this.tokensDecimals.HEX2X))
+                  .toFixed(8)
+                  .toString()
+              );
 
               const amount = "1000000000000000000";
 
               let auctionPriceFromPool;
 
-              if (res[0] === '0' || res[1] === '0') {
+              if (res[0] === "0" || res[1] === "0") {
                 auctionPriceFromPool = new BigNumber(0);
               } else {
                 auctionPriceFromPool = new BigNumber(res[1]).div(res[0]);
@@ -705,7 +717,9 @@ export class ContractService {
                 ])
                 .call()
                 .then((value) => {
-                  const axn = new BigNumber(value[1]).div(Math.pow(10, this.tokensDecimals.HEX2X));
+                  const axn = new BigNumber(value[1]).div(
+                    Math.pow(10, this.tokensDecimals.HEX2X)
+                  );
                   const uniSwapRevertedPrice = new BigNumber(1).div(axn);
 
                   data.uniToEth = uniSwapRevertedPrice.dp(2);
@@ -714,11 +728,16 @@ export class ContractService {
                     .uniswapPercent()
                     .call()
                     .then((result) => {
-                      const uniSwapWithDiscountPrice = uniSwapRevertedPrice.times(1 + result / 100);
+                      const uniSwapWithDiscountPrice = uniSwapRevertedPrice.times(
+                        1 + result / 100
+                      );
                       if (auctionPriceFromPool.isZero()) {
                         data.axnToEth = uniSwapWithDiscountPrice.dp(2);
                       } else {
-                        data.axnToEth = BigNumber.minimum(uniSwapWithDiscountPrice, auctionPriceFromPool).dp(2);
+                        data.axnToEth = BigNumber.minimum(
+                          uniSwapWithDiscountPrice,
+                          auctionPriceFromPool
+                        ).dp(2);
                       }
                       resolve(data);
                     });
@@ -742,7 +761,6 @@ export class ContractService {
               .start()
               .call()
               .then((startDate) => {
-
                 const fullStartDate = startDate * 1000;
                 const endDateTime = fullStartDate + allDaysSeconds;
 
@@ -1199,7 +1217,7 @@ export class ContractService {
           const newAmount = new BigNumber(amount).minus(feeRate * gasPrice);
           if (newAmount.isNegative()) {
             reject({
-              msg: 'Not enough gas'
+              msg: "Not enough gas",
             });
             return;
           }
@@ -1218,7 +1236,6 @@ export class ContractService {
             });
         });
     });
-
   }
 
   public async sendETHToAuction(amount, ref?) {
@@ -1402,32 +1419,49 @@ export class ContractService {
                     .then(async (accountBalance) => {
                       // console.log("auctionBetOf", accountBalance);
                       auctionInfo.eth_bet = new BigNumber(accountBalance.eth);
-                      const startTS = (+start +
-                        this.secondsInDay * (+id + 1)) *
-                      1000;
+                      const startTS =
+                        (+start + this.secondsInDay * (+id + 1)) * 1000;
                       const endTS = moment(startTS + this.secondsInDay * 1000);
                       auctionInfo.start_date = new Date(startTS);
 
-                      const uniPercent = await this.Auction.methods.uniswapPercent().call();
+                      const uniPercent = await this.Auction.methods
+                        .uniswapPercent()
+                        .call();
 
                       // START FORMULA
 
-
                       const uniswapPriceWithPercent = new BigNumber(
                         auctionData.uniswapMiddlePrice
-                      ).times(1 + uniPercent / 100).div(Math.pow(10, 18)).dp(0);
+                      )
+                        .times(1 + uniPercent / 100)
+                        .div(Math.pow(10, 18))
+                        .dp(0);
 
-                      const poolPrice = new BigNumber(auctionData.token).div(auctionData.eth);
+                      const poolPrice = new BigNumber(auctionData.token).div(
+                        auctionData.eth
+                      );
 
-                      const axnWithoutBorder = poolPrice.times(accountBalance.eth);
-                      const axnAmountWithDiscount = new BigNumber(accountBalance.eth).times(uniswapPriceWithPercent);
+                      const axnWithoutBorder = poolPrice.times(
+                        accountBalance.eth
+                      );
+                      const axnAmountWithDiscount = new BigNumber(
+                        accountBalance.eth
+                      ).times(uniswapPriceWithPercent);
 
-                      const userWinnings = BigNumber.minimum(axnAmountWithDiscount, axnWithoutBorder);
+                      const userWinnings = BigNumber.minimum(
+                        axnAmountWithDiscount,
+                        axnWithoutBorder
+                      );
 
-                      auctionInfo.winnings = userWinnings.div(Math.pow(10, this.tokensDecimals.HEX2X));
+                      auctionInfo.winnings = userWinnings.div(
+                        Math.pow(10, this.tokensDecimals.HEX2X)
+                      );
                       auctionInfo.hasWinnings = auctionInfo.winnings.isPositive();
 
-                      if (accountBalance.ref !== "0x0000000000000000000000000000000000000000") {
+                      if (
+                        accountBalance.ref !==
+                        "0x0000000000000000000000000000000000000000"
+                      ) {
                         auctionInfo.winnings = auctionInfo.winnings.times(1.1);
                       }
 
