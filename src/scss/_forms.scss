@@ -21,6 +21,10 @@
       &-dashed {
         &-right {
           border-right: $clForm-Border;
+
+          @include b(900) {
+            border-right: none;
+          }
         }
         &-bottom {
           border-bottom: $clForm-Border;

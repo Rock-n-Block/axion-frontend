@@ -238,7 +238,7 @@
             >
               {{
                 auction.axn_pool
-                  | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:4
+                  | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
               }}
             </span>
           </td>
@@ -253,7 +253,7 @@
             >
               {{
                 auction.eth_pool
-                  | bigNumberFormat: tokensDecimals["ETH"]:true:false:4
+                  | bigNumberFormat: tokensDecimals["ETH"]:true:false:2
               }}
             </span>
           </td>
@@ -268,7 +268,7 @@
             >
               {{
                 auction.eth_bet
-                  | bigNumberFormat: tokensDecimals["ETH"]:true:false:4
+                  | bigNumberFormat: tokensDecimals["ETH"]:true:false:2
               }}
             </span>
           </td>
@@ -280,7 +280,7 @@
                 auction.winnings | bigNumberFormat: false:true:false:18
               }}"
             >
-              {{ auction.winnings | bigNumberFormat: false:true:false:4 }}
+              {{ auction.winnings | bigNumberFormat: false:true:false:2 }}
             </span>
           </td>
           <td class="action-button">
@@ -345,7 +345,7 @@
             >
               {{
                 auction.data.axn_pool
-                  | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:4
+                  | bigNumberFormat: tokensDecimals["HEX2X"]:true:false:2
               }}
             </span>
           </td>
@@ -360,7 +360,7 @@
             >
               {{
                 auction.data.eth_pool
-                  | bigNumberFormat: tokensDecimals["ETH"]:true:false:4
+                  | bigNumberFormat: tokensDecimals["ETH"]:true:false:2
               }}
             </span>
           </td>

@@ -20,8 +20,8 @@ export class ClaimResolver implements Resolve<any> {
       this.contractService
         .getEndDateTime()
         .then((result: { leftDays: number }) => {
-          // const leftDaysInfoShow = result.leftDays > 0;
-          const leftDaysInfoShow = true;
+          const leftDaysInfoShow = result.leftDays > 0;
+          // const leftDaysInfoShow = true;
           if (leftDaysInfoShow) {
             this.continue(observer);
           } else {

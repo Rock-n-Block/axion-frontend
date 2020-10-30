@@ -109,7 +109,7 @@
                 mat-raised-button
                 matTooltip="{{ shareRate | bigNumberFormat: 0:true:false:18 }}"
               >
-                {{ shareRate | bigNumberFormat: 0:true:false:4 }}
+                {{ shareRate | bigNumberFormat: 0:true:false:2 }}
               </span>
               <br />
               <span class="axn-form-block-shares-text">Total Shares</span>
@@ -121,12 +121,12 @@
                 mat-raised-button
                 matTooltip="{{
                   stakingContractInfo.ShareRate || 0
-                    | bigNumberFormat: tokensDecimals.HEX2X:true:false:4
+                    | bigNumberFormat: tokensDecimals.HEX2X:true:false:2
                 }}"
               >
                 {{
                   stakingContractInfo.ShareRate || 0
-                    | bigNumberFormat: tokensDecimals.HEX2X:true:false:4
+                    | bigNumberFormat: tokensDecimals.HEX2X:true:false:2
                 }}
               </span>
               <span class="axn-form-block-shares-text">Share rate</span>
@@ -159,7 +159,7 @@
               >
                 {{
                   bonusLongerPays
-                    | bigNumberFormat: tokensDecimals.HEX2X:true:false:4
+                    | bigNumberFormat: tokensDecimals.HEX2X:true:false:2
                 }}
               </span>
               <br />

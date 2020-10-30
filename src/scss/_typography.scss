@@ -157,6 +157,10 @@ a {
   &-l {
     &-10 {
       padding-left: 10px;
+
+      @include b(900) {
+        padding-left: 0;
+      }
     }
   }
 
