@@ -58,17 +58,6 @@ export class ClaimPageComponent implements OnInit, OnDestroy {
     private appComponent: AppComponent,
     private router: Router
   ) {
-    this.contractService
-      .getEndDateTimeCurrent()
-      .then((result: { leftDaysInfo: number }) => {
-        if (result.leftDaysInfo < 0) {
-          this.leftDaysInfoChecker = false;
-          this.router.navigate(["auction"]);
-        } else {
-          this.leftDaysInfoChecker = true;
-          this.checkDays();
-        }
-      });
 
     this.initPage();
 
@@ -100,6 +89,19 @@ export class ClaimPageComponent implements OnInit, OnDestroy {
           this.ngZone.run(() => {
             this.account = account;
             if (account) {
+
+              this.contractService
+                .getEndDateTimeCurrent()
+                .then((result: { leftDaysInfo: number }) => {
+                  if (result.leftDaysInfo < 0) {
+                    this.leftDaysInfoChecker = false;
+                    this.router.navigate(["auction"]);
+                  } else {
+                    this.leftDaysInfoChecker = true;
+                    this.checkDays();
+                  }
+                });
+
               this.updateSwapBalanceProgress = true;
               this.onChangeAmount();
               this.onChangeAccount.emit();

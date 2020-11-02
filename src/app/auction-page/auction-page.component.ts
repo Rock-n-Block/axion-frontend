@@ -87,7 +87,6 @@ export class AuctionPageComponent implements OnDestroy {
     private dialog: MatDialog
   ) {
     this.referalAddress = this.cookieService.get("ref");
-    this.getAuctions();
     this.accountSubscribe = this.contractService
       .accountSubscribe()
       .subscribe((account: any) => {
@@ -96,6 +95,7 @@ export class AuctionPageComponent implements OnDestroy {
             this.account = account;
             window.dispatchEvent(new Event("resize"));
             if (account) {
+              this.getAuctions();
               this.onChangeAmount();
               this.onChangeAccount.emit();
 

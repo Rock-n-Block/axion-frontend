@@ -41,6 +41,8 @@ export class ContractService {
   private BPDContract: Contract;
   private SubBalanceContract: Contract;
 
+  private isActive: boolean;
+
   private tokensDecimals: any = {
     ETH: 18,
   };
@@ -158,6 +160,10 @@ export class ContractService {
         result[1][
           IS_PRODUCTION ? "mainnet" : this.settingsApp.settings.network
         ];
+      this.isActive = true;
+      if (this.account) {
+        this.callAllAccountsSubscribers();
+      }
     });
   }
 
@@ -201,16 +207,24 @@ export class ContractService {
   public getStaticInfo() {
     return this.initAll().then(() => {
       this.web3Service = new MetamaskService(this.config);
-      this.initializeContracts();
-      const promises = [this.getTokensInfo(false)];
-      return Promise.all(promises);
+      this.web3Service
+        .getAccounts()
+        .subscribe((account: any) => {
+          if (account) {
+            this.initializeContracts();
+            const promises = [this.getTokensInfo(false)];
+            return Promise.all(promises);
+          }
+        });
     });
   }
 
   private callAllAccountsSubscribers() {
-    this.allAccountSubscribers.forEach((observer) => {
-      observer.next(this.account);
-    });
+    if (this.isActive) {
+      this.allAccountSubscribers.forEach((observer) => {
+        observer.next(this.account);
+      });
+    }
   }
   private callAllTransactionsSubscribers(transaction) {
     this.allTransactionSubscribers.forEach((observer) => {
@@ -749,6 +763,7 @@ export class ContractService {
   }
 
   public getEndDateTime() {
+    console.trace();
     return this.ForeignSwapContract.methods
       .stepTimestamp()
       .call()

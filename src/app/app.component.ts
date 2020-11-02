@@ -26,6 +26,7 @@ export class AppComponent implements OnInit {
   public chainNetwork = "rinkeby";
   public tableInfo;
   public runLineCountArray = new Array(1);
+  private firstInitialization = false;
   @ViewChild("runString", { static: false }) runString;
   constructor(
     private contractService: ContractService,
@@ -73,6 +74,13 @@ export class AppComponent implements OnInit {
       .accountSubscribe()
       .subscribe((account) => {
         if (account) {
+          if (!this.firstInitialization) {
+            this.contractService.getContractsInfo().then((info) => {
+              this.tableInfo = info;
+              this.iniRunString();
+            });
+          }
+          this.firstInitialization = true;
           this.accountSubscribe.unsubscribe();
           this.subscribeAccount();
 
@@ -105,11 +113,6 @@ export class AppComponent implements OnInit {
     this.contractService.getAccount(true);
 
     this.isNavbarOpen = false;
-
-    this.contractService.getContractsInfo().then((info) => {
-      this.tableInfo = info;
-      this.iniRunString();
-    });
 
     this.isHeaderActive = false;
 

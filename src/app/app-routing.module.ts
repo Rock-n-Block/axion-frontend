@@ -9,7 +9,6 @@ const routes: Routes = [
   {
     path: "claim",
     component: ClaimPageComponent,
-    resolve: { claim: ClaimResolver },
   },
   {
     path: "auction",
