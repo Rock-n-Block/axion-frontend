@@ -37,14 +37,7 @@ export class MetamaskService {
     this.providers = {};
     this.providers.metamask = Web3.givenProvider;
 
-    this.providers.infura = new Web3.providers.HttpProvider(
-      WEB3_CONSTANTS[
-        this.networks[this.IS_PRODUCTION ? "production" : "testnet"]
-      ].WEB3_PROVIDER
-    );
-
     this.metaMaskWeb3 = window["ethereum"];
-    this.Web3 = new Web3(this.providers.infura);
   }
 
   private providers;
@@ -107,7 +100,11 @@ export class MetamaskService {
 
   public getAccounts(noEnable?) {
     const onAuth = (observer, address) => {
-      this.Web3.setProvider(this.providers.metamask);
+      if (this.Web3) {
+        this.Web3.setProvider(this.providers.metamask);
+      } else {
+        this.Web3 = new Web3(this.providers.metamask);
+      }
       observer.next({
         address,
         network: this.net,
@@ -118,7 +115,7 @@ export class MetamaskService {
     };
 
     const onError = (observer, errorParams) => {
-      this.Web3.setProvider(this.providers.infura);
+      // this.Web3.setProvider(this.providers.infura);
       observer.error(errorParams);
       if (noEnable) {
         observer.complete();

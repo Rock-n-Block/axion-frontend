@@ -106,9 +106,13 @@ export class AppComponent implements OnInit {
 
     this.isNavbarOpen = false;
 
-    this.contractService.getContractsInfo().then((info) => {
-      this.tableInfo = info;
-      this.iniRunString();
+    this.contractService.accountSubscribe().subscribe((account) => {
+      if (account) {
+        this.contractService.getContractsInfo().then((info) => {
+          this.tableInfo = info;
+          this.iniRunString();
+        });
+      }
     });
 
     this.isHeaderActive = false;

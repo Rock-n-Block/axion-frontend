@@ -58,15 +58,23 @@ export class ClaimPageComponent implements OnInit, OnDestroy {
     private appComponent: AppComponent,
     private router: Router
   ) {
-    this.contractService
-      .getEndDateTimeCurrent()
-      .then((result: { leftDaysInfo: number }) => {
-        if (result.leftDaysInfo < 0) {
-          this.leftDaysInfoChecker = false;
-          this.router.navigate(["auction"]);
-        } else {
-          this.leftDaysInfoChecker = true;
-          this.checkDays();
+
+    this.accountSubscribe = this.contractService
+      .accountSubscribe()
+      .subscribe((account: any) => {
+        if (account) {
+
+          this.contractService
+            .getEndDateTimeCurrent()
+            .then((result: { leftDaysInfo: number }) => {
+              if (result.leftDaysInfo < 0) {
+                this.leftDaysInfoChecker = false;
+                this.router.navigate(["auction"]);
+              } else {
+                this.leftDaysInfoChecker = true;
+                this.checkDays();
+              }
+            });
         }
       });
 
