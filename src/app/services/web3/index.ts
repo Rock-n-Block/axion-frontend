@@ -24,7 +24,6 @@ export class MetamaskService {
 
   constructor(private config: AppConfig) {
     const settingsApp = config.getConfig();
-    // console.log("web3", config.getConfig(), settingsApp);
 
     this.networks.testnet = settingsApp.settings.network;
 
@@ -37,12 +36,6 @@ export class MetamaskService {
 
     this.providers = {};
     this.providers.metamask = Web3.givenProvider;
-
-    // this.providers.infura = new Web3.providers.HttpProvider(
-    //   WEB3_CONSTANTS[
-    //     this.networks[this.IS_PRODUCTION ? "mainnet" : "testnet"]
-    //   ].WEB3_PROVIDER
-    // );
 
     this.providers.infura = new Web3.providers.HttpProvider(
       WEB3_CONSTANTS[

@@ -9,6 +9,6 @@ export const WEB3_CONSTANTS = {
   },
   mainnet: {
     WEB3_PROVIDER:
-      "https://mainnet.infura.io/v3/ada9a064fd3b4031b53ef14bf50ae718",
+      "https://mainnet.infura.io/v3/ecf1e6d0427b458b89760012a8500abf",
   },
 };
