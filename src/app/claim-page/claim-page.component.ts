@@ -36,9 +36,6 @@ export class ClaimPageComponent implements OnInit, OnDestroy {
   public burnTokensProgress: boolean;
   public claimTokensProgress: boolean;
 
-  public AxnTokenAddress = "none";
-  public tonkenUrl = "none";
-
   public dataSendForm = false;
   public leftDaysInfoChecker = true;
 
@@ -76,8 +73,6 @@ export class ClaimPageComponent implements OnInit, OnDestroy {
     this.initPage();
 
     this.tokensDecimals = this.contractService.getCoinsDecimals();
-    this.AxnTokenAddress = this.contractService.AxnTokenAddress;
-    this.tonkenUrl = this.contractService.settingsApp.settings.tonkenUrl;
   }
 
   public checkDays() {

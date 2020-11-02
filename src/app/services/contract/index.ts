@@ -55,10 +55,10 @@ export class ContractService {
       checkerBPD: 3600000,
 
       production: false,
-      network: "rinkeby",
+      network: "ropsten",
       chainsForButtonAddToMetamask: [1, 3, 4],
-      tonkenUrl: "https://rinkeby.etherscan.io/token/",
-      net: 4,
+      net: 3,
+
       time: {
         seconds: 900,
         display: "minutes",
@@ -777,11 +777,7 @@ export class ContractService {
                   this.settingsApp[this.settingsApp.settings.time.display]
                     .lowerName
                 );
-                const dateEnd = a.diff(
-                  b,
-                  this.settingsApp[this.settingsApp.settings.time.display]
-                    .lowerName
-                );
+                const dateEnd = a.diff(b, "days");
 
                 const dateToEnd = a.diff(b);
                 const showTime = leftDays;

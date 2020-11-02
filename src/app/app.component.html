@@ -169,6 +169,11 @@
           >&nbsp;<b>Days</b>
         </ng-container>
 
+        <ng-container *ngIf="chainNetwork === 'mainnet'">
+          <b>{{ leftDaysInfo?.dateEnd }}</b
+          >&nbsp;<b>Days</b>
+        </ng-container>
+
         <span>left for Claiming AXN</span>
       </span>
     </ng-container>
