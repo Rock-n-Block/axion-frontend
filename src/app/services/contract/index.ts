@@ -207,15 +207,13 @@ export class ContractService {
   public getStaticInfo() {
     return this.initAll().then(() => {
       this.web3Service = new MetamaskService(this.config);
-      this.web3Service
-        .getAccounts()
-        .subscribe((account: any) => {
-          if (account) {
-            this.initializeContracts();
-            const promises = [this.getTokensInfo(false)];
-            return Promise.all(promises);
-          }
-        });
+      this.web3Service.getAccounts().subscribe((account: any) => {
+        if (account) {
+          this.initializeContracts();
+          const promises = [this.getTokensInfo(false)];
+          return Promise.all(promises);
+        }
+      });
     });
   }
 
@@ -763,7 +761,7 @@ export class ContractService {
   }
 
   public getEndDateTime() {
-    console.trace();
+    // console.trace();
     return this.ForeignSwapContract.methods
       .stepTimestamp()
       .call()
