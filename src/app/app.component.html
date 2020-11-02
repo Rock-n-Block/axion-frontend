@@ -153,10 +153,10 @@
 <div class="axn">
   <div
     class="left-days-info"
-    [ngClass]="{ visibility: leftDaysInfoShow && account }"
+    [ngClass]="{ visibility: leftDaysInfoShow && account && bannerForClaim }"
     #runString
   >
-    <ng-container *ngIf="leftDaysInfoShow && account">
+    <ng-container *ngIf="leftDaysInfoShow && account && bannerForClaim">
       <span class="repeat-content" *ngFor="let item of runLineCountArray">
         <ng-container *ngIf="chainNetwork === 'rinkeby'">
           <b
@@ -174,10 +174,10 @@
           >&nbsp;<b>Days</b>
         </ng-container>
 
-        <span>left for Claiming AXN</span>
+        <span *ngIf="bannerForClaim">left for Claiming AXN</span>
       </span>
     </ng-container>
-    <ng-container *ngIf="!leftDaysInfoShow || !account">
+    <ng-container *ngIf="!leftDaysInfoShow || !account || !bannerForClaim">
       <span class="repeat-content"></span>
     </ng-container>
   </div>

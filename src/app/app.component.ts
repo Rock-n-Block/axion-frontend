@@ -25,6 +25,7 @@ export class AppComponent implements OnInit {
   public themeSwitch = false;
   public chainNetwork = "rinkeby";
   public tableInfo;
+  public bannerForClaim = false;
   public runLineCountArray = new Array(1);
   private firstInitialization = false;
   @ViewChild("runString", { static: false }) runString;
@@ -34,7 +35,7 @@ export class AppComponent implements OnInit {
     public dialog: MatDialog,
     private cookieService: CookieService,
     private config: AppConfig,
-    route: Router
+    private route: Router
   ) {
     this.theme = this.cookieService.get("theme")
       ? this.cookieService.get("theme")
@@ -118,6 +119,7 @@ export class AppComponent implements OnInit {
 
     route.events.subscribe((event) => {
       if (event instanceof ActivationStart) {
+        this.bannerForClaim = event.snapshot.url[0].path === "claim";
         if (event.snapshot.queryParams.ref) {
           this.cookieService.set("ref", event.snapshot.queryParams.ref);
         }

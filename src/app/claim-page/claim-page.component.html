@@ -185,7 +185,7 @@
 
 <section class="axn-section" *ngIf="account">
   <div class="axn-title-block">
-    <span class="axn-title">Convert HEX to AXN</span>
+    <span class="axn-title">Freeclaim AXN with HEX</span>
     <div
       #tooltip2="matTooltip"
       (click)="tooltip2.toggle()"
@@ -276,7 +276,11 @@
         class="axn-btn axn-btn-gray axn-btn-form"
         (click)="claim()"
         [ngClass]="{ progress: claimTokensProgress }"
-        [disabled]="account.claimableInfo.claim.isZero() || claimTokensProgress"
+        [disabled]="
+          account.snapshot.user_dont_have_hex ||
+          account.claimableInfo.claim.isZero() ||
+          claimTokensProgress
+        "
       >
         <span class="lds-ellipsis" *ngIf="claimTokensProgress">
           <span class="lds-ellipsis-container">
