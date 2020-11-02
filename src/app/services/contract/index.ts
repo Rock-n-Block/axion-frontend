@@ -9,7 +9,8 @@ import * as moment from "moment";
 // import { settingsData } from "../../params";
 import { AppConfig } from "../../appconfig";
 
-export const stakingMaxDays = 5555;
+// export const stakingMaxDays = 5555;
+export const stakingMaxDays = 1820;
 
 interface DepositInterface {
   start: Date;

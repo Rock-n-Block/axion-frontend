@@ -2,13 +2,14 @@ import {
   Component,
   EventEmitter,
   NgZone,
-  OnDestroy, TemplateRef,
+  OnDestroy,
+  TemplateRef,
   ViewChild,
 } from "@angular/core";
 import { ContractService, stakingMaxDays } from "../services/contract";
 import BigNumber from "bignumber.js";
 import { AppConfig } from "../appconfig";
-import {MatDialog} from "@angular/material/dialog";
+import { MatDialog } from "@angular/material/dialog";
 
 interface StakingInfoInterface {
   ShareRate: number;
@@ -26,7 +27,7 @@ export class StakingPageComponent implements OnDestroy {
   public account;
   public tableInfo;
   public tokensDecimals;
-  public depositMaxDays = stakingMaxDays;
+  public depositMaxDays = 5555;
   private accountSubscribe;
   public shareRate = 0;
   public hasBigPayDay = false;
@@ -112,7 +113,7 @@ export class StakingPageComponent implements OnDestroy {
     this.settingsData = this.config.getConfig();
     this.dayEndSubscriber = this.contractService.onDayEnd().subscribe(() => {
       this.depositList();
-    })
+    });
   }
 
   public getStakingInfo() {
@@ -297,24 +298,20 @@ export class StakingPageComponent implements OnDestroy {
 
   public successWithPenalty() {
     this.confirmWithdrawData.openedWarning.close();
-    this.depositWithdraw(
-      this.confirmWithdrawData.deposit,
-      true
-    );
+    this.depositWithdraw(this.confirmWithdrawData.deposit, true);
   }
 
   public confirmWithdrawData;
 
   public depositWithdraw(deposit, withoutConfirm?) {
-
     if (!withoutConfirm) {
       if (!deposit.penalty.isZero()) {
         const openedWarning = this.dialog.open(this.warningModal, {});
         this.confirmWithdrawData = {
           deposit,
           openedWarning,
-          early: Date.now() > deposit.end
-        }
+          early: Date.now() > deposit.end,
+        };
         return;
       }
     }
