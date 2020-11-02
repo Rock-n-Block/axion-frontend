@@ -56,6 +56,7 @@ export class ContractService {
 
       production: false,
       network: "rinkeby",
+      chainsForButtonAddToMetamask: [1, 3, 4],
       tonkenUrl: "https://rinkeby.etherscan.io/token/",
       net: 4,
       time: {
