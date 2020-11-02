@@ -88,9 +88,6 @@ export class AuctionPageComponent implements OnDestroy {
   ) {
     this.referalAddress = this.cookieService.get("ref");
     this.getAuctions();
-
-    console.log("auctions");
-
     this.accountSubscribe = this.contractService
       .accountSubscribe()
       .subscribe((account: any) => {

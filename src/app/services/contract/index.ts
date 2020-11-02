@@ -1278,28 +1278,47 @@ export class ContractService {
     };
 
     return new Promise((resolve) => {
-      const auctions = [
-        {
-          id: auctionId - 1,
-          data: {},
-          time: {
-            state: "finished",
-            date: setDate(auctionId, true),
+      let auctions: any;
+
+      if (auctionId === 0) {
+        auctions = [
+          {
+            id: auctionId,
+            data: {},
+            time: {
+              state: "progress",
+              date: moment(new Date()).set({
+                h: new Date(start).getHours(),
+                m: new Date(start).getMinutes(),
+                s: new Date(start).getSeconds(),
+              }),
+            },
           },
-        },
-        {
-          id: auctionId,
-          data: {},
-          time: {
-            state: "progress",
-            date: moment(new Date()).set({
-              h: new Date(start).getHours(),
-              m: new Date(start).getMinutes(),
-              s: new Date(start).getSeconds(),
-            }),
+        ];
+      } else {
+        auctions = [
+          {
+            id: auctionId - 1,
+            data: {},
+            time: {
+              state: "finished",
+              date: setDate(auctionId, true),
+            },
           },
-        },
-      ];
+          {
+            id: auctionId,
+            data: {},
+            time: {
+              state: "progress",
+              date: moment(new Date()).set({
+                h: new Date(start).getHours(),
+                m: new Date(start).getMinutes(),
+                s: new Date(start).getSeconds(),
+              }),
+            },
+          },
+        ];
+      }
 
       let featureId = auctionId;
       let nowId = auctionId;
@@ -1370,6 +1389,7 @@ export class ContractService {
             .calculateStepsFromStart()
             .call()
             .then((auctionId) => {
+              // console.log(auctionId);
               this.getAuctionsData(Number(auctionId), start * 1000).then(
                 (auctions) => {
                   resolve(auctions);
@@ -1385,6 +1405,7 @@ export class ContractService {
       .start()
       .call()
       .then((start) => {
+        // console.log(start);
         return this.Auction.methods
           .auctionsOf_(this.account.address)
           .call()
