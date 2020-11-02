@@ -287,9 +287,9 @@ export class ContractService {
   public getAccount(noEnable?) {
     const finishIniAccount = () => {
       if (!noEnable) {
-        this.initializeContracts();
       }
       if (this.account) {
+        this.initializeContracts();
         this.getAccountSnapshot().then(() => {
           this.updateClaimableInformation(true);
           this.updateClaimableInformationHex(true);
