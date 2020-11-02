@@ -763,6 +763,7 @@ export class ContractService {
   }
 
   public getEndDateTime() {
+    console.trace();
     return this.ForeignSwapContract.methods
       .stepTimestamp()
       .call()
