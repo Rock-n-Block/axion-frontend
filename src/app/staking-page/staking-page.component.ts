@@ -162,6 +162,7 @@ export class StakingPageComponent implements OnDestroy {
       .then((r) => {
         this.contractService.updateHEX2XBalance(true).then(() => {
           this.depositTokensProgress = false;
+          this.shareRate = 0;
         });
         this.formsData = {};
       })
