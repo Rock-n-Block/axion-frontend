@@ -305,18 +305,13 @@ export class StakingPageComponent implements OnDestroy {
   public confirmWithdrawData;
 
   public depositWithdraw(deposit, withoutConfirm?) {
-    // console.log(
-    //   Date.now(),
-    //   deposit.end,
-    //   new Date(deposit.end).getTime(),
-    //   new Date(new Date(deposit.end).getTime() + 12096e5).getTime(),
-    //   new Date(new Date(new Date(deposit.end).getTime() + 12096e5)),
-    //   Date.now() > deposit.end
-    // );
-
     if (!withoutConfirm) {
       if (!deposit.penalty.isZero()) {
         const openedWarning = this.dialog.open(this.warningModal, {});
+
+        console.log(deposit);
+
+        let payOutAmount: any;
 
         const endTwoWeeks = new Date(
           new Date(new Date(deposit.end).getTime() + 12096e5)
@@ -329,9 +324,52 @@ export class StakingPageComponent implements OnDestroy {
             ? "Late"
             : "Normal";
 
+        // Дней прошло с начала стейкинга
+        const daysGone = Math.round(
+          (Date.parse(new Date() as any) - Date.parse(deposit.start)) / 86400000
+        );
+
+        // Общее количество дней стейкинга
+        const daysStaking = Math.round(
+          (Date.parse(deposit.end) - Date.parse(deposit.start)) / 86400000
+        );
+
+        if (late === "Early") {
+          // payOutAmount = (Застейкано AXN + stakingInterest)*Дней прошло с начала стейкинга/Общее количество дней стейкинга
+          payOutAmount = new BigNumber(deposit.amount)
+            .plus(deposit.interest)
+            .multipliedBy(daysGone)
+            .div(daysStaking);
+        }
+
+        if (late === "Late") {
+          // payOutAmount = (Застейкано AXN + stakingInterest) * (714 - Дней прошло с начала стейкинга)/700
+          payOutAmount = new BigNumber(deposit.amount)
+            .plus(deposit.interest)
+            .multipliedBy(714 - daysGone)
+            .div(700);
+        }
+
+        // penalty =  Застейкано AXN + stakingInterest - payOutAmount
+        const penalty = new BigNumber(deposit.amount)
+          .plus(deposit.interest)
+          .minus(payOutAmount);
+
+        console.log(
+          "days from start: " + daysGone,
+          "| staking days: " + daysStaking,
+          "| payOutAmount: " +
+            payOutAmount
+              .div(Math.pow(10, this.tokensDecimals.HEX2X))
+              .toNumber(),
+          "| earlyUnstakePenalty: " +
+            penalty.div(Math.pow(10, this.tokensDecimals.HEX2X)).toNumber()
+        );
+
         this.confirmWithdrawData = {
           deposit,
           openedWarning,
+          penalty,
           late,
         };
         return;
