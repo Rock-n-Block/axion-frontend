@@ -324,9 +324,9 @@ export class StakingPageComponent implements OnDestroy {
 
         const late =
           Date.now() < deposit.end
-            ? "Late"
-            : Date.now() < endTwoWeeks
             ? "Early"
+            : Date.now() < endTwoWeeks
+            ? "Late"
             : "Normal";
 
         this.confirmWithdrawData = {
