@@ -305,13 +305,34 @@ export class StakingPageComponent implements OnDestroy {
   public confirmWithdrawData;
 
   public depositWithdraw(deposit, withoutConfirm?) {
+    // console.log(
+    //   Date.now(),
+    //   deposit.end,
+    //   new Date(deposit.end).getTime(),
+    //   new Date(new Date(deposit.end).getTime() + 12096e5).getTime(),
+    //   new Date(new Date(new Date(deposit.end).getTime() + 12096e5)),
+    //   Date.now() > deposit.end
+    // );
+
     if (!withoutConfirm) {
       if (!deposit.penalty.isZero()) {
         const openedWarning = this.dialog.open(this.warningModal, {});
+
+        const endTwoWeeks = new Date(
+          new Date(new Date(deposit.end).getTime() + 12096e5)
+        ).getTime();
+
+        const late =
+          Date.now() < deposit.end
+            ? "Late"
+            : Date.now() < endTwoWeeks
+            ? "Early"
+            : "Normal";
+
         this.confirmWithdrawData = {
           deposit,
           openedWarning,
-          early: Date.now() > deposit.end,
+          late,
         };
         return;
       }

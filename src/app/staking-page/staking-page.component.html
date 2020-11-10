@@ -487,7 +487,8 @@
     <div class="dialog-title">Attention!</div>
 
     <div class="dialog-description">
-      {{ confirmWithdrawData.early ? "Late" : "Early" }} unstake! You will get
+      {{ confirmWithdrawData.late ? confirmWithdrawData.late : "" }} unstake!
+      You will get
       {{
         confirmWithdrawData.deposit.forWithdraw
           | bigNumberFormat: tokensDecimals.HEX2X:true:false:2

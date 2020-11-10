@@ -5,11 +5,11 @@
     "checkerStakingInfo": 3600000,
     "checkerBPD": 3600000,
 
-    "production": true,
-    "chainsForButtonAddToMetamask": [1],
-    "network": "mainnet",
+    "production": false,
+    "chainsForButtonAddToMetamask": [4],
+    "network": "ropsten",
     "tonkenUrl": "https://etherscan.io/token/",
-    "net": 1,
+    "net": 3,
     "time": {
       "seconds": 86400,
       "display": "days"
