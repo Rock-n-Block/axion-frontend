@@ -114,6 +114,10 @@ export class ContractService {
     }, 60000);
   }
 
+  public getSecondsInDay() {
+    return this.secondsInDay;
+  }
+
   public onDayEnd() {
     return new Observable((observer) => {
       this.dayEndSubscribers.push(observer);

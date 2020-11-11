@@ -309,12 +309,11 @@ export class StakingPageComponent implements OnDestroy {
       if (!deposit.penalty.isZero()) {
         const openedWarning = this.dialog.open(this.warningModal, {});
 
-        console.log(deposit);
-
+        const oneDayInSeconds = this.contractService.getSecondsInDay();
         let payOutAmount: any;
 
         const endTwoWeeks = new Date(
-          new Date(new Date(deposit.end).getTime() + 12096e5)
+          new Date(new Date(deposit.end).getTime() + oneDayInSeconds * 14)
         ).getTime();
 
         const late =
@@ -326,28 +325,31 @@ export class StakingPageComponent implements OnDestroy {
 
         // Дней прошло с начала стейкинга
         const daysGone = Math.round(
-          (Date.parse(new Date() as any) - Date.parse(deposit.start)) / 86400000
+          (Date.parse(new Date() as any) - Date.parse(deposit.start)) / oneDayInSeconds
         );
 
         // Общее количество дней стейкинга
         const daysStaking = Math.round(
-          (Date.parse(deposit.end) - Date.parse(deposit.start)) / 86400000
+          (Date.parse(deposit.end) - Date.parse(deposit.start)) / oneDayInSeconds
         );
 
-        if (late === "Early") {
+        switch (late) {
           // payOutAmount = (Застейкано AXN + stakingInterest)*Дней прошло с начала стейкинга/Общее количество дней стейкинга
-          payOutAmount = new BigNumber(deposit.amount)
-            .plus(deposit.interest)
-            .multipliedBy(daysGone)
-            .div(daysStaking);
-        }
-
-        if (late === "Late") {
+          case "Early":
+            payOutAmount = new BigNumber(deposit.amount)
+              .plus(deposit.interest)
+              .multipliedBy(daysGone)
+              .div(daysStaking);
+            break;
           // payOutAmount = (Застейкано AXN + stakingInterest) * (714 - Дней прошло с начала стейкинга)/700
-          payOutAmount = new BigNumber(deposit.amount)
-            .plus(deposit.interest)
-            .multipliedBy(714 - daysGone)
-            .div(700);
+          case "Late":
+            payOutAmount = new BigNumber(deposit.amount)
+              .plus(deposit.interest)
+              .multipliedBy(714 - daysGone)
+              .div(700);
+            break;
+          default:
+            payOutAmount = new BigNumber(deposit.interest).plus(deposit.amount);
         }
 
         // penalty =  Застейкано AXN + stakingInterest - payOutAmount
