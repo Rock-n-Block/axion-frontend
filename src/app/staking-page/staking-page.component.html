@@ -490,12 +490,12 @@
       {{ confirmWithdrawData.late ? confirmWithdrawData.late : "" }} unstake!
       You will get
       {{
-        confirmWithdrawData.deposit.forWithdraw
+        confirmWithdrawData.payOutAmount
           | bigNumberFormat: tokensDecimals.HEX2X:true:false:2
       }}
       Axion,
       {{
-        confirmWithdrawData.penalty
+        confirmWithdrawData.deposit.penalty
           | bigNumberFormat: tokensDecimals.HEX2X:true:false:2
       }}
       Axion will be penalized!

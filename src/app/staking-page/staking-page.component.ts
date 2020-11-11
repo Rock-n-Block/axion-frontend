@@ -355,6 +355,9 @@ export class StakingPageComponent implements OnDestroy {
           .plus(deposit.interest)
           .minus(payOutAmount);
 
+        // получить пенальти с вычетом количества которое будет выплачено при unstakw/withdraw?
+        const penalty2 = new BigNumber(deposit.penalty).minus(payOutAmount);
+
         console.log(
           "days from start: " + daysGone,
           "| staking days: " + daysStaking,
@@ -370,7 +373,9 @@ export class StakingPageComponent implements OnDestroy {
           deposit,
           openedWarning,
           penalty,
+          penalty2,
           late,
+          payOutAmount,
         };
         return;
       }
