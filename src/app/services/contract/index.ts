@@ -114,8 +114,8 @@ export class ContractService {
     }, 60000);
   }
 
-  public getSecondsInDay() {
-    return this.secondsInDay;
+  public getMSecondsInDay() {
+    return this.secondsInDay * 1000;
   }
 
   public onDayEnd() {

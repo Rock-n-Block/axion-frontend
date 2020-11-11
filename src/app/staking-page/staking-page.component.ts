@@ -309,12 +309,10 @@ export class StakingPageComponent implements OnDestroy {
       if (!deposit.penalty.isZero()) {
         const openedWarning = this.dialog.open(this.warningModal, {});
 
-        const oneDayInSeconds = this.contractService.getSecondsInDay();
+        const oneDayInSeconds = this.contractService.getMSecondsInDay();
         let payOutAmount: any;
 
-        const endTwoWeeks = new Date(
-          new Date(new Date(deposit.end).getTime() + oneDayInSeconds * 14)
-        ).getTime();
+        const endTwoWeeks = new Date(deposit.end).getTime() + oneDayInSeconds * 14;
 
         const late =
           Date.now() < deposit.end
