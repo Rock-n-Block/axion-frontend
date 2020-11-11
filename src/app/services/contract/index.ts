@@ -1078,8 +1078,6 @@ export class ContractService {
                   .calculateSessionPayout(sessionId)
                   .call()
                   .then((result) => {
-                    let interest = 1;
-
                     return this.StakingContract.methods
                       .calculateStakingInterest(
                         sessionId,
@@ -1090,9 +1088,9 @@ export class ContractService {
                       .then((res) => {
                         return this.StakingContract.methods
                           .getAmountOutAndPenalty(sessionId, res)
-                          .call()
+                          .call({ from: this.account.address })
                           .then((resultInterest) => {
-                            interest =
+                            const interest =
                               resultInterest[1].length < 40
                                 ? resultInterest[1]
                                 : 0;

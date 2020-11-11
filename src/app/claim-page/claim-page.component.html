@@ -1,16 +1,16 @@
 <section class="axn-section" *ngIf="account">
   <div class="axn-title-block">
-    <span class="axn-title">Convert HEX2T to AXN</span>
+    <span class="axn-title">Convert HEX3T to AXN</span>
     <div
       #tooltip="matTooltip"
       (click)="tooltip.toggle()"
       class="question"
       mat-raised-button
       matTooltip="
-      Exchange HEX2T tokens to Axion at a 1:1 rate. To receive Axion tokens, send tokens to the Burn contract and burn them. The exchange will be available for 350 days, however, there is a Late Claim Penalty for late exchange.
+      Exchange HEX3T tokens to Axion at a 1:1 rate. To receive Axion tokens, send tokens to the Burn contract and burn them. The exchange will be available for 350 days, however, there is a Late Claim Penalty for late exchange.
 
       The amount of the penalty is calculated by the formula:
-      Penalty = HEX2T amount * (day since free claim starts / 350)
+      Penalty = HEX3T amount * (day since free claim starts / 350)
 
       All penalized tokens will be sent to the next day auction."
       matTooltipClass="question__tooltip"
@@ -39,7 +39,7 @@
           name="swap-amount"
           autocomplete="off"
         />
-        <span class="axn-cheap icon icon_hex cl-gradient-bg">HEX2T</span>
+        <span class="axn-cheap icon icon_hex cl-gradient-bg">HEX3T</span>
 
         <div class="axn-form-base-2 axn-form-bottom">
           <div class="axn-form-block-sendmax">
@@ -100,7 +100,7 @@
               | bigNumberFormat: tokensDecimals.HEX2X:true:false:2
           }}
         </span>
-        <span class="axn-cheap icon icon_hex cl-gradient-bg">HEX2T</span>
+        <span class="axn-cheap icon icon_hex cl-gradient-bg">HEX3T</span>
         <div class="axn-form-block-button axn-form-bottom">
           <button
             class="axn-btn axn-btn-gray axn-btn-form axn-btn-form-mid"
