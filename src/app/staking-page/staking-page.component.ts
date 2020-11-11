@@ -18,6 +18,9 @@ interface StakingInfoInterface {
   closestPoolAmount?: string;
 }
 
+const FULL_PERIOD = 700;
+const AVAILABLE_DAYS_AFTER_END = 14;
+
 @Component({
   selector: "app-staking-page",
   templateUrl: "./staking-page.component.html",
@@ -312,62 +315,55 @@ export class StakingPageComponent implements OnDestroy {
         const oneDayInSeconds = this.contractService.getMSecondsInDay();
         let payOutAmount: any;
 
-        const endTwoWeeks = new Date(deposit.end).getTime() + oneDayInSeconds * 14;
+        const nowTS = Date.now();
+        const startTS = Date.parse(deposit.start);
+        const endTS = Date.parse(deposit.end);
 
-        const late =
-          Date.now() < deposit.end
-            ? "Early"
-            : Date.now() < endTwoWeeks
-            ? "Late"
-            : "Normal";
+        const endTwoWeeks = endTS + oneDayInSeconds * AVAILABLE_DAYS_AFTER_END;
+
+
+        const late = nowTS < endTS ? "Early" : nowTS > endTwoWeeks ? "Late" : "Normal";
 
         // Дней прошло с начала стейкинга
-        const daysGone = Math.round(
-          (Date.parse(new Date() as any) - Date.parse(deposit.start)) / oneDayInSeconds
-        );
+        const daysGone = Math.floor((nowTS - startTS) / oneDayInSeconds);
 
         // Общее количество дней стейкинга
-        const daysStaking = Math.round(
-          (Date.parse(deposit.end) - Date.parse(deposit.start)) / oneDayInSeconds
-        );
+        const daysStaking = (endTS - startTS) / oneDayInSeconds;
+        console.log(daysStaking);
+        console.log(deposit.forWithdraw.div(Math.pow(10, 18)).toString(10));
+        const fullPayOut = new BigNumber(deposit.amount).plus(deposit.interest);
 
         switch (late) {
           // payOutAmount = (Застейкано AXN + stakingInterest)*Дней прошло с начала стейкинга/Общее количество дней стейкинга
           case "Early":
-            payOutAmount = new BigNumber(deposit.amount)
-              .plus(deposit.interest)
-              .multipliedBy(daysGone)
-              .div(daysStaking);
+            payOutAmount = fullPayOut.times(daysGone).div(daysStaking);
             break;
           // payOutAmount = (Застейкано AXN + stakingInterest) * (714 - Дней прошло с начала стейкинга)/700
           case "Late":
-            payOutAmount = new BigNumber(deposit.amount)
-              .plus(deposit.interest)
-              .multipliedBy(714 - daysGone)
-              .div(700);
+            const lastUnStakingDay = FULL_PERIOD + AVAILABLE_DAYS_AFTER_END;
+            payOutAmount = fullPayOut.times(lastUnStakingDay - daysGone).div(FULL_PERIOD);
             break;
           default:
-            payOutAmount = new BigNumber(deposit.interest).plus(deposit.amount);
+            payOutAmount = fullPayOut;
         }
 
         // penalty =  Застейкано AXN + stakingInterest - payOutAmount
-        const penalty = new BigNumber(deposit.amount)
-          .plus(deposit.interest)
-          .minus(payOutAmount);
+        const penalty = fullPayOut.minus(payOutAmount);
 
         // получить пенальти с вычетом количества которое будет выплачено при unstakw/withdraw?
         const penalty2 = new BigNumber(deposit.penalty).minus(payOutAmount);
 
         console.log(
-          "days from start: " + daysGone,
-          "| staking days: " + daysStaking,
-          "| payOutAmount: " +
-            payOutAmount
-              .div(Math.pow(10, this.tokensDecimals.HEX2X))
-              .toNumber(),
-          "| earlyUnstakePenalty: " +
-            penalty.div(Math.pow(10, this.tokensDecimals.HEX2X)).toNumber()
+          'Unstake: ' + late + ";\n" +
+          'Застейкано AXN: ' + deposit.amount.toString(10) + ";\n" +
+          'Интерес: ' + deposit.interest.toString(10) + ";\n" +
+          'Дней прошло: ' + daysGone + ";\n" +
+          'Всего дней: ' + daysStaking + ";\n" +
+          'payOutAmount if Early: (' + deposit.amount.toString(10) + ' + ' + deposit.interest.toString(10) + ') * ' + daysGone + ' / ' + daysStaking + ' = ' + payOutAmount + ";\n" +
+          'payOutAmount if Late: (' + deposit.amount.toString(10) + ' + ' + deposit.interest.toString(10) + ') * (' + (FULL_PERIOD + AVAILABLE_DAYS_AFTER_END - daysGone) + ') / ' + daysStaking + ' = ' + payOutAmount.toString(10) + ";\n" +
+          'penalty: ' + deposit.amount.toString(10) + ' + ' + deposit.interest.toString(10) + ' - ' + payOutAmount.toString(10) + ' = ' + penalty
         );
+
 
         this.confirmWithdrawData = {
           deposit,

@@ -1094,10 +1094,7 @@ export class ContractService {
                           .getAmountOutAndPenalty(sessionId, res)
                           .call({ from: this.account.address })
                           .then((resultInterest) => {
-                            const interest =
-                              resultInterest[1].length < 40
-                                ? resultInterest[1]
-                                : 0;
+                            const interest = res;
 
                             return {
                               start: new Date(oneSession.start * 1000),
