@@ -47,7 +47,19 @@ export class AppComponent implements OnInit {
 
     const settingsData = config.getConfig();
 
-    window["ethereum"].on("chainChanged", () => {
+    if (window["ethereum"]) {
+      window["ethereum"].on("chainChanged", () => {
+        window["ethereum"]
+          .request({
+            method: "net_version",
+          })
+          .then((result) => {
+            this.addToMetamask = settingsData.settings.chainsForButtonAddToMetamask.includes(
+              Number(result)
+            );
+          });
+      });
+
       window["ethereum"]
         .request({
           method: "net_version",
@@ -57,17 +69,8 @@ export class AppComponent implements OnInit {
             Number(result)
           );
         });
-    });
+    }
 
-    window["ethereum"]
-      .request({
-        method: "net_version",
-      })
-      .then((result) => {
-        this.addToMetamask = settingsData.settings.chainsForButtonAddToMetamask.includes(
-          Number(result)
-        );
-      });
 
     this.chainNetwork = settingsData.settings.network;
 
