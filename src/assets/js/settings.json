@@ -6,12 +6,12 @@
     "checkerBPD": 3600000,
 
     "production": false,
-    "chainsForButtonAddToMetamask": [4],
+    "chainsForButtonAddToMetamask": [3],
     "network": "ropsten",
-    "tonkenUrl": "https://etherscan.io/token/",
+    "tonkenUrl": "https://ropsten.etherscan.io/token/",
     "net": 3,
     "time": {
-      "seconds": 86400,
+      "seconds": 5,
       "display": "days"
     }
   },
