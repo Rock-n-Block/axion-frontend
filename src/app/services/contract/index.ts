@@ -271,7 +271,7 @@ export class ContractService {
       .call()
       .then((result) => {
         this.account.completeClaim = {
-          have_forClaim: new BigNumber(result).toNumber() > 0,
+          hasClaimed: new BigNumber(result).toNumber() > 0,
           value: new BigNumber(result).div(10000000000).toNumber(),
           valueFull: new BigNumber(result),
         };
@@ -1523,9 +1523,9 @@ export class ContractService {
       .then(
         (result) => {
           this.account.snapshot = result;
-          this.account.snapshot.user_dont_have_hex =
+          this.account.snapshot.nothingToClaim =
             this.account.snapshot.hex_amount <= 0;
-          this.account.snapshot.show_hex =
+          this.account.snapshot.hexAmount =
             new BigNumber(this.account.snapshot.hex_amount).toNumber() > 0
               ? new BigNumber(
                   this.account.snapshot.hex_amount.div(10000000000).toFixed(0)
@@ -1553,9 +1553,9 @@ export class ContractService {
         .then(
           (result) => {
             this.account.snapshot = result;
-            this.account.snapshot.user_dont_have_hex =
+            this.account.snapshot.nothingToClaim =
               this.account.snapshot.hex_amount <= 0;
-            this.account.snapshot.show_hex = new BigNumber(
+            this.account.snapshot.hexAmount = new BigNumber(
               this.account.snapshot.hex_amount
             )
               .div(10000000000)

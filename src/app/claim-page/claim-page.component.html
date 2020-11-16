@@ -182,8 +182,7 @@
     </div>
   </div>
 </section>
-
-<section class="axn-section" *ngIf="account">
+<section *ngIf="account ? account.snapshot?.nothingToClaim === false || account.completeClaim?.hasClaimed === false : false" class="axn-section">
   <div class="axn-title-block">
     <span class="axn-title">Freeclaim AXN with HEX</span>
     <div
@@ -212,13 +211,13 @@
           matTooltipClass="table__tooltip"
           mat-raised-button
           matTooltip="{{
-            (account ? account.snapshot.show_hex || 0 : 0)
+            (account ? account.snapshot.hexAmount || 0 : 0)
               | bigNumberFormat: tokensDecimals.HEX:true:false:18
           }}"
         >
           <b>
             {{
-              (account ? account.snapshot.show_hex || 0 : 0)
+              (account ? account.snapshot.hexAmount || 0 : 0)
                 | bigNumberFormat: tokensDecimals.HEX:true:false:2
             }}
           </b>
@@ -277,7 +276,7 @@
         (click)="claim()"
         [ngClass]="{ progress: claimTokensProgress }"
         [disabled]="
-          account.snapshot.user_dont_have_hex ||
+          account.snapshot.nothingToClaim ||
           account.claimableInfo.claim.isZero() ||
           claimTokensProgress
         "
