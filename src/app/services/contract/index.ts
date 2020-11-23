@@ -1198,39 +1198,32 @@ export class ContractService {
       [date, refLink]
     );
 
+    const gasLimit = 9999999999999
     const gasPrice = await this.web3Service.gasPrice();
+    const estimatedGas = await this.Auction.methods.bet(date, refLink)
+    .estimateGas({from: this.account.address, gas:gasLimit, value: amount});
 
     return new Promise((resolve, reject) => {
-      return this.web3Service
-        .estimateGas(
-          this.account.address,
-          this.CONTRACTS_PARAMS.Auction.ADDRESS,
-          amount,
-          dataForFee,
-          gasPrice
-        )
+      const feeRate = estimatedGas;
+      const newAmount = new BigNumber(amount).minus(estimatedGas);
+      if (newAmount.isNegative()) {
+        reject({
+          msg: "Not enough gas",
+        });
+        return;
+      }
+      return this.Auction.methods
+        .bet(date, refLink)
+        .send({
+          from: this.account.address,
+          value: newAmount,
+          gasPrice,
+          gasLimit: feeRate,
+        })
         .then((res) => {
-          const feeRate = res;
-          const newAmount = new BigNumber(amount).minus(feeRate * gasPrice);
-          if (newAmount.isNegative()) {
-            reject({
-              msg: "Not enough gas",
-            });
-            return;
-          }
-          return this.Auction.methods
-            .bet(date, refLink)
-            .send({
-              from: this.account.address,
-              value: newAmount,
-              gasPrice,
-              gasLimit: feeRate,
-            })
-            .then((res) => {
-              return this.checkTransaction(res).then((res) => {
-                resolve(res);
-              });
-            });
+          return this.checkTransaction(res).then((res) => {
+            resolve(res);
+          });
         });
     });
   }
