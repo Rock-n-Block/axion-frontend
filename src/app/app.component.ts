@@ -174,6 +174,10 @@ export class AppComponent implements OnInit {
     this.isNavbarOpen = !this.isNavbarOpen;
   }
 
+  public navigateToHomePage() {
+    window.location.href='https://axion.network'
+  }
+
   public subscribeAccount() {
     if (this.account) {
       return;
